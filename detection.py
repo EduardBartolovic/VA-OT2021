@@ -4,6 +4,7 @@ import numpy as np
 import time
 import sys
 import os
+import math
 
 
 # the neural network configuration
@@ -21,6 +22,9 @@ colors = np.random.randint(0, 255, size=(len(labels), 3), dtype="uint8")
 # load the YOLO network
 net = cv2.dnn.readNetFromDarknet(config_path, weights_path)
 
+#net.setPreferableBackend(cv.dnn.DNN_BACKEND_OPENCV)
+net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
+
 #Minimum Confidence
 confidenceThreshold = 0.3
 
@@ -31,13 +35,17 @@ nmsThreshold = 0.2
 font_scale = 1
 thickness = 2
 
+
+"""
+return Bounding Boxes top left corner and height and width
+"""
 def detect_image(image,count):
 
     h, w = image.shape[:2]
     
     blob = cv2.dnn.blobFromImage(image, 1/255.0, (416, 416), swapRB=True, crop=False)# create 4D blob
 
-    print("image.shape:", image.shape, "=> blob.shape:", blob.shape)
+    #print("image.shape:", image.shape, "=> blob.shape:", blob.shape)
 
     net.setInput(blob) # sets the blob as the input of the network
     
@@ -123,16 +131,23 @@ def draw_detections(image, boxes, confidences, class_ids, location, direction = 
 
     cv2.imwrite(location+"/Output_" + str(count) + "_yolo.jpg", image)
 
-def calculateMeanColorInBB(boxes, magnitude, angles):
+def calculateMeanColorInBB(boxes, magnitude, angles, image_w, image_h):
     count= 0
     magnitudeMeans = np.zeros((len(boxes),1))
     angleMeans = np.zeros((len(boxes),1))
     
     for box in boxes:
+
+        startY = max(box[0],0)
+        endY = min(box[0]+box[2], image_w-1)
+        startX = max(box[1],0)
+        endX = min(box[1]+box[3], image_h-1)
+        #print('startX',startX,'endx',endX,'startY',startY,'endY',endY)
+
         mags = []
         angs = []
-        for y in range(box[0],box[0]+box[2]):#Math max?
-            for x in range(box[1]-box[3],box[1]):#Math max?
+        for y in range(startY,endY):
+            for x in range(startX,endX):
                 mags.append(magnitude[x][y])
                 angs.append(angle[x][y])
         
@@ -144,8 +159,12 @@ def calculateMeanColorInBB(boxes, magnitude, angles):
 
 
 #+++++++++++++++++++++++
-vidcap = cv2.VideoCapture('videos/2.mp4')
+#vidcap = cv2.VideoCapture('videos/Brudermuehl.mp4')
+vidcap = cv2.VideoCapture('videos/3.mp4')
+
 success,image = vidcap.read()
+image_h, image_w = image.shape[:2]
+print('Image height:', image_h, ' Image width:', image_w)
 prev_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 mask = np.zeros_like(image)
 mask[..., 1] = 255
@@ -154,12 +173,11 @@ count = 0
 while success:
     print('Frame:',count)
     success,image = vidcap.read()
-    #if count%2 == 0:
     boxes,confidences,class_ids = detect_image(image, count)
-    #draw_detections(image,boxes,confidences,class_ids,'Output')#Draw Normal with Bounding Boxes
+    draw_detections(image,boxes,confidences,class_ids,'Output') #Draw Normal with Bounding Boxes
     prev_gray, image, magnitude, angle = opticalFlow(prev_gray, image)
-    magnitudes, angles = calculateMeanColorInBB(boxes, magnitude, angle)
-    draw_detections(image,boxes,confidences,class_ids,'OutputOF', magnitudes, angles)#Draw OF with Bounding Boxes
+    magnitudes, angles = calculateMeanColorInBB(boxes, magnitude, angle, image_w, image_h)
+    draw_detections(image,boxes,confidences,class_ids,'OutputOF', magnitudes, angles) #Draw OF with Bounding Boxes
     count += 1
 
 cap.release()

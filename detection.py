@@ -35,6 +35,9 @@ nmsThreshold = 0.2
 font_scale = 1
 thickness = 2
 
+#Locations
+
+
 
 """
 return Bounding Boxes top left corner and height and width
@@ -116,10 +119,14 @@ def draw_detections(image, boxes, confidences, class_ids, location, direction = 
             cv2.rectangle(image, (x, y), (x + w, y + h), color=color, thickness=thickness)
             
             text = f"{labels[class_ids[i]]}: {confidences[i]:.2f}" #Define Text
-            if not direction is None:   #ignore if directions are not definded
-                text +=  f"Dir: {direction[i][0]:.2f}"
-            if not magintude is None:   #ignore if magnitude are not definded
-                text +=  f"Mag: {magintude[i][0]:.2f}"
+            if not direction is None:   #ignore if directions and magnitude are not definded
+                degree = direction[i][0] * 180 / np.pi / 2 
+                endX = int(x+100*np.cos(direction[i][0]))
+                endy = int(y+100*np.sin(direction[i][0]))
+                cv2.arrowedLine(image, (x,y), (endX, endy), (0, 0, 255), 3, 8, 0, 0.1)
+
+                text +=  f"Dir: {degree:.2f} Mag: {magintude[i][0]:.2f}"
+
 
             text_width, text_height = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, fontScale=font_scale, thickness=thickness)[0]
             box_coords = ((x, y - 5), (x + text_width + 2, y - text_height - 5))
@@ -127,9 +134,11 @@ def draw_detections(image, boxes, confidences, class_ids, location, direction = 
             cv2.rectangle(overlay, box_coords[0], box_coords[1], color=color, thickness=cv2.FILLED) # Box for Text         
             image = cv2.addWeighted(overlay, 0.6, image, 0.4, 0) # add opacity (transparency to the box)
             cv2.putText(image, text, (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX,
-                fontScale=font_scale, color=(0, 0, 0), thickness=thickness) # now put the text (label: confidence %)
+                fontScale=font_scale, color=(0, 0, 0), thickness=thickness) # now put the text (label: confidence %)      
 
-    cv2.imwrite(location+"/Output_" + str(count) + "_yolo.jpg", image)
+    cv2.imwrite(location+"/Output_" + str(count) + ".jpg", image)
+
+
 
 def calculateMeanColorInBB(boxes, magnitude, angles, image_w, image_h):
     count= 0
@@ -160,7 +169,7 @@ def calculateMeanColorInBB(boxes, magnitude, angles, image_w, image_h):
 
 #+++++++++++++++++++++++
 #vidcap = cv2.VideoCapture('videos/Brudermuehl.mp4')
-vidcap = cv2.VideoCapture('videos/3.mp4')
+vidcap = cv2.VideoCapture('videos/2.mp4')
 
 success,image = vidcap.read()
 image_h, image_w = image.shape[:2]
@@ -173,11 +182,12 @@ count = 0
 while success:
     print('Frame:',count)
     success,image = vidcap.read()
-    boxes,confidences,class_ids = detect_image(image, count)
-    draw_detections(image,boxes,confidences,class_ids,'Output') #Draw Normal with Bounding Boxes
-    prev_gray, image, magnitude, angle = opticalFlow(prev_gray, image)
-    magnitudes, angles = calculateMeanColorInBB(boxes, magnitude, angle, image_w, image_h)
-    draw_detections(image,boxes,confidences,class_ids,'OutputOF', magnitudes, angles) #Draw OF with Bounding Boxes
+    if count > 2000:
+        boxes,confidences,class_ids = detect_image(image, count)
+        #draw_detections(image,boxes,confidences,class_ids,'Output') #Draw Normal with Bounding Boxes
+        prev_gray, image, magnitude, angle = opticalFlow(prev_gray, image)
+        magnitudes, angles = calculateMeanColorInBB(boxes, magnitude, angle, image_w, image_h)
+        draw_detections(image,boxes,confidences,class_ids,'OutputOF', magnitudes, angles) #Draw OF with Bounding Boxes
     count += 1
 
 cap.release()

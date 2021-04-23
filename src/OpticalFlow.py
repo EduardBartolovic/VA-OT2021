@@ -3,7 +3,6 @@ import numpy as np
 
 def opticalFlow(prev_gray, frame):
     
-
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     # Calculates dense optical flow by Farneback method
     # https://docs.opencv.org/3.0-beta/modules/video/doc/motion_analysis_and_object_tracking.html#calcopticalflowfarneback
@@ -18,14 +17,13 @@ def opticalFlow(prev_gray, frame):
     mask[..., 2] = cv2.normalize(magnitude, None, 0, 255, cv2.NORM_MINMAX)
     # Converts HSV to RGB (BGR) color representation
     rgb = cv2.cvtColor(mask, cv2.COLOR_HSV2BGR)
-    return (gray, rgb, magnitude, angle)
+    return (gray, rgb, magnitude, angle, mask)
 
 
-def calculateMeanColorInBB(boxes, magnitude, angles, image_w, image_h):
+def calculateMeanColorInBB(boxes, magnitude, angles, image_w, image_h, mask):
     count= 0
     magnitudeMeans = np.zeros((len(boxes),1))
     angleMeans = np.zeros((len(boxes),1))
-    
     for box in boxes:
 
         startY = max(box[0],0)
@@ -36,16 +34,26 @@ def calculateMeanColorInBB(boxes, magnitude, angles, image_w, image_h):
 
         mags = []
         angs = []
+        col = []
         for y in range(startY,endY):
             for x in range(startX,endX):
-                if magnitude[x][y] > 0.1:
-                    mags.append(magnitude[x][y])
-                    angs.append(angles[x][y])
+                if mask[x][y][2] > 0:
+                    col.append(mask[x][y][0])
+                #if magnitude[x][y] > 0.1:
+                mags.append(magnitude[x][y])
+                angs.append(angles[x][y])
 
         mags.append(-1)
         angs.append(0)
+        col.append(-1)
         magnitudeMeans[count] = np.mean(mags)
-        angleMeans[count] = np.mean(angs)
+        #angleMeans[count] = np.mean(angs)
+        meancol = np.mean(col)*2
+        if (meancol > 90 and meancol < 180) or meancol > 270:
+            angleMeans[count] = np.mean(angs)-np.pi
+        else:
+            angleMeans[count] = np.mean(angs)
+        
 
         count += 1
     return (magnitudeMeans, angleMeans)

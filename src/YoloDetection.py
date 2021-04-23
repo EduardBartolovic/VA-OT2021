@@ -18,11 +18,21 @@ net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
 #Minimum Confidence
 confidenceThreshold = 0.3
 
+#Non-maximum suppression threshold
+nmsThreshold = 0.2
+
+def choose_elements_by_indices(list_object, indices):
+    newList = []
+    for i in range(len(list_object)):
+        if i in indices:
+            newList.append(list_object[i])
+    return newList
+
 
 """
 return Bounding Boxes top left corner and height and width
 """
-def detect_image(image,count):
+def detect_image(image):
 
     h, w = image.shape[:2]
     
@@ -69,4 +79,10 @@ def detect_image(image,count):
                     confidences.append(float(confidence))
                     class_ids.append(class_id)
 
+    #print('length',len(boxes))
+    indices = cv2.dnn.NMSBoxes(boxes, confidences, confidenceThreshold, nmsThreshold) #NMS function in opencv to perform Non-maximum Suppression
+    boxes = choose_elements_by_indices(boxes, indices)
+    confidences = choose_elements_by_indices(confidences, indices)
+    class_ids = choose_elements_by_indices(class_ids, indices)
+    #print('length',len(boxes))
     return boxes,confidences,class_ids

@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import time
+from Detection import Detection
 
 
 # the neural network configuration
@@ -46,10 +47,10 @@ def detect_image(image):
     ln = [ln[i[0] - 1] for i in net.getUnconnectedOutLayers()]
 
     # measure how much it took in seconds for the inference
-    start = time.perf_counter()
+    #start = time.perf_counter()
     layer_outputs = net.forward(ln)
-    time_took = time.perf_counter() - start
-    print(f"Time took: {time_took:.2f}s")
+    #time_took = time.perf_counter() - start
+    #print(f"Time took: {time_took:.2f}s")
 
     boxes, confidences, class_ids = [], [], []
     # loop over each of the layer outputs
@@ -75,6 +76,7 @@ def detect_image(image):
                     x = int(centerX - (width / 2))
                     y = int(centerY - (height / 2))
                     # update our list of bounding box coordinates, confidences and class IDs
+
                     boxes.append([x, y, int(width), int(height)])
                     confidences.append(float(confidence))
                     class_ids.append(class_id)
@@ -85,4 +87,6 @@ def detect_image(image):
     confidences = choose_elements_by_indices(confidences, indices)
     class_ids = choose_elements_by_indices(class_ids, indices)
     #print('length',len(boxes))
-    return boxes,confidences,class_ids
+
+    detections = [Detection(box, confidence, class_id, None, None) for box, confidence, class_id in zip(boxes, confidences, class_ids)]
+    return detections #boxes,confidences,class_ids

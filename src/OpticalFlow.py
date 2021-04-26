@@ -20,17 +20,16 @@ def opticalFlow(prev_gray, frame):
     return (gray, rgb, magnitude, angle, mask)
 
 
-def calculateMeanColorInBB(boxes, magnitude, angles, image_w, image_h, mask):
+def calculateMeanColorInBB(detections, magnitude, angles, image_w, image_h, mask):
     count= 0
-    magnitudeMeans = np.zeros((len(boxes),1))
-    angleMeans = np.zeros((len(boxes),1))
-    for box in boxes:
-
-        startY = max(box[0],0)
-        endY = min(box[0]+box[2], image_w-1)
-        startX = max(box[1],0)
-        endX = min(box[1]+box[3], image_h-1)
-        #print('startX',startX,'endx',endX,'startY',startY,'endY',endY)
+    magnitudeMeans = np.zeros((len(detections),1))
+    angleMeans = np.zeros((len(detections),1))
+    for det in detections:
+        t,l,b,r = det.get_tlbr()
+        startY = max(t,0)
+        endY = min(b, image_w-1)
+        startX = max(l,0)
+        endX = min(r, image_h-1)
 
         mags = []
         angs = []

@@ -5,10 +5,16 @@ from Detection import Detection
 
 
 # the neural network configuration
-config_path = "../cfg/yolov4.cfg"
+#config_path = "../cfg/yolov4.cfg"
 
 # the YOLO net weights file
-weights_path = "../weights/yolov4.weights" 
+#weights_path = "../weights/yolov4.weights" 
+
+# the neural network configuration                                              
+config_path = "/media/snow/HDD/Unizeug/VAOT/darknet/cfg/yolov4.cfg"             
+                                                                                
+# the YOLO net weights file                                                     
+weights_path = "/media/snow/HDD/Unizeug/VAOT/darknet/yolov4.weights"
 
 # load the YOLO network
 net = cv2.dnn.readNetFromDarknet(config_path, weights_path)

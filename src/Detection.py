@@ -24,8 +24,8 @@ class Detection(object):
         A feature vector that describes the object contained in this image.
     """
 
-    def __init__(self, tlwh, confidence, class_name, feature, tracking_id):
-        self.tlwh = np.asarray(tlwh, dtype=np.int)
+    def __init__(self, tlwh, confidence, class_name, feature, tracking_id=None):
+        self.tlwh = np.asarray(tlwh, dtype=np.float32)
         self.confidence = float(confidence)
         self.class_name = class_name
         self.feature = np.asarray(feature, dtype=np.float32)

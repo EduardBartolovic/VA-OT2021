@@ -26,10 +26,10 @@ def calculateMeanColorInBB(detections, magnitude, angles, image_w, image_h, mask
     angleMeans = np.zeros((len(detections),1))
     for det in detections:
         t,l,b,r = det.get_tlbr()
-        startY = max(t,0)
-        endY = min(b, image_w-1)
-        startX = max(l,0)
-        endX = min(r, image_h-1)
+        startY = int(max(t,0))
+        endY = int(min(b, image_w-1))
+        startX = int(max(l,0))
+        endX = int(min(r, image_h-1))
 
         mags = []
         angs = []

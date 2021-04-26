@@ -11,31 +11,60 @@ from YoloDetection import detect_image
 from trackingSort import *
 from Detection import Detection
 
+from deepSort.trackingDeepSort import *                                         
+from deepSort import nn_matching                                                
+#from deepSort.detection import Detection                                        
+                                                                                
+# loading all the class labels (objects)labels                                  
+labels = open("/media/snow/HDD/Unizeug/VAOT/darknet/data/coco.names").read().strip().split("\n")
+                                                                                
+# generating colors for each object for later plotting                          
+colors = np.random.randint(0, 255, size=(len(labels), 3), dtype="uint8")        
+                                                                                
+#Minimum Confidence                                                             
+confidenceThreshold = 0.3                                                       
+                                                                                
+#Non-maximum suppression threshold                                              
+nmsThreshold = 0.2                                                              
+                                                                                
+#Config for drawing                                                             
+font_scale = 1                                                                  
+thickness = 2                                                                   
+                                                                                
+#Locations                                                                      
+videoLocation = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/'
+outputLocationOF = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/Output/OF'           
+outputLocationYOLO = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/Output/Yolo'       
+outputLocationSORT = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/Output/SORT'  
+
 
 # loading all the class labels (objects)labels
-labels = open("../cfg/coco.names").read().strip().split("\n")
+#labels = open("../cfg/coco.names").read().strip().split("\n")
 
 # generating colors for each object for later plotting
-colors = np.random.randint(0, 255, size=(len(labels), 3), dtype="uint8")
+#colors = np.random.randint(0, 255, size=(len(labels), 3), dtype="uint8")
 
 #Minimum Confidence
-confidenceThreshold = 0.3
+#confidenceThreshold = 0.3
 
 #Non-maximum suppression threshold
-nmsThreshold = 0.2
+#nmsThreshold = 0.2
 
 #Config for drawing
-font_scale = 1
-thickness = 2
+#font_scale = 1
+#thickness = 2
 
 #Locations
-videoLocation = '../videos/'
-outputLocationOF = '../Output/OF'
-outputLocationYOLO = '../Output/Yolo'
-outputLocationSORT = '../Output/SORT'
+#videoLocation = '../videos/'
+#outputLocationOF = '../Output/OF'
+#outputLocationYOLO = '../Output/Yolo'
+#outputLocationSORT = '../Output/SORT'
+
+
 
 #Video settings
-videoFile = 'Brudermuehl.mp4'
+#videoFile = 'Brudermuehl.mp4'
+videoFile = 'videos/20210409_100728.mp4'
 crop_img_y = 0.25
 crop_img_x = 0
 crop_img_h = 1
@@ -58,12 +87,16 @@ def draw_detections(location, image, detections, direction = None, magintude = N
         color = [int(c) for c in colors[detections[i].get_class()]]
 
         x, y, w, h = detections[i].get_tlwh() # extract the bounding box coordinates
+        x = int(x)
+        y = int(y)
+        w = int(w)
+        h = int(h)
         cv2.rectangle(image, (x, y), (x + w, y + h), color=color, thickness=thickness)
 
         if detections[i].get_tracking_id() is None: #Part for tracking
             text = f"{labels[detections[i].get_class()]}: {detections[i].get_confidence():.2f}"
         else:
-            text = f"{labels[detections[i].get_class()]}: {int(detections[i].get_tracking_id())}"
+            text = f"{labels[int(detections[i].get_class())]}: {int(detections[i].get_tracking_id())}"
 
         if not direction is None:   #draw arrows if directions and magnitude are definded
             if magintude[i] > 1:    #Only draw arrow if box is moving      
@@ -112,6 +145,13 @@ prev_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
 sort_tracker = Sort()# tracker -> Sort
 
+max_cosine_distance = 0.4                                                       
+nn_budget = None                                                                
+# calculate cosine distance metric                                              
+metric = nn_matching.NearestNeighborDistanceMetric("cosine", max_cosine_distance, nn_budget)
+# initialize tracker                                                            
+tracker = Tracker(metric) 
+
 count = 0
 while success:
 
@@ -129,15 +169,27 @@ while success:
         draw_detections(outputLocationYOLO,image,detections)
 
         #Tracking SORT Start
-        tracking_boxes = [] 
-        for d in detections:
-            t,l,b,r = d.get_tlbr()
-            tracking_boxes.append([t,l,b,r,d.get_confidence()])
-        track_bbs_ids = sort_tracker.update(np.array(tracking_boxes))
-        trackingDetections = []
-        for d in track_bbs_ids:
-            trackingDetections.append(Detection([d[0],d[1],d[2]-d[0],d[3]-d[1]], 0.0, 0, None, d[4]))
-        draw_detections(outputLocationSORT,image, trackingDetections)
+        #tracking_boxes = [] 
+        #for d in detections:
+        #    t,l,b,r = d.get_tlbr()
+        #    tracking_boxes.append([t,l,b,r,d.get_confidence()])
+        #track_bbs_ids = sort_tracker.update(np.array(tracking_boxes))
+        #trackingDetections = []
+        #for d in track_bbs_ids:
+        #    trackingDetections.append(Detection([d[0],d[1],d[2]-d[0],d[3]-d[1]], 0.0, 0, None, d[4]))
+        #draw_detections(outputLocationSORT,image, trackingDetections)
+
+        #Tracking DEEPSORT Start
+        # Call the tracker
+        tracker.predict()
+        tracker.update(detections)
+        track_bbs_ids = []                                                          
+        for track in tracker.tracks:                                                
+            if not track.is_confirmed() or track.time_since_update > 1:             
+                continue                                                            
+            bbox = track.to_tlbr()                                                  
+            track_bbs_ids.append(Detection([bbox[0], bbox[1], bbox[2]-bbox[0], bbox[3]-bbox[1]], 0.0, 0, None, track.track_id))
+        draw_detections(outputLocationSORT,image, track_bbs_ids)  
 
         #OpticalFlow Start
         prev_gray, imageOF, magnitude, angle, mask = opticalFlow(prev_gray, image)

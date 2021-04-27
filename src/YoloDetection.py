@@ -4,17 +4,13 @@ import time
 from Detection import Detection
 
 
-# the neural network configuration
-#config_path = "../cfg/yolov4.cfg"
-
-# the YOLO net weights file
-#weights_path = "../weights/yolov4.weights" 
-
 # the neural network configuration                                              
-config_path = "/media/snow/HDD/Unizeug/VAOT/darknet/cfg/yolov4.cfg"             
-                                                                                
+#config_path = "/media/snow/HDD/Unizeug/VAOT/darknet/cfg/yolov4.cfg"             
+config_path = "/home/eduard/Schreibtisch/VA-OT2021/cfg/yolo4.cfg"
+
 # the YOLO net weights file                                                     
-weights_path = "/media/snow/HDD/Unizeug/VAOT/darknet/yolov4.weights"
+#weights_path = "/media/snow/HDD/Unizeug/VAOT/darknet/yolov4.weights"
+weights_path = "/home/eduard/Schreibtisch/VA-OT2021/weights/yolov4.weights" 
 
 # load the YOLO network
 net = cv2.dnn.readNetFromDarknet(config_path, weights_path)
@@ -94,5 +90,5 @@ def detect_image(image):
     class_ids = choose_elements_by_indices(class_ids, indices)
     #print('length',len(boxes))
 
-    detections = [Detection(box, confidence, class_id, None, None) for box, confidence, class_id in zip(boxes, confidences, class_ids)]
+    detections = [Detection(box, confidence, class_id, None) for box, confidence, class_id in zip(boxes, confidences, class_ids)]
     return detections #boxes,confidences,class_ids

@@ -12,6 +12,8 @@ class Detection(object):
         Detector confidence score.
     feature : array_like
         A feature vector that describes the object contained in this image.
+    tracking_id : int <Optional>
+        Optional value for tracking
     Attributes
     ----------
     tlwh : ndarray
@@ -22,6 +24,8 @@ class Detection(object):
         Detector class.
     feature : ndarray | NoneType
         A feature vector that describes the object contained in this image.
+    tracking_id : int <Optional>
+        Optional value for tracking
     """
 
     def __init__(self, tlwh, confidence, class_name, feature, tracking_id=None):
@@ -41,7 +45,7 @@ class Detection(object):
         return self.confidence
 
     def get_tlwh(self):
-        return self.tlwh[0], self.tlwh[1], self.tlwh[2], self.tlwh[3]
+        return int(self.tlwh[0]), int(self.tlwh[1]), int(self.tlwh[2]), int(self.tlwh[3])
 
     def get_tlbr(self):
         return self.tlwh[0], self.tlwh[1], self.tlwh[0]+self.tlwh[2], self.tlwh[1]+self.tlwh[3]

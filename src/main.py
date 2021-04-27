@@ -16,7 +16,8 @@ from deepSort import nn_matching
 #from deepSort.detection import Detection                                        
                                                                                 
 # loading all the class labels (objects)labels                                  
-labels = open("/media/snow/HDD/Unizeug/VAOT/darknet/data/coco.names").read().strip().split("\n")
+#labels = open("/media/snow/HDD/Unizeug/VAOT/darknet/data/coco.names").read().strip().split("\n")
+labels = open("/home/eduard/Schreibtisch/VA-OT2021/cfg/coco.names").read().strip().split("\n")
                                                                                 
 # generating colors for each object for later plotting                          
 colors = np.random.randint(0, 255, size=(len(labels), 3), dtype="uint8")        
@@ -32,39 +33,20 @@ font_scale = 1
 thickness = 2                                                                   
                                                                                 
 #Locations                                                                      
-videoLocation = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/'
-outputLocationOF = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/Output/OF'           
-outputLocationYOLO = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/Output/Yolo'       
-outputLocationSORT = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/Output/SORT'  
-
-
-# loading all the class labels (objects)labels
-#labels = open("../cfg/coco.names").read().strip().split("\n")
-
-# generating colors for each object for later plotting
-#colors = np.random.randint(0, 255, size=(len(labels), 3), dtype="uint8")
-
-#Minimum Confidence
-#confidenceThreshold = 0.3
-
-#Non-maximum suppression threshold
-#nmsThreshold = 0.2
-
-#Config for drawing
-#font_scale = 1
-#thickness = 2
-
-#Locations
-#videoLocation = '../videos/'
-#outputLocationOF = '../Output/OF'
-#outputLocationYOLO = '../Output/Yolo'
-#outputLocationSORT = '../Output/SORT'
+#videoLocation = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/' 
+#outputLocationOF = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/Output/OF'           
+#outputLocationYOLO = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/Output/Yolo'       
+#outputLocationSORT = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/Output/SORT'
+videoLocation = '/home/eduard/Schreibtisch/VA-OT2021/videos/'
+outputLocationOF = '/home/eduard/Schreibtisch/VA-OT2021/Output/OF'           
+outputLocationYOLO = '/home/eduard/Schreibtisch/VA-OT2021/Output/Yolo'       
+outputLocationSORT = '/home/eduard/Schreibtisch/VA-OT2021/Output/SORT'  
 
 
 
 #Video settings
-#videoFile = 'Brudermuehl.mp4'
-videoFile = 'videos/20210409_100728.mp4'
+videoFile = 'Brudermuehl.mp4'
+#videoFile = 'videos/20210409_100728.mp4'
 crop_img_y = 0.25
 crop_img_x = 0
 crop_img_h = 1
@@ -87,10 +69,6 @@ def draw_detections(location, image, detections, direction = None, magintude = N
         color = [int(c) for c in colors[detections[i].get_class()]]
 
         x, y, w, h = detections[i].get_tlwh() # extract the bounding box coordinates
-        x = int(x)
-        y = int(y)
-        w = int(w)
-        h = int(h)
         cv2.rectangle(image, (x, y), (x + w, y + h), color=color, thickness=thickness)
 
         if detections[i].get_tracking_id() is None: #Part for tracking
@@ -121,8 +99,6 @@ def draw_detections(location, image, detections, direction = None, magintude = N
 
 
 #+++++++++++++++++++++++
-if not os.path.exists(outputLocationOF):
-    os.makedirs(outputLocationOF)
 
 
 

@@ -2,19 +2,15 @@ import cv2
 import numpy as np
 import time
 from Detection import Detection
-
-
-# the neural network configuration
-#config_path = "../cfg/yolov4.cfg"
-
-# the YOLO net weights file
-#weights_path = "../weights/yolov4.weights" 
+from tools import generate_detections as gdet
 
 # the neural network configuration                                              
 config_path = "/media/snow/HDD/Unizeug/VAOT/darknet/cfg/yolov4.cfg"             
-                                                                                
+#config_path = "/home/eduard/Schreibtisch/VA-OT2021/cfg/yolo4.cfg"
+
 # the YOLO net weights file                                                     
 weights_path = "/media/snow/HDD/Unizeug/VAOT/darknet/yolov4.weights"
+#weights_path = "/home/eduard/Schreibtisch/VA-OT2021/weights/yolov4.weights" 
 
 # load the YOLO network
 net = cv2.dnn.readNetFromDarknet(config_path, weights_path)
@@ -27,6 +23,10 @@ confidenceThreshold = 0.3
 
 #Non-maximum suppression threshold
 nmsThreshold = 0.2
+
+# initialize deep sort
+model_filename = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/src/model_data/mars-small128.pb'
+encoder = gdet.create_box_encoder(model_filename, batch_size=1)
 
 def choose_elements_by_indices(list_object, indices):
     newList = []
@@ -93,6 +93,6 @@ def detect_image(image):
     confidences = choose_elements_by_indices(confidences, indices)
     class_ids = choose_elements_by_indices(class_ids, indices)
     #print('length',len(boxes))
-
-    detections = [Detection(box, confidence, class_id, None, None) for box, confidence, class_id in zip(boxes, confidences, class_ids)]
+    features = encoder(image, boxes)
+    detections = [Detection(box, confidence, class_id, feature) for box, confidence, class_id, feature in zip(boxes, confidences, class_ids, features)]
     return detections #boxes,confidences,class_ids

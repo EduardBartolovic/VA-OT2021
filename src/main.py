@@ -17,6 +17,7 @@ from deepSort import nn_matching
                                                                                 
 # loading all the class labels (objects)labels                                  
 labels = open("/media/snow/HDD/Unizeug/VAOT/darknet/data/coco.names").read().strip().split("\n")
+#labels = open("/home/eduard/Schreibtisch/VA-OT2021/cfg/coco.names").read().strip().split("\n")
                                                                                 
 # generating colors for each object for later plotting                          
 colors = np.random.randint(0, 255, size=(len(labels), 3), dtype="uint8")        
@@ -32,35 +33,14 @@ font_scale = 1
 thickness = 2                                                                   
                                                                                 
 #Locations                                                                      
-videoLocation = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/'
+videoLocation = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/' 
 outputLocationOF = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/Output/OF'           
 outputLocationYOLO = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/Output/Yolo'       
-outputLocationSORT = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/Output/SORT'  
-
-
-# loading all the class labels (objects)labels
-#labels = open("../cfg/coco.names").read().strip().split("\n")
-
-# generating colors for each object for later plotting
-#colors = np.random.randint(0, 255, size=(len(labels), 3), dtype="uint8")
-
-#Minimum Confidence
-#confidenceThreshold = 0.3
-
-#Non-maximum suppression threshold
-#nmsThreshold = 0.2
-
-#Config for drawing
-#font_scale = 1
-#thickness = 2
-
-#Locations
-#videoLocation = '../videos/'
-#outputLocationOF = '../Output/OF'
-#outputLocationYOLO = '../Output/Yolo'
-#outputLocationSORT = '../Output/SORT'
-
-
+outputLocationSORT = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/Output/SORT'
+#videoLocation = '/home/eduard/Schreibtisch/VA-OT2021/videos/'
+#outputLocationOF = '/home/eduard/Schreibtisch/VA-OT2021/Output/OF'           
+#outputLocationYOLO = '/home/eduard/Schreibtisch/VA-OT2021/Output/Yolo'       
+#outputLocationSORT = '/home/eduard/Schreibtisch/VA-OT2021/Output/SORT'  
 
 #Video settings
 #videoFile = 'Brudermuehl.mp4'
@@ -76,6 +56,17 @@ crop_img_w = 0.75
 #crop_img_h = 1
 #crop_img_w = 1
 
+# DeepSort parameter
+# Definition of the parameters
+max_cosine_distance = 0.4
+nn_budget = None
+nms_max_overlap = 1.0
+# calculate cosine distance metric
+metric = nn_matching.NearestNeighborDistanceMetric("cosine", max_cosine_distance, nn_budget)
+# initialize tracker
+tracker = Tracker(metric)
+
+
 """
 draw a bounding box rectangle and label on the image
 Label could include direction and magintude
@@ -87,10 +78,6 @@ def draw_detections(location, image, detections, direction = None, magintude = N
         color = [int(c) for c in colors[detections[i].get_class()]]
 
         x, y, w, h = detections[i].get_tlwh() # extract the bounding box coordinates
-        x = int(x)
-        y = int(y)
-        w = int(w)
-        h = int(h)
         cv2.rectangle(image, (x, y), (x + w, y + h), color=color, thickness=thickness)
 
         if detections[i].get_tracking_id() is None: #Part for tracking
@@ -121,8 +108,6 @@ def draw_detections(location, image, detections, direction = None, magintude = N
 
 
 #+++++++++++++++++++++++
-if not os.path.exists(outputLocationOF):
-    os.makedirs(outputLocationOF)
 
 
 
@@ -187,8 +172,9 @@ while success:
         for track in tracker.tracks:                                                
             if not track.is_confirmed() or track.time_since_update > 1:             
                 continue                                                            
-            bbox = track.to_tlbr()                                                  
-            track_bbs_ids.append(Detection([bbox[0], bbox[1], bbox[2]-bbox[0], bbox[3]-bbox[1]], 0.0, 0, None, track.track_id))
+            bbox = track.to_tlbr()
+            class_id = track.get_class()                                                  
+            track_bbs_ids.append(Detection([bbox[0], bbox[1], bbox[2]-bbox[0], bbox[3]-bbox[1]], 0.0, class_id, None, track.track_id))
         draw_detections(outputLocationSORT,image, track_bbs_ids)  
 
         #OpticalFlow Start
@@ -202,7 +188,7 @@ while success:
     time_took = time.perf_counter() - start
     print(f"Time took: {time_took:.2f}s")
 
-    if count > 5:
+    if count > 500:
         break
 
 cv2.destroyAllWindows()

@@ -16,8 +16,9 @@ from deepSort import nn_matching
 #from deepSort.detection import Detection                                        
                                                                                 
 # loading all the class labels (objects)labels                                  
-labels = open("/media/snow/HDD/Unizeug/VAOT/darknet/data/coco.names").read().strip().split("\n")
-#labels = open("/home/eduard/Schreibtisch/VA-OT2021/cfg/coco.names").read().strip().split("\n")
+
+#labels = open("/media/snow/HDD/Unizeug/VAOT/darknet/data/coco.names").read().strip().split("\n")
+labels = open("/home/eduard/Schreibtisch/VA-OT2021/cfg/coco.names").read().strip().split("\n")
                                                                                 
 # generating colors for each object for later plotting                          
 colors = np.random.randint(0, 255, size=(len(labels), 3), dtype="uint8")        
@@ -33,18 +34,18 @@ font_scale = 1
 thickness = 2                                                                   
                                                                                 
 #Locations                                                                      
-videoLocation = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/' 
-outputLocationOF = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/Output/OF'           
-outputLocationYOLO = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/Output/Yolo'       
-outputLocationSORT = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/Output/SORT'
-#videoLocation = '/home/eduard/Schreibtisch/VA-OT2021/videos/'
-#outputLocationOF = '/home/eduard/Schreibtisch/VA-OT2021/Output/OF'           
-#outputLocationYOLO = '/home/eduard/Schreibtisch/VA-OT2021/Output/Yolo'       
-#outputLocationSORT = '/home/eduard/Schreibtisch/VA-OT2021/Output/SORT'  
+#videoLocation = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/' 
+#outputLocationOF = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/Output/OF'           
+#outputLocationYOLO = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/Output/Yolo'       
+#outputLocationSORT = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/Output/SORT'
+videoLocation = '/home/eduard/Schreibtisch/VA-OT2021/videos/'
+outputLocationOF = '/home/eduard/Schreibtisch/VA-OT2021/Output/OF'           
+outputLocationYOLO = '/home/eduard/Schreibtisch/VA-OT2021/Output/Yolo'       
+outputLocationSORT = '/home/eduard/Schreibtisch/VA-OT2021/Output/SORT'  
 
 #Video settings
-#videoFile = 'Brudermuehl.mp4'
-videoFile = 'videos/20210409_100728.mp4'
+videoFile = 'Brudermuehl.mp4'
+#videoFile = 'videos/20210409_100728.mp4'
 crop_img_y = 0.25
 crop_img_x = 0
 crop_img_h = 1

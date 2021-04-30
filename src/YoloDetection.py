@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import time
 from Detection import Detection
+from tools import generate_detections as gdet
 
 # the neural network configuration                                              
 #config_path = "/media/snow/HDD/Unizeug/VAOT/darknet/cfg/yolov4.cfg"             
@@ -24,7 +25,8 @@ confidenceThreshold = 0.3
 nmsThreshold = 0.2
 
 # initialize deep sort
-model_filename = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/src/model_data/mars-small128.pb'
+#model_filename = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/src/model_data/mars-small128.pb'
+model_filename = '/home/eduard/Schreibtisch/VA-OT2021/src/model_data/mars-small128.pb'
 encoder = gdet.create_box_encoder(model_filename, batch_size=1)
 
 def choose_elements_by_indices(list_object, indices):

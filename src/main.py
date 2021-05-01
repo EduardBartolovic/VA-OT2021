@@ -18,7 +18,7 @@ from deepSort import nn_matching
 # loading all the class labels (objects)labels                                  
 
 #labels = open("/media/snow/HDD/Unizeug/VAOT/darknet/data/coco.names").read().strip().split("\n")
-labels = open("/home/eduard/Schreibtisch/VA-OT2021/cfg/coco.names").read().strip().split("\n")
+labels = open("../cfg/coco.names").read().strip().split("\n")
                                                                                 
 # generating colors for each object for later plotting                          
 colors = np.random.randint(0, 255, size=(len(labels), 3), dtype="uint8")        
@@ -38,10 +38,10 @@ thickness = 2
 #outputLocationOF = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/Output/OF'           
 #outputLocationYOLO = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/Output/Yolo'       
 #outputLocationSORT = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/Output/SORT'
-videoLocation = '/home/eduard/Schreibtisch/VA-OT2021/videos/'
-outputLocationOF = '/home/eduard/Schreibtisch/VA-OT2021/Output/OF'           
-outputLocationYOLO = '/home/eduard/Schreibtisch/VA-OT2021/Output/Yolo'       
-outputLocationSORT = '/home/eduard/Schreibtisch/VA-OT2021/Output/SORT'  
+videoLocation = '../videos/'
+outputLocationOF = '../Output/OF'           
+outputLocationYOLO = '../Output/YOLO'       
+outputLocationSORT = '../Output/SORT'  
 
 #Video settings
 videoFile = 'Brudermuehl.mp4'

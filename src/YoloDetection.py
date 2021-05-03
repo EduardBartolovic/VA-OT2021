@@ -6,11 +6,11 @@ from tools import generate_detections as gdet
 
 # the neural network configuration                                              
 #config_path = "/media/snow/HDD/Unizeug/VAOT/darknet/cfg/yolov4.cfg"             
-config_path = "/home/eduard/Schreibtisch/VA-OT2021/cfg/yolo4.cfg"
+config_path = "../cfg/yolo4.cfg"
 
 # the YOLO net weights file                                                     
 #weights_path = "/media/snow/HDD/Unizeug/VAOT/darknet/yolov4.weights"
-weights_path = "/home/eduard/Schreibtisch/VA-OT2021/weights/yolov4.weights" 
+weights_path = "../weights/yolov4.weights" 
 
 # load the YOLO network
 net = cv2.dnn.readNetFromDarknet(config_path, weights_path)
@@ -26,7 +26,7 @@ nmsThreshold = 0.2
 
 # initialize deep sort
 #model_filename = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/src/model_data/mars-small128.pb'
-model_filename = '/home/eduard/Schreibtisch/VA-OT2021/src/model_data/mars-small128.pb'
+model_filename = '../weights/mars-small128.pb'
 encoder = gdet.create_box_encoder(model_filename, batch_size=1)
 
 def choose_elements_by_indices(list_object, indices):
@@ -40,7 +40,7 @@ def choose_elements_by_indices(list_object, indices):
 """
 return Bounding Boxes top left corner and height and width
 """
-def detect_image(image):
+def detect_image(image,allowedClasses):
 
     h, w = image.shape[:2]
     
@@ -70,7 +70,7 @@ def detect_image(image):
             confidence = scores[class_id]
             
             
-            if class_id <= 8: #remove classes in which we are not interested person,bicycle,car,motorbike,aeroplane,bus,train,truck
+            if class_id in allowedClasses: #remove classes in which we are not interested
                 if confidence > confidenceThreshold: #remove weak predictions by ensuring the detected probability is greater than the threshold
 
                     # scale the bounding box coordinates back relative to the

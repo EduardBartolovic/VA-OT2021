@@ -4,12 +4,10 @@ import time
 from Detection import Detection
 from tools import generate_detections as gdet
 
-# the neural network configuration                                              
-#config_path = "/media/snow/HDD/Unizeug/VAOT/darknet/cfg/yolov4.cfg"             
+# the neural network configuration                                                      
 config_path = "../cfg/yolo4.cfg"
 
 # the YOLO net weights file                                                     
-#weights_path = "/media/snow/HDD/Unizeug/VAOT/darknet/yolov4.weights"
 weights_path = "../weights/yolov4.weights" 
 
 # load the YOLO network
@@ -25,7 +23,6 @@ confidenceThreshold = 0.3
 nmsThreshold = 0.2
 
 # initialize deep sort
-#model_filename = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/src/model_data/mars-small128.pb'
 model_filename = '../weights/mars-small128.pb'
 encoder = gdet.create_box_encoder(model_filename, batch_size=1)
 

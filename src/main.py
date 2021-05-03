@@ -16,9 +16,7 @@ from deepSort import nn_matching
                                                                                 
 # loading all the class labels (objects)labels                                  
 
-#labels = open("/media/snow/HDD/Unizeug/VAOT/darknet/data/coco.names").read().strip().split("\n")
-labels = open("/cfg/coco.names").read().strip().split("\n")
-
+labels = open("../cfg/coco.names").read().strip().split("\n")
                                                                                 
 # generating colors for each object for later plotting                          
 colors = np.random.randint(0, 255, size=(len(labels), 3), dtype="uint8")        
@@ -34,33 +32,39 @@ font_scale = 1
 thickness = 2                                                                   
                                                                                 
 #Locations                                                                      
-#videoLocation = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/' 
-#outputLocationOF = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/Output/OF2'           
-#outputLocationYOLO = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/Output/Yolo2'       
-#outputLocationSORT = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/Output/SORT2'
-videoLocation = '/videos/'
-outputLocationOF = '/Output/OF'           
-outputLocationYOLO = '/Output/Yolo'       
-outputLocationSORT = '/Output/SORT'  
+videoLocation = '../videos/'
+outputLocationOF = '../Output/OF2'           
+outputLocationYOLO = '../Output/Yolo2'       
+outputLocationSORT = '../Output/SORT2'  
 
 # Video settings
 
-##NEW VIDEO HERE+++++++++++++++++++++++++++++++++++++++++++++++
-
-#Video Zug1
-
-#Video Brudermühl
-videoFile = 'Brudermuehl.mp4'
+videoFile = 'goodtrain.mp4'
 allowedClasses = [2]# allows classes in which we are interested person,bicycle,car,motorbike,aeroplane,bus,train,truck
-crop_img_y = 0.25
+crop_img_y = 0
 crop_img_x = 0
 crop_img_h = 1
-crop_img_w = 0.75
+crop_img_w = 0.5
 max_cosine_distance = 0.4
 nn_budget = None
 max_iou_distance = 0.2
 metric = nn_matching.NearestNeighborDistanceMetric(
-    "cosine", max_cosine_distance, nn_budget)  # DeepSort parameter
+    "euclidean", max_cosine_distance, nn_budget)  # DeepSort parameter
+
+#Video Zug1
+
+#Video Brudermühl
+#videoFile = 'Brudermuehl.mp4'
+#allowedClasses = [2]# allows classes in which we are interested person,bicycle,car,motorbike,aeroplane,bus,train,truck
+#crop_img_y = 0.25
+#crop_img_x = 0
+#crop_img_h = 1
+#crop_img_w = 0.75
+#max_cosine_distance = 0.4
+#nn_budget = None
+#max_iou_distance = 0.2
+#metric = nn_matching.NearestNeighborDistanceMetric(
+#    "cosine", max_cosine_distance, nn_budget)  # DeepSort parameter
 
 #Video Kanal
 #videoFile = 'Kanal.mp4'
@@ -141,7 +145,7 @@ prev_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 tracker = Tracker(metric,max_iou_distance) 
 
 # initialize database   
-dataBase = DataBase()
+#dataBase = DataBase()
 
 count = 0
 while success:
@@ -154,7 +158,7 @@ while success:
     image = image[crop_img_y:crop_img_h, crop_img_x:crop_img_w] #Crop image
 
 
-    if True: #count > 200:
+    if count > 260:
 
         #Detection Start
         detections = detect_image(image,allowedClasses)
@@ -195,7 +199,7 @@ while success:
     time_took = time.perf_counter() - start
     print(f"Time took: {time_took:.2f}s")
 
-    if count > 1000:
+    if count > 2000:
         break
 
 cv2.destroyAllWindows()

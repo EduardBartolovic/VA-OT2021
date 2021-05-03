@@ -6,7 +6,7 @@ import sys
 import os
 import math
 
-from OpticalFlow import  opticalFlow, calculateMeanColorInBB
+from OpticalFlow import opticalFlow, calculateMeanColorInBB
 from YoloDetection import detect_image
 from trackingSort import *
 from Detection import Detection
@@ -16,8 +16,8 @@ from deepSort import nn_matching
                                                                                 
 # loading all the class labels (objects)labels                                  
 
-labels = open("/media/snow/HDD/Unizeug/VAOT/darknet/data/coco.names").read().strip().split("\n")
-#labels = open("/home/eduard/Schreibtisch/VA-OT2021/cfg/coco.names").read().strip().split("\n")
+#labels = open("/media/snow/HDD/Unizeug/VAOT/darknet/data/coco.names").read().strip().split("\n")
+labels = open("/cfg/coco.names").read().strip().split("\n")
 
                                                                                 
 # generating colors for each object for later plotting                          
@@ -34,19 +34,24 @@ font_scale = 1
 thickness = 2                                                                   
                                                                                 
 #Locations                                                                      
-videoLocation = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/' 
-outputLocationOF = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/Output/OF2'           
-outputLocationYOLO = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/Output/Yolo2'       
-outputLocationSORT = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/Output/SORT2'
-#videoLocation = '/home/eduard/Schreibtisch/VA-OT2021/videos/'
-#outputLocationOF = '/home/eduard/Schreibtisch/VA-OT2021/Output/OF'           
-#outputLocationYOLO = '/home/eduard/Schreibtisch/VA-OT2021/Output/Yolo'       
-#outputLocationSORT = '/home/eduard/Schreibtisch/VA-OT2021/Output/SORT'  
+#videoLocation = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/' 
+#outputLocationOF = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/Output/OF2'           
+#outputLocationYOLO = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/Output/Yolo2'       
+#outputLocationSORT = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/Output/SORT2'
+videoLocation = '/videos/'
+outputLocationOF = '/Output/OF'           
+outputLocationYOLO = '/Output/Yolo'       
+outputLocationSORT = '/Output/SORT'  
 
-#Video settings
-#videoFile = 'Brudermuehl.mp4'
-allowedClasses = [2]#allows classes in which we are interested person,bicycle,car,motorbike,aeroplane,bus,train,truck
-#videoFile = 'videos/20210409_100728.mp4'
+# Video settings
+
+##NEW VIDEO HERE+++++++++++++++++++++++++++++++++++++++++++++++
+
+#Video Zug1
+
+#Video Brudermühl
+videoFile = 'Brudermuehl.mp4'
+allowedClasses = [2]# allows classes in which we are interested person,bicycle,car,motorbike,aeroplane,bus,train,truck
 crop_img_y = 0.25
 crop_img_x = 0
 crop_img_h = 1
@@ -54,8 +59,10 @@ crop_img_w = 0.75
 max_cosine_distance = 0.4
 nn_budget = None
 max_iou_distance = 0.2
-metric = nn_matching.NearestNeighborDistanceMetric("cosine", max_cosine_distance, nn_budget)# DeepSort parameter
+metric = nn_matching.NearestNeighborDistanceMetric(
+    "cosine", max_cosine_distance, nn_budget)  # DeepSort parameter
 
+#Video Kanal
 #videoFile = 'Kanal.mp4'
 #allowedClasses = [0]#allows classes in which we are interested person,bicycle,car,motorbike,aeroplane,bus,train,truck
 #crop_img_y = 0
@@ -66,13 +73,6 @@ metric = nn_matching.NearestNeighborDistanceMetric("cosine", max_cosine_distance
 #nn_budget = None
 #max_iou_distance = 0.7
 #metric = nn_matching.NearestNeighborDistanceMetric("cosine", max_cosine_distance, nn_budget)# DeepSort parameter
-
-
-#videoFile = '1.mp4'
-#crop_img_y = 0.50
-#crop_img_x = 0.50
-#crop_img_h = 1
-#crop_img_w = 1
 
 """
 draw a bounding box rectangle and label on the image
@@ -139,6 +139,10 @@ prev_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 # initialize tracker    
 #sort_tracker = Sort()# tracker -> Sort                                                        
 tracker = Tracker(metric,max_iou_distance) 
+
+# initialize database   
+dataBase = DataBase()
+
 count = 0
 while success:
 
@@ -180,11 +184,11 @@ while success:
             track_bbs_ids.append(Detection([bbox[0], bbox[1], bbox[2]-bbox[0], bbox[3]-bbox[1]], 0.0, class_id, None, track.track_id))
         draw_detections(outputLocationSORT,image, track_bbs_ids)  
 
+
         #OpticalFlow Start
         prev_gray, imageOF, magnitude, angle, mask = opticalFlow(prev_gray, image)
         magnitudes, angles = calculateMeanColorInBB(detections, magnitude, angle, image_w, image_h, mask)
         draw_detections(outputLocationOF, imageOF, detections, angles, magnitudes)
-
 
     count += 1
 

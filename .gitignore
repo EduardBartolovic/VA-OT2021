@@ -1,4 +1,6 @@
 *.jpg
+src/zugphase.py
+.vscode/
 *.pyc
 *.mp4
 *.weights

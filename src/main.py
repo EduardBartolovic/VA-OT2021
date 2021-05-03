@@ -17,8 +17,8 @@ from deepSort import nn_matching
                                                                                 
 # loading all the class labels (objects)labels                                  
 
-#labels = open("/media/snow/HDD/Unizeug/VAOT/darknet/data/coco.names").read().strip().split("\n")
-labels = open("/home/eduard/Schreibtisch/VA-OT2021/cfg/coco.names").read().strip().split("\n")
+labels = open("/media/snow/HDD/Unizeug/VAOT/darknet/data/coco.names").read().strip().split("\n")
+#labels = open("/home/eduard/Schreibtisch/VA-OT2021/cfg/coco.names").read().strip().split("\n")
                                                                                 
 # generating colors for each object for later plotting                          
 colors = np.random.randint(0, 255, size=(len(labels), 3), dtype="uint8")        
@@ -34,17 +34,17 @@ font_scale = 1
 thickness = 2                                                                   
                                                                                 
 #Locations                                                                      
-#videoLocation = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/' 
-#outputLocationOF = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/Output/OF'           
-#outputLocationYOLO = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/Output/Yolo'       
-#outputLocationSORT = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/Output/SORT'
-videoLocation = '/home/eduard/Schreibtisch/VA-OT2021/videos/'
-outputLocationOF = '/home/eduard/Schreibtisch/VA-OT2021/Output/OF'           
-outputLocationYOLO = '/home/eduard/Schreibtisch/VA-OT2021/Output/Yolo'       
-outputLocationSORT = '/home/eduard/Schreibtisch/VA-OT2021/Output/SORT'  
+videoLocation = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/' 
+outputLocationOF = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/Output/OF2'           
+outputLocationYOLO = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/Output/Yolo2'       
+outputLocationSORT = '/media/snow/HDD/Unizeug/VAOT/VA-OT2021/Output/SORT2'
+#videoLocation = '/home/eduard/Schreibtisch/VA-OT2021/videos/'
+#outputLocationOF = '/home/eduard/Schreibtisch/VA-OT2021/Output/OF'           
+#outputLocationYOLO = '/home/eduard/Schreibtisch/VA-OT2021/Output/Yolo'       
+#outputLocationSORT = '/home/eduard/Schreibtisch/VA-OT2021/Output/SORT'  
 
 #Video settings
-videoFile = 'Brudermuehl.mp4'
+#videoFile = 'Brudermuehl.mp4'
 #videoFile = 'videos/20210409_100728.mp4'
 crop_img_y = 0.25
 crop_img_x = 0
@@ -63,7 +63,7 @@ max_cosine_distance = 0.4
 nn_budget = None
 nms_max_overlap = 1.0
 # calculate cosine distance metric
-metric = nn_matching.NearestNeighborDistanceMetric("cosine", max_cosine_distance, nn_budget)
+metric = nn_matching.NearestNeighborDistanceMetric("euclidean", max_cosine_distance, nn_budget)
 # initialize tracker
 tracker = Tracker(metric)
 
@@ -131,13 +131,6 @@ prev_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
 sort_tracker = Sort()# tracker -> Sort
 
-max_cosine_distance = 0.4                                                       
-nn_budget = None                                                                
-# calculate cosine distance metric                                              
-metric = nn_matching.NearestNeighborDistanceMetric("cosine", max_cosine_distance, nn_budget)
-# initialize tracker                                                            
-tracker = Tracker(metric) 
-
 count = 0
 while success:
 
@@ -148,11 +141,11 @@ while success:
 
     image = image[crop_img_y:crop_img_h, crop_img_x:crop_img_w] #Crop image
 
-    if True:#count > 2000:
+    if count > 260:
 
         #Detection Start
         detections = detect_image(image)
-        draw_detections(outputLocationYOLO,image,detections)
+        #draw_detections(outputLocationYOLO,image,detections)
 
         #Tracking SORT Start
         #tracking_boxes = [] 
@@ -189,7 +182,7 @@ while success:
     time_took = time.perf_counter() - start
     print(f"Time took: {time_took:.2f}s")
 
-    if count > 500:
-        break
+    #if count > 500:
+    #    break
 
 cv2.destroyAllWindows()

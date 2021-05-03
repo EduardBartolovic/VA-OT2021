@@ -36,17 +36,15 @@ def calculateMeanColorInBB(detections, magnitude, angles, image_w, image_h, mask
         col = []
         for y in range(startY,endY):
             for x in range(startX,endX):
-                if mask[x][y][2] > 0:
+                if mask[x][y][2] > 19:
                     col.append(mask[x][y][0])
-                #if magnitude[x][y] > 0.1:
-                mags.append(magnitude[x][y])
-                angs.append(angles[x][y])
+                    mags.append(magnitude[x][y])
+                    angs.append(angles[x][y])
 
         mags.append(-1)
         angs.append(0)
         col.append(-1)
         magnitudeMeans[count] = np.mean(mags)
-        #angleMeans[count] = np.mean(angs)
         meancol = np.mean(col)*2
         if (meancol > 90 and meancol < 180) or meancol > 270:
             angleMeans[count] = np.mean(angs)-np.pi

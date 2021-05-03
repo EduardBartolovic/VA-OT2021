@@ -40,7 +40,7 @@ def choose_elements_by_indices(list_object, indices):
 """
 return Bounding Boxes top left corner and height and width
 """
-def detect_image(image):
+def detect_image(image,allowedClasses):
 
     h, w = image.shape[:2]
     
@@ -70,7 +70,7 @@ def detect_image(image):
             confidence = scores[class_id]
             
             
-            if class_id <= 8: #remove classes in which we are not interested person,bicycle,car,motorbike,aeroplane,bus,train,truck
+            if class_id in allowedClasses: #remove classes in which we are not interested
                 if confidence > confidenceThreshold: #remove weak predictions by ensuring the detected probability is greater than the threshold
 
                     # scale the bounding box coordinates back relative to the

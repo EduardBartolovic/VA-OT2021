@@ -70,7 +70,7 @@ metric = nn_matching.NearestNeighborDistanceMetric(
 
 #Video Candid
 videoFile = 'Candidtunnel.mp4'
-allowedClasses = [2]# allows classes in which we are interested person,bicycle,car,motorbike,aeroplane,bus,train,truck
+allowedClasses = [2,5]# allows classes in which we are interested person,bicycle,car,motorbike,aeroplane,bus,train,truck
 crop_img_y = 0
 crop_img_x = 0
 crop_img_h = 1

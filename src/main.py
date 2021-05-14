@@ -13,7 +13,9 @@ from trackingSort import *
 from Detection import Detection
 
 from deepSort.trackingDeepSort import *                                         
-from deepSort import nn_matching                                    
+from deepSort import nn_matching        
+
+from TrackerBox import *
                                                                                 
 # loading all the class labels (objects)labels                                  
 
@@ -69,17 +71,17 @@ metric = nn_matching.NearestNeighborDistanceMetric(
     "cosine", max_cosine_distance, nn_budget)  # DeepSort parameter
 
 #Video Candid
-videoFile = 'Candidtunnel.mp4'
-allowedClasses = [2,5]# allows classes in which we are interested person,bicycle,car,motorbike,aeroplane,bus,train,truck
-crop_img_y = 0
-crop_img_x = 0
-crop_img_h = 1
-crop_img_w = 1
-max_cosine_distance = 0.4
-nn_budget = None
-max_iou_distance = 0.2
-metric = nn_matching.NearestNeighborDistanceMetric(
-    "cosine", max_cosine_distance, nn_budget)  # DeepSort parameter
+#videoFile = 'Candidtunnel.mp4'
+#allowedClasses = [2,5]# allows classes in which we are interested person,bicycle,car,motorbike,aeroplane,bus,train,truck
+#crop_img_y = 0
+#crop_img_x = 0
+#crop_img_h = 1
+#crop_img_w = 1
+#max_cosine_distance = 0.4
+#nn_budget = None
+#max_iou_distance = 0.2
+#metric = nn_matching.NearestNeighborDistanceMetric(
+#    "cosine", max_cosine_distance, nn_budget)  # DeepSort parameter
 
 #Video Kanal
 #videoFile = 'Kanal.mp4'
@@ -159,8 +161,11 @@ mog_object_detector = cv2.createBackgroundSubtractorMOG2(history=100, varThresho
 #sort_tracker = Sort()# tracker -> Sort                                                        
 tracker = Tracker(metric,max_iou_distance) 
 
-# initialize database   
-#dataBase = DataBase()
+# initialize trackerBox   
+trackerBox = TrackerBox(0*image_w, 0.7*image_h, 1*image_w, 0.9*image_h)#define TrackerBox tl,br
+start_point = (0, int(0.7*image_h))
+end_point = (image_w, int(0.7*image_h))
+
 
 count = 0
 while success:
@@ -170,10 +175,11 @@ while success:
 
     success,image = vidcap.read()
 
-    image = image[crop_img_y:crop_img_h, crop_img_x:crop_img_w] #Crop image
-
-
     if count >= 0:
+
+
+        image = image[crop_img_y:crop_img_h, crop_img_x:crop_img_w] #Crop image
+        image = cv2.line(image, start_point, end_point, (255,255,255), 5)
 
         ############################
 
@@ -209,6 +215,8 @@ while success:
             track_bbs_ids.append(Detection([bbox[0], bbox[1], bbox[2]-bbox[0], bbox[3]-bbox[1]], 0.0, class_id, None, track.track_id))
         draw_detections(outputLocationSORT,image, track_bbs_ids)  
 
+        trackerBox.add( track_bbs_ids )
+        print(trackerBox.getDict())
 
         #OpticalFlow Start
         prev_gray, imageOF, magnitude, angle, mask = opticalFlow(prev_gray, image)

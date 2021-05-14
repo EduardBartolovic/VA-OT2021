@@ -37,7 +37,7 @@ def choose_elements_by_indices(list_object, indices):
 """
 return Bounding Boxes top left corner and height and width
 """
-def detect_image(image,allowedClasses):
+def detect_image_yolo(image,allowedClasses):
 
     h, w = image.shape[:2]
     

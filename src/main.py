@@ -7,7 +7,8 @@ import os
 import math
 
 from OpticalFlow import opticalFlow, calculateMeanColorInBB
-from YoloDetection import detect_image
+from YoloDetection import detect_image_yolo
+from MOGDetection import detect_image_mog
 from trackingSort import *
 from Detection import Detection
 
@@ -33,38 +34,52 @@ thickness = 2
                                                                                 
 #Locations                                                                      
 videoLocation = '../videos/'
-outputLocationOF = '../Output/OF2'           
-outputLocationYOLO = '../Output/Yolo2'       
-outputLocationSORT = '../Output/SORT2'  
+outputLocationOF = '../Output/OF'     
+outputLocationYOLO = '../Output/Yolo'  
+outputLocationSORT = '../Output/SORT'
+outputLocationMOG = '../Output/MOG'
 
 # Video settings
 
-videoFile = 'goodtrain.mp4'
-allowedClasses = [2]# allows classes in which we are interested person,bicycle,car,motorbike,aeroplane,bus,train,truck
-crop_img_y = 0
-crop_img_x = 0
-crop_img_h = 1
-crop_img_w = 0.5
-max_cosine_distance = 0.4
-nn_budget = None
-max_iou_distance = 0.2
-metric = nn_matching.NearestNeighborDistanceMetric(
-    "euclidean", max_cosine_distance, nn_budget)  # DeepSort parameter
-
-#Video Zug1
-
-#Video Brudermühl
-#videoFile = 'Brudermuehl.mp4'
+#videoFile = 'goodtrain.mp4'
 #allowedClasses = [2]# allows classes in which we are interested person,bicycle,car,motorbike,aeroplane,bus,train,truck
-#crop_img_y = 0.25
+#crop_img_y = 0
 #crop_img_x = 0
 #crop_img_h = 1
-#crop_img_w = 0.75
+#crop_img_w = 0.5
 #max_cosine_distance = 0.4
 #nn_budget = None
 #max_iou_distance = 0.2
 #metric = nn_matching.NearestNeighborDistanceMetric(
-#    "cosine", max_cosine_distance, nn_budget)  # DeepSort parameter
+#    "euclidean", max_cosine_distance, nn_budget)  # DeepSort parameter
+
+#Video Zug1
+
+#Video Brudermühl
+videoFile = 'Brudermuehl.mp4'
+allowedClasses = [2]# allows classes in which we are interested person,bicycle,car,motorbike,aeroplane,bus,train,truck
+crop_img_y = 0.25
+crop_img_x = 0
+crop_img_h = 1
+crop_img_w = 0.75
+max_cosine_distance = 0.4
+nn_budget = None
+max_iou_distance = 0.2
+metric = nn_matching.NearestNeighborDistanceMetric(
+    "cosine", max_cosine_distance, nn_budget)  # DeepSort parameter
+
+#Video Candid
+videoFile = 'Candidtunnel.mp4'
+allowedClasses = [2]# allows classes in which we are interested person,bicycle,car,motorbike,aeroplane,bus,train,truck
+crop_img_y = 0
+crop_img_x = 0
+crop_img_h = 1
+crop_img_w = 1
+max_cosine_distance = 0.4
+nn_budget = None
+max_iou_distance = 0.2
+metric = nn_matching.NearestNeighborDistanceMetric(
+    "cosine", max_cosine_distance, nn_budget)  # DeepSort parameter
 
 #Video Kanal
 #videoFile = 'Kanal.mp4'
@@ -138,7 +153,7 @@ image = image[crop_img_y:crop_img_h, crop_img_x:crop_img_w]
 image_h, image_w = image.shape[:2]
 
 prev_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
+mog_object_detector = cv2.createBackgroundSubtractorMOG2(history=100, varThreshold=40)
 
 # initialize tracker    
 #sort_tracker = Sort()# tracker -> Sort                                                        
@@ -158,10 +173,16 @@ while success:
     image = image[crop_img_y:crop_img_h, crop_img_x:crop_img_w] #Crop image
 
 
-    if count > 260:
+    if count >= 0:
+
+        ############################
 
         #Detection Start
-        detections = detect_image(image,allowedClasses)
+        detections = detect_image_yolo(image,allowedClasses)
+
+        
+        draw_detections(outputLocationMOG, image, detect_image_mog(image, mog_object_detector))
+
         #draw_detections(outputLocationYOLO,image,detections)
 
         #Tracking SORT Start

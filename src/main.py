@@ -58,30 +58,29 @@ outputLocationMOG = '../Output/MOG'
 #Video Zug1
 
 #Video Brudermühl
-videoFile = 'Brudermuehl.mp4'
-allowedClasses = [2]# allows classes in which we are interested person,bicycle,car,motorbike,aeroplane,bus,train,truck
-crop_img_y = 0.25
-crop_img_x = 0
-crop_img_h = 1
-crop_img_w = 0.75
-max_cosine_distance = 0.4
-nn_budget = None
-max_iou_distance = 0.2
-metric = nn_matching.NearestNeighborDistanceMetric(
-    "cosine", max_cosine_distance, nn_budget)  # DeepSort parameter
-
-#Video Candid
-#videoFile = 'Candidtunnel.mp4'
-#allowedClasses = [2,5]# allows classes in which we are interested person,bicycle,car,motorbike,aeroplane,bus,train,truck
-#crop_img_y = 0
+#videoFile = 'Brudermuehl.mp4'
+#allowedClasses = [2]# allows classes in which we are interested person,bicycle,car,motorbike,aeroplane,bus,train,truck
+#crop_img_y = 0.25
 #crop_img_x = 0
 #crop_img_h = 1
-#crop_img_w = 1
+#crop_img_w = 0.75
 #max_cosine_distance = 0.4
-#nn_budget = None
+##nn_budget = None
 #max_iou_distance = 0.2
 #metric = nn_matching.NearestNeighborDistanceMetric(
 #    "cosine", max_cosine_distance, nn_budget)  # DeepSort parameter
+
+#Video Candid
+videoFile = 'Candidtunnel.mp4'
+allowedClasses = [2,5]# allows classes in which we are interested person,bicycle,car,motorbike,aeroplane,bus,train,truck
+crop_img_y = 0.1
+crop_img_x = 0.1
+crop_img_h = 1
+crop_img_w = 1
+max_cosine_distance = 0.4
+nn_budget = None
+max_iou_distance = 0.2
+metric = nn_matching.NearestNeighborDistanceMetric("cosine", max_cosine_distance, nn_budget)# DeepSort parameter
 
 #Video Kanal
 #videoFile = 'Kanal.mp4'

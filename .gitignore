@@ -4,3 +4,6 @@ src/zugphase.py
 *.pyc
 *.mp4
 *.weights
+*.log
+*.aux
+*.gz

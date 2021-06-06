@@ -16,7 +16,7 @@
 \definecolor{pgreen}{rgb}{0,0.5,0}
 \definecolor{pred}{rgb}{0.9,0,0}
 \definecolor{pgrey}{rgb}{0.46,0.45,0.48}
-\lstset{language=Java,
+\lstset{language=Python,
 	showspaces=false,
 	showtabs=false,
 	breaklines=true,
@@ -38,22 +38,21 @@
 	\title{Videoanalyse und Objekttracking}
 	
 	\author{\IEEEauthorblockN{1\textsuperscript{st} Bartolovic Eduard}
-		\IEEEauthorblockA{\textit{Hochschule München} \\
-			München, Deutschland \\
-			eduard.bartolovic0@hm.edu}
+	\IEEEauthorblockA{\textit{Hochschule München} \\
+		München, Deutschland \\
+		eduard.bartolovic0@hm.edu}
+	\and
+	\IEEEauthorblockN{2\textsuperscript{nd} Thomas Willeit}
+	\IEEEauthorblockA{\textit{Hochschule München} \\
+		München, Deutschland \\
+		XXXXX@hm.edu}
+	\and
+	\IEEEauthorblockN{3\textsuperscript{rd} Schäfer Julia}
+	\IEEEauthorblockA{\textit{Hochschule München} \\
+		München, Deutschland \\
+		j.schaefer0@hm.edu}
 	}
 
-	\author{\IEEEauthorblockN{1\textsuperscript{st} Bartolovic Eduard}
-		\IEEEauthorblockA{\textit{Hochschule München} \\
-			München, Deutschland \\
-			eduard.bartolovic0@hm.edu}
-	}
-	
-	\author{\IEEEauthorblockN{1\textsuperscript{st} Bartolovic Eduard}
-		\IEEEauthorblockA{\textit{Hochschule München} \\
-			München, Deutschland \\
-			eduard.bartolovic0@hm.edu}
-	}
 	
 	\maketitle
 	
@@ -68,7 +67,7 @@
 	
 	\begin{figure}[h]
 		\begin{center}
-			\includegraphics[width=17cm]{Media/KonzeptVAOT.png}
+			\includegraphics[width=14cm]{Media/KonzeptVAOT.png}
 			\caption{Konzept für das Projekt}
 			\label{Konzept}
 		\end{center}
@@ -77,15 +76,33 @@
 	\section{Objekterkennung: Gauß Mixture}
 	
 	\section{Objekterkennung: YoloV4}
-	YOLO ist eine Neuronal Netz für die Echtzeit-Objekterkennung. YOLO ist die Abkürzung für 'You Only Look Once' was übersetzt 'Man sieht nur einmal hin' heißt. Es zerlegt die Aufgabe der Objekterkennung in zwei Teile. Einmal in die Objektposition über Bounding Boxes und dann in Klassifizierung zur Bestimmung der Objektklasse. In diesem Projekt verwendeten wir die 4te Version von Yolo.
+	YOLO ist ein Neuronal Netz für die Echtzeit-Objekterkennung. YOLO ist die Abkürzung für 'You Only Look Once' was übersetzt 'Man sieht nur einmal hin' heißt. Es zerlegt die Aufgabe der Objekterkennung in zwei Teile. Einmal in die Objektposition über Bounding Boxes und dann in Klassifizierung zur Bestimmung der Objektklasse.\\
+	Dieses System basiert auf Residualblöcken, Bounding-Box-Regression und IOU-Techniken.
+	Das Bild in ein S × S-Gitter mit den Residualblöcken aufgeteilt. Wenn der Mittelpunkt eines Objekts in eine Gitterzelle fällt, ist diese Gitterzelle für die Erkennung dieses Objekts zuständig. Jede Gitterzelle sagt B Bounding Boxes und Konfidenzwerte für diese Boxen voraus \cite{b1}.\\
+	In diesem Projekt verwendeten wir die 4te und damit letzte Version von Yolo. So bietet jede Version inkrementelle Verbesserung.\\
+	Unser Modell wurde bereits mit dem VOC? Datensatz vor trainiert. Es sind X Klassen erkennbar. Wir interessieren uns aber nur für einen kleineren Teil wie:
+	\begin{enumerate}
+		\item Personen
+		\item Pkw
+		\item Lkw
+		\item Busse
+		\item Fahrräder
+		\item Züge
+	\end{enumerate}
+	Je nach Szenario lassen sich per Parameter die relevanten Klassen auswählen.
 	
+	\subsection{Fehler in der Erkennung}
+	...falsch Klassifizierung wegem schlechter Datensatz....
+	Zu großer Datensatz...
+
 	\section{Tracking: Sort}
 	
 	\section{Tracking: DeepSort}
 	
+	\section{Zustandserkennung Züge}
 	
 	\begin{thebibliography}{00}
-		\bibitem{b1}www.BlaBla.de
+		\bibitem{b1}https://arxiv.org/pdf/1506.02640.pdf
 	\end{thebibliography}
 	
 	

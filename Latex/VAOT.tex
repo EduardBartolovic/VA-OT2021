@@ -87,7 +87,11 @@
 	........Netzwerk???...........
 	........LossFunction???...........
 	
-	Da Objekte meist immer ähnliche Formen haben kann man eine gewisse Menge an sogenannten Ankerboxen definieren welche als Basis Boundingboxen fingieren. Diese Ankerboxen kann man mittels Clusteralgorithmen wie K-Means und den Boundingboxen aus dem Datensatz berechnen....\\
+	In YoloV2 wurden Ankerboxen eingeführt. Da Objekte meist immer ähnliche Formen haben kann man eine gewisse Menge an sogenannten Ankerboxen definieren welche als Basis Boundingboxen fingieren. So wird anstatt die absolute Größen von Boxen in Bezug auf das gesamte Bild vorherzusagen, eine Ankerbox ausgewählt die am besten zu dem gewünschten Objekten passende verwendet. Diese Ankerboxen kann man mittels Clusteralgorithmen wie K-Means und den Boundingboxen aus dem Datensatz berechnen werden. Dies hat vor allem den Vorteil das mehr Boundingboxen vorhersagbar sind als noch zuvor. \cite{b3}\\
+	.....
+	YoloV3??
+	YoloV4??
+	....
 	In diesem Projekt verwendeten wir die 4te und damit aktuell neueste Version von Yolo\cite{b2}. So bietet jede Version inkrementelle Verbesserung zum jeweiligen Vorgänger.\\
 	Unser Modell wurde bereits mit dem Microsoft COCO Datensatz trainiert. Es sind 80 verschiedene Klassen erkennbar. Wir interessieren uns aber nur für einen kleineren Teil wie:
 	\begin{enumerate}
@@ -105,7 +109,7 @@
 	...falsch Klassifizierung wegen schlechter Datensatz....
 	Zu großer Datensatz...
 	
-	YOLO besitzt starke räumliche Beschränkungen für die Boundingbox-Vorhersagen, da jede Gitterzelle nur zwei Boxen vorhersagen kann und nur eine Klasse haben kann. Diese räumliche Beschränkung begrenzt die Anzahl der Objekte in der Nähe, die das Modell vorhersagen kann. 
+	YOLO besitzt starke räumliche Beschränkungen für die Boundingbox-Vorhersagen, da es pro Gitterzelle nur eine begrenzte Anzahl an Vorhersagen treffen kann. Diese Anzahl ist direkt Abhängig von der Anzahl der Ankerboxen \cite{b3}. Diese räumliche Beschränkung begrenzt die Anzahl der Objekte in der Nähe, die das Modell vorhersagen kann. 
 	-------------Problem zu viele Elemente nebeneinander..... wegen zu großen matschigen Grid zu wenig Ankerboxen????--------------
 
 	\section{Tracking: Sort}
@@ -152,6 +156,7 @@
 	\begin{thebibliography}{00}
 		\bibitem{b1}https://arxiv.org/pdf/1506.02640v5.pdf
 		\bibitem{b2}https://arxiv.org/pdf/2004.10934.pdf
+		\bibitem{b3}https://arxiv.org/pdf/1612.08242.pdf
 	\end{thebibliography}
 	
 	

@@ -61,9 +61,13 @@
 	\end{abstract}
 	
 	\section{Konzept}
-	Ziel des Projektes ist es klassische Verfahren mit neuere DeepLearning Verfahren zu vergleichen.
-	Dafür ist für beide arten eine Pipeline geschaffen worden.\\
-	Für die Klassische Verfahren wurde für die Objekterkennung Gausmixture verwendet und für das Tracking Sort. Für die DeepLearnig Verfahren wurde für die Objekterkennung ein Neuronales Netz  und für das Tracking wurde Deepsort verwendet.
+	Ziel des Projektes ist es klassische Verfahren mit neueren DeepLearning Methoden zu vergleichen.
+	Dafür ist für beide Arten eine Pipeline geschaffen worden.\\
+	Für die Klassische Verfahren wurde für die Objekterkennung Gausmixture verwendet und für das Tracking Sort. Für die DeepLearning Verfahren wurde für die Objekterkennung ein Neuronales Netz  und für das Tracking wurde Deepsort verwendet. Mit einem Objektzähler können am Ende der Pipelines die Objekte gezählt oder mit einer Zustandserkennung die Bewegungen und Stillstand erfasst werden. Die Abbildung \ref{Konzept} visualisiert das Konzept.\\
+	\\
+	Bilder werden mittels OpenCV Bibliotheken Frame für Frame aus einem Video ausgelesen.
+	Es ist möglich Bilder vor der weiteren Verarbeitung noch beliebig zuzuschneiden.
+	Diese Bilder werden dann in die Pipeline gelegt.
 	
 	\begin{figure*}[!h]
 		\begin{center}
@@ -73,11 +77,12 @@
 		\end{center}
 	\end{figure*}
 	
-	\section{Vorverarbeitung}
-	
-	\subsection{Rauschminderung}
+	\section{Videomaterial}
+	Für dieses Projekt wurden mehrere Aufnahmen aufgenommen. ..........
 	
 	\section{Objekterkennung: Gauß Mixture}
+	
+	\subsection{Rauschminderung}
 	
 	\section{Objekterkennung: YoloV4}
 	YOLO ist ein Neuronal Netz für die Echtzeit-Objekterkennung. YOLO ist die Abkürzung für 'You Only Look Once' was übersetzt 'Man sieht nur einmal hin' heißt. Die Aufgabe der Objekterkennung besteht darin, den Ort und die Bounding Box im Bild zu bestimmen, sowie die Objekte zu klassifizieren. Frühere Methoden, wie R-CNN und seine Variationen, verwendeten eine Pipeline, um diese Aufgabe in mehreren Schritten durchzuführen. Dies ist in der Ausführung langsam und aufwendiger zu trainieren, da jede einzelne Komponente separat trainiert werden muss. YOLO, erledigt beide Aufgaben mit einem einzigen Convolutional Neural Network. Es betrachtet dabei die Objekterkennung als ein Regressionsproblem auf räumlich getrennte Bounding Boxes und zugehörige Klassenwahrscheinlichkeiten.\cite{b1}\\

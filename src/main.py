@@ -102,7 +102,7 @@ tracking_objects_states = {}
 draw a bounding box rectangle and label on the image
 Label could include direction and magintude
 """
-def draw_detections(location, image, detections, direction = None, magintude = None):
+def draw_detections(location, image, detections, show_state, direction = None, magintude = None):
 
     for i in range(len(detections)):
 
@@ -113,6 +113,18 @@ def draw_detections(location, image, detections, direction = None, magintude = N
 
         if detections[i].get_tracking_id() is None: #Part for tracking
             text = f"{labels[detections[i].get_class()]}: {detections[i].get_confidence():.2f}"
+        elif show_state:
+            id = detections[i].get_tracking_id()
+            statestr = "kein Zug"
+            if id in tracking_objects_states:
+                state = tracking_objects_states[id].get_state()
+                if state == 1:
+                    statestr = "Einfahrend"
+                elif state == 2:
+                    statestr = "Haltend"
+                elif state == 3:
+                    statestr = "Abfahrend"
+            test = f"{labels[int(detections[i].get_class())]}: {int(detections[i].get_tracking_id())}, {statestr}"
         else:
             text = f"{labels[int(detections[i].get_class())]}: {int(detections[i].get_tracking_id())}"
 
@@ -190,7 +202,7 @@ while success:
         detections = detect_image_yolo(image,allowedClasses)
 
         
-        draw_detections(outputLocationMOG, image, detect_image_mog(image, mog_object_detector))
+        draw_detections(outputLocationMOG, image, detect_image_mog(image, mog_object_detector), False)
 
         #draw_detections(outputLocationYOLO,image,detections)
 
@@ -222,7 +234,7 @@ while success:
             magnitudes.append(mag)
             angles.append(ang)                                              
             track_bbs_ids.append(Detection([bbox[0], bbox[1], bbox[2]-bbox[0], bbox[3]-bbox[1]], 0.0, class_id, None, track.track_id))
-        draw_detections(outputLocationSORT,image, track_bbs_ids)  
+        draw_detections(outputLocationSORT,image, track_bbs_ids, False)  
 
         # Objektzähler
         trackerBox.add( track_bbs_ids )
@@ -234,7 +246,7 @@ while success:
         #OpticalFlow Start
         prev_gray, imageOF, magnitude, angle, mask = opticalFlow(prev_gray, image)
         #magnitudes, angles = calculateMeanColorInBB(detections, magnitude, angle, image_w, image_h, mask)
-        draw_detections(outputLocationOF, imageOF, detections, angles, magnitudes)
+        draw_detections(outputLocationOF, image, detections, True, angles, magnitudes)
 
     count += 1
 

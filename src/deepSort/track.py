@@ -1,4 +1,4 @@
-
+import math
 class TrackState:
     """
     Enumeration type for the single target track state. Newly created tracks are
@@ -166,3 +166,10 @@ class Track:
     def is_deleted(self):
         """Returns True if this track is dead and should be deleted."""
         return self.state == TrackState.Deleted
+
+    def direction(self):
+        dir_vec = self.mean[4:6]
+        mag = math.sqrt(dir_vec[0]**2 + dir_vec[1]**2)
+        ang = dir_vec[0]/mag
+        ang_deg = math.degrees(math.acos(ang))
+        return mag, ang_deg

@@ -11,6 +11,7 @@ from YoloDetection import detect_image_yolo
 from MOGDetection import detect_image_mog
 from trackingSort import *
 from Detection import Detection
+from zugphase import zugphase
 
 from deepSort.trackingDeepSort import *                                         
 from deepSort import nn_matching        
@@ -93,6 +94,9 @@ metric = nn_matching.NearestNeighborDistanceMetric("cosine", max_cosine_distance
 #nn_budget = None
 #max_iou_distance = 0.7
 #metric = nn_matching.NearestNeighborDistanceMetric("cosine", max_cosine_distance, nn_budget)# DeepSort parameter
+
+# Zugphase
+tracking_objects_states = {}
 
 """
 draw a bounding box rectangle and label on the image
@@ -205,21 +209,31 @@ while success:
         # Call the tracker
         tracker.predict()
         tracker.update(detections)
-        track_bbs_ids = []                                                          
+        track_bbs_ids = []    
+        magnitudes = []
+        angles = []                                                      
         for track in tracker.tracks:                                                
             if not track.is_confirmed() or track.time_since_update > 1:             
                 continue                                                            
             bbox = track.to_tlbr()
-            class_id = track.get_class()                                                  
+            class_id = track.get_class()
+            # Bestimmung der Richtung des Objekts
+            mag, ang = track.direction()
+            magnitudes.append(mag)
+            angles.append(ang)                                              
             track_bbs_ids.append(Detection([bbox[0], bbox[1], bbox[2]-bbox[0], bbox[3]-bbox[1]], 0.0, class_id, None, track.track_id))
         draw_detections(outputLocationSORT,image, track_bbs_ids)  
 
+        # Objektzähler
         trackerBox.add( track_bbs_ids )
         print(trackerBox.getDict())
 
+        # Zugphase
+        tracking_objects_states = zugphase(track_bbs_ids, angles, magnitudes, tracking_objects_states)
+
         #OpticalFlow Start
         prev_gray, imageOF, magnitude, angle, mask = opticalFlow(prev_gray, image)
-        magnitudes, angles = calculateMeanColorInBB(detections, magnitude, angle, image_w, image_h, mask)
+        #magnitudes, angles = calculateMeanColorInBB(detections, magnitude, angle, image_w, image_h, mask)
         draw_detections(outputLocationOF, imageOF, detections, angles, magnitudes)
 
     count += 1

@@ -63,7 +63,7 @@
 	
 	\section{Videomaterial}
 	Für dieses Projekt wurden mehrere Aufnahmen aufgenommen.\\ Ziel war es keine zu chaotischen aber auch nicht zu einfache Aufnahmen zu erstellen. Auch sollten verschiedene Szenarien abgebildet werden.\\
-	\textbf{Verkehrsaufnahmen am Brudermühltunnel am Mittleren Ring.} Dieser Teil ist sehr verkehrsreich und Autobahnähnlich ausgebaut. Es gibt mehrere Fahrspuren. Alle Fahrzeuge fahren in eine Richtung. Es sind ein paar Laternen und Bäume in der Aufnahme.
+	\textbf{Verkehrsaufnahmen am Brudermühltunnel am Mittleren Ring.} Dieser Teil ist sehr verkehrsreich und Autobahnähnlich ausgebaut. Es gibt mehrere Fahrspuren. Alle Fahrzeuge fahren in eine Richtung. Es sind ein paar Laternen und Bäume in der Aufnahme. Es sind nur Pkw und kleine Transporter welche trotzdem als Pkw klassifiziert werden enthalten.
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=5cm]{Media/BrudermuhlRaw.png}
@@ -71,7 +71,7 @@
 			\label{BrudermuhlRaw}
 		\end{center}
 	\end{figure}\\
-	\textbf{Verkehrsaufnahmen am Candidtunnel.} Eine stark befahrene Straße mit einer viel zahl von Verkehrsteilnehmern. Es herrscht zwei Richtungsverkehr mit insgesamt 4 Fahrspuren. In eine Richtung stehen die Fahrzeuge in einem Stau. Durch Regen spiegeln viele Oberflächen. Die Bäume bewegen sich aufgrund von stärkeren Wind. Diese Aufnahme ist die anspruchsvollste.
+	\textbf{Verkehrsaufnahmen am Candidtunnel.} Eine stark befahrene Straße mit einer viel zahl von Verkehrsteilnehmern. Es herrscht zwei Richtungsverkehr mit insgesamt 4 Fahrspuren. In eine Richtung stehen die Fahrzeuge in einem Stau. Durch Regen spiegeln viele Oberflächen. Die Bäume bewegen sich aufgrund von stärkeren Wind. Diese Aufnahme ist die anspruchsvollste. In diesem Video sind neben Pkw auch Busse enthalten.
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=5cm]{Media/CandidRaw.png}
@@ -79,7 +79,7 @@
 			\label{BrudermuhlRaw}
 		\end{center}
 	\end{figure}\\
-	\textbf{Zugaufnahmen an der Donnersbergerbrücke.} Eine Aufnahme einer der am stärksten befahren Bahnstrecken Deutschlands QUELLE. Hier existiert viel Zufverkehr mit unterschiedlichen Zugtypen. Außerdem Versperren Masten, Signale und Bahnsteig einen guten Blick auf die Züge.
+	\textbf{Zugaufnahmen an der Donnersbergerbrücke.} Eine Aufnahme der am stärksten befahren Bahnstrecken Europas \cite{z1}. Hier existiert viel Zugverkehr auf mehreren Gleisen mit unterschiedlichen Zugtypen. Beobachtet werden die vier Gleise der zwei Bahnsteige der S-Bahnhalt \textit{Donnersbergerbrücke}. Ein Hindernis sind die Masten, Signale und das Bahnsteigdach welche einen einen guten Blick auf die Züge erschweren. In dieser Aufnahme sind Züge und Fußgänger enthalten.
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=5cm]{Media/DonnersbergerRaw.png}
@@ -95,8 +95,7 @@
 	Für die Klassische Verfahren wurde für die Objekterkennung Gausmixture verwendet und für das Tracking Sort. Für die DeepLearning Verfahren wurde für die Objekterkennung ein Neuronales Netz  und für das Tracking wurde Deepsort verwendet. Mit einem Objektzähler können am Ende der Pipelines die Objekte gezählt oder mit einer Zustandserkennung die Bewegungen und Stillstand erfasst werden. Die Abbildung \ref{Konzept} visualisiert das Konzept.\\
 	\\
 	Bilder werden mittels OpenCV Bibliotheken Frame für Frame aus einem Video ausgelesen.
-	Es ist möglich Bilder vor der weiteren Verarbeitung noch beliebig zuzuschneiden.
-	Diese Bilder werden dann in die Pipeline gelegt.
+	Es ist möglich Bilder vor der weiteren Verarbeitung noch beliebig zuzuschneiden um nur relevant Bereiche zu betrachten. Dies hat den Vorteil das die Performance steigt und auch die Genauigkeit mancher Algorithmen zunimmt. Diese Bilder werden dann in die Pipeline gelegt.
 	
 	\begin{figure*}[!h]
 		\begin{center}
@@ -131,7 +130,7 @@
 	YoloV4??
 	....
 	In diesem Projekt verwendeten wir die 4te und damit aktuell neueste Version von Yolo\cite{b2}. So bietet jede Version inkrementelle Verbesserung zum jeweiligen Vorgänger.\\
-	Unser Modell wurde bereits mit dem Microsoft COCO Datensatz trainiert. Es sind 80 verschiedene Klassen erkennbar. Wir interessieren uns aber nur für einen kleineren Teil wie:
+	Wir mussten unser Modell nicht mehr trainieren da es bereits mit dem Microsoft COCO Datensatz trainiert wurde. Es sind 80 verschiedene Klassen erkennbar. Wir interessieren uns aber nur für einen kleineren Teil wie:
 	\begin{enumerate}
 		\item Personen
 		\item Pkw
@@ -140,8 +139,17 @@
 		\item Fahrräder
 		\item Züge
 	\end{enumerate}
-	Je nach Szenario lassen sich per Parameter die relevanten Klassen auswählen. Das Modell prädiktiert trotzdem noch alle Klassen. Die nicht relevanten werden einfach im Postprocessing herausgefiltert. Das Ergebnis einer Prädiktion ist eine Liste von Objekten welches aus den x,y Koordinate des Mittelpunktes der Boundingbox, der Breite w, der Höhe h, der Klasse und des Konfidenzwerts.
-	Ein weitere Postprocesingschritt ist die Non-Maxima-Suppression. BEISPIELBILD? Der Output kann überschneidende Boundingboxen besitzen die eigentlich zur selben Klasse gehören. Diese Duplikate können mittels der Non-Maxima-Suppression entfernt werden. Heirfür wird die IOU der Boxen berechnet. Sollte die IOU einen Threshold überschreiten dann wird das Duplikat entfernt.
+	Das Modell könnte noch besser arbeiten wenn es nur auf die Klassen trainiert würde die für unser Projekt relevant sind. Dies hätte aber den Rahmen des Projektes gesprengt.\\
+	Deshalb lassen sich je nach Szenario per Parameter die relevanten Klassen auswählen. Das Modell prädiktiert trotzdem noch alle Klassen. Die nicht relevanten werden einfach nur Postprocessing herausgefiltert. Das Ergebnis einer Prädiktion ist eine Liste von Objekten welches aus den x,y Koordinate des Mittelpunktes der Boundingbox, der Breite w, der Höhe h, der Klasse und des Konfidenzwerts besteht.\\
+	Ein weitere Postprocesingschritt ist die Non-Maxima-Suppression.
+	\begin{figure}[!h]
+		\begin{center}
+			\includegraphics[width=6cm]{Media/NMS.png}
+			\caption{Non-Maxima-Suppression}
+			\label{NMS}
+		\end{center}
+	\end{figure}
+	Der Output kann überschneidende Boundingboxen besitzen die eigentlich zur selben Klasse gehören. Diese Duplikate können mittels der Non-Maxima-Suppression entfernt werden. Hierfür wird die IOU der Boxen berechnet. Sollte die IOU einen Threshold überschreiten dann wird das Duplikat entfernt.
 	
 	\subsection{Fehler in der Erkennung}
 	...falsch Klassifizierung wegen schlechter Datensatz....
@@ -192,6 +200,7 @@
 	Durch YOLO erhält man die Bounding Box. Durch abgleich der TrackingID kann festgestellt werden, ob es ich auch immer um den gleichen Zug handelt. Für jede dessen Detektionen wird durch Optical Flow die Magnitude und die Richtung bestimmt. Fährt der Zug ein, hat dieses Objekt eine Magnitude größer 1, die durchschnittliche Richtung wird über die gesamten Richtungsvektoren der Bounding Box des Zuges bestimmt und als Richtungspfeil in das Bild eingefügt. Sein Zustand wechselt von „Kein Zug“ zu „Einfahrend“. Dabei wird immer für 5 Frames geprüft ob die Richtung gleichbleibend ist. Sollte für eine Länge von 10 Frames die Magnitude unter 0 fallen ändert sich der Zustand des Zuges zu „Haltend“. Beginnt der Zug sich wieder zu bewegen und die Richtung ist wieder gleichbleibend in eine Richtung wird der Zustand auf „Abfahrend“ gesetzt, bis der Zug außerhalb des Bildes ist und nicht mehr erkannt wird.
 	
 	\begin{thebibliography}{00}
+		\bibitem{z1}https://www.zeit.de/news/2020-10/18/s-bahn-stammstrecke-in-muenchen-fuer-arbeiten-gesperrt
 		\bibitem{b1}https://arxiv.org/pdf/1506.02640v5.pdf
 		\bibitem{b2}https://arxiv.org/pdf/2004.10934.pdf
 		\bibitem{b3}https://arxiv.org/pdf/1612.08242.pdf

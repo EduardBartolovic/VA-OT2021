@@ -161,13 +161,43 @@
 	Das Ergebnis einer Prädiktion ist eine Liste von Objekten welches aus den x,y Koordinate des Mittelpunktes der Boundingbox, der Breite w, der Höhe h, der Klasse und des Konfidenzwerts besteht.
 	
 	\subsection{Fehler in der Erkennung}
+	BRUDERMÜHL / ZUG FEHLT
+	
 	YoloV4 ist nicht perfekt. So gibt es gelegentlich Fehler:
 	\textbf{Falschklassifizierung:}\\
+	Selten Klassifiziert das Netz falsch. So wie in der Abbildung \ref{FaK} zu sehen ist wurde ein Bus als Pkw klassifiziert. Das Modell ist sich in diesem Beispiel auch nur unsicher mit $31\%$. Der Fehler lässt sich vermutlich erklären da die Frontpartie des Bus einem Pkw sehr ähnelt und der Rest des Fahrzeuges wegen einem Baum und einer Laterne verdeckt wird.
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=7cm]{Media/Output_480 - Kopie.jpg}
 			\caption{Falschklassifizierung}
-			\label{FK}
+			\label{FaK}
+		\end{center}
+	\end{figure}\\
+	Außerdem DATENSATZ+++++++++++++++
+	\begin{figure}[!h]
+		\begin{center}
+			\includegraphics[width=7cm]{Media/Output_847 - Kopie.jpg}
+			\caption{Falschklassifizierung}
+			\label{FaK2}
+		\end{center}
+	\end{figure}\\
+
+	\textbf{Fehlende Klassifikationen:}\\
+	Ein etwas häufigerer Fehler ist das Klassifikationen Fehlen. Dies kann mehrere Gründe haben. So zeigt die Abbildung \ref{Fek} zwei Typische Gründe. Grund Nummer eins ist es das Objekte teilweise verdeckt sind. In Kombination wenn Objekte sehr klein sind ist es nahezu nicht mehr möglich zuverlässig Detektion zu bekommen. INPUT NETZ YOLO? Zu grobes GRID?? 
+	\begin{figure}[!h]
+		\begin{center}
+			\includegraphics[width=7cm]{Media/Output_680 - Kopie.jpg}
+			\caption{Fehlende Klassifikationen}
+			\label{FeK}
+		\end{center}
+	\end{figure}\\
+	\textbf{Unpassende Boundingboxen:}\\
+	Yolo hat eine große schwäche da es nur rechteckige Boundingboxen vorhersagen kann. Das resultiert in manchen Szenarien zu sehr unpassenden Boundingboxen. Beispielsweise kann man in der Abbildung \ref{UB} gut erkennen das wegen dem Bus welcher Diagonal steht die Boxen zu groß werden. Das selbe gilt für noch längere Objekte wie die Züge.++++++++ZUG BILD++
+	\begin{figure}[!h]
+		\begin{center}
+			\includegraphics[width=7cm]{Media/Output_777 - Kopie.jpg}
+			\caption{Unpassende Boundingboxen}
+			\label{UB}
 		\end{center}
 	\end{figure}\\
 	

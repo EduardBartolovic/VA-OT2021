@@ -66,7 +66,7 @@
 	\textbf{Verkehrsaufnahmen am Brudermühltunnel am Mittleren Ring.} Dieser Teil ist sehr verkehrsreich und Autobahnähnlich ausgebaut. Es gibt mehrere Fahrspuren. Alle Fahrzeuge fahren in eine Richtung. Es sind ein paar Laternen und Bäume in der Aufnahme. Es sind nur Pkw und kleine Transporter welche trotzdem als Pkw klassifiziert werden enthalten.
 	\begin{figure}[!h]
 		\begin{center}
-			\includegraphics[width=5cm]{Media/BrudermuhlRaw.png}
+			\includegraphics[width=7cm]{Media/BrudermuhlRaw.png}
 			\caption{Verkehrsaufnahmen am Brudermühltunnel}
 			\label{BrudermuhlRaw}
 		\end{center}
@@ -74,7 +74,7 @@
 	\textbf{Verkehrsaufnahmen am Candidtunnel.} Eine stark befahrene Straße mit einer viel zahl von Verkehrsteilnehmern. Es herrscht zwei Richtungsverkehr mit insgesamt 4 Fahrspuren. In eine Richtung stehen die Fahrzeuge in einem Stau. Durch Regen spiegeln viele Oberflächen. Die Bäume bewegen sich aufgrund von stärkeren Wind. Diese Aufnahme ist die anspruchsvollste. In diesem Video sind neben Pkw auch Busse enthalten.
 	\begin{figure}[!h]
 		\begin{center}
-			\includegraphics[width=5cm]{Media/CandidRaw.png}
+			\includegraphics[width=7cm]{Media/CandidRaw.png}
 			\caption{Verkehrsaufnahmen am Candidtunnel.}
 			\label{BrudermuhlRaw}
 		\end{center}
@@ -82,7 +82,7 @@
 	\textbf{Zugaufnahmen an der Donnersbergerbrücke.} Eine Aufnahme der am stärksten befahren Bahnstrecken Europas \cite{z1}. Hier existiert viel Zugverkehr auf mehreren Gleisen mit unterschiedlichen Zugtypen. Beobachtet werden die vier Gleise der zwei Bahnsteige der S-Bahnhalt \textit{Donnersbergerbrücke}. Ein Hindernis sind die Masten, Signale und das Bahnsteigdach welche einen einen guten Blick auf die Züge erschweren. In dieser Aufnahme sind Züge und Fußgänger enthalten.
 	\begin{figure}[!h]
 		\begin{center}
-			\includegraphics[width=5cm]{Media/DonnersbergerRaw.png}
+			\includegraphics[width=7cm]{Media/DonnersbergerRaw.png}
 			\caption{Zugaufnahmen an der Donnersbergerbrücke}
 			\label{BrudermuhlRaw}
 		\end{center}
@@ -194,6 +194,17 @@
 	Kann DeepSORT erfolgreich ein bereits verfolgtes Objekt zu einer Detektion assoziieren, wird anschließend eine TrackingID erstellt. Hierbei muss beachtet werden, dass im Zuge der Verbesserung von SORT weitere Sicherheiten eingebaut wurden. Ein neu getracktes Objekt erhält nicht sofort eine endgültige Identifikationsnummer. Erst nachdem das Objekt in drei hintereinander liegenden Frames erfolgreich getrackt werden konnte erhält es eine Nummer. Das Objekt erhält des weiteren einen Zähler $a$, der die Anzahl an Frames zählt, seitdem das Objekt nicht mehr erfolgreich assoziiert werden konnte. Ist eine maximale Anzahl $Age_{max}$ erreicht gilt das Objekt als verloren oder außer Reichweite der Kamera und wird aus der Objektliste entfernt. Dieser Zähler wird jedoch zurückgesetzt, sollte zuvor das Objekt erneut erfolgreich assoziiert werden.
 	
 	\section{Zählen von Objekten}
+	Wir testeten verschiedene Verfahren zu Zählen der gefundenen Objekte die das Video passieren.\\
+	\textbf{Zählen der vergebenen TrackingID's.} Unser erster Plan war das Zählen aller vergebenen Tracking ID's. Dies hätte den Vorteil das sobald ein Objekt gefunden wird auch gezählt wird. Wir stellten aber schnell fest das Aufgrund von Fehlern in der Pipeline Objekten mehrfach neue IDs zugewiesen wurde. Diese Probleme entstehen in Kombination aus Fehlern in der Objekterkennung und dem Tracker. Je zuverlässiger das Tracking funktioniert desto geringer ist der Fehler im Zählen. Da aber ein perfekter Tracker nicht immer realistisch ist müssen bessere Lösungen gefunden werden.\\
+	\textbf{Zähllinie.} Um Trackingfehler zu umgehen bauten wir eine Zähllinie ein die sobald der Mittelpunkt der Boundingbox diese schneidet einmal hochzählt. Dies hatte noch immer Probleme wie zum Beispiel das manche Boxen doppelt gezählt wurden ohne manche die Linie direkt übersprungen haben. WAS WAR DA NOCHMAL FALSCH Thomas?\\
+	\textbf{Zählung der Tracking IDs in einer Zählbox.} Um die beiden Techniken zu vereinen wurde eine Zählbox entwickelt. So kann für jedes Szenario per Parameter die Position und Größe der Zählbox definiert werden. Sobald der Mittelpunkt einer Boundingbox in den die Zählbereich eindringt wird überprüft ob diese Tracking ID schon in einem Set enthalten ist. Ist sie es noch nicht wird hochgezählt. Es ist sinnvoll die Zählbox in Bereiche zu setzten in denen das Tracking zuverlässig funktioniert. 
+	\begin{figure}[!h]
+		\begin{center}
+			\includegraphics[width=7cm]{Media/BrudermuhlCounter.png}
+			\caption{Darstellung einer Zählbox}
+			\label{Counter}
+		\end{center}
+	\end{figure}
 	
 	\section{Zustandserkennung Züge}
 	Da nun ein Objekt erfolgreich erkannt, verfolgt und seine Bewegungsrichtung erkannt werden kann, wird nun für Objekte die die Klasse Zug haben die aktuelle Zugphase bestimmt. 

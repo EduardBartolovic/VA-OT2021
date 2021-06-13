@@ -172,4 +172,4 @@ class Track:
         mag = math.sqrt(dir_vec[0]**2 + dir_vec[1]**2)
         ang = dir_vec[0]/mag
         ang_deg = math.degrees(math.acos(ang))
-        return mag, ang_deg
+        return mag, ang_deg, dir_vec

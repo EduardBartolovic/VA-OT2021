@@ -28,12 +28,13 @@ class Detection(object):
         Optional value for tracking
     """
 
-    def __init__(self, tlwh, confidence, class_name, feature, tracking_id=None):
+    def __init__(self, tlwh, confidence, class_name, feature, tracking_id=None, dir_vec = None):
         self.tlwh = np.asarray(tlwh, dtype=np.float32)
         self.confidence = float(confidence)
         self.class_name = class_name
         self.feature = np.asarray(feature, dtype=np.float32)
         self.tracking_id = tracking_id
+        self.dir_vec = dir_vec
 
     def get_class(self):
         return self.class_name

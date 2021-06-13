@@ -11,12 +11,12 @@ from YoloDetection import detect_image_yolo
 from MOGDetection import detect_image_mog
 from trackingSort import *
 from Detection import Detection
-from zugphase import zugphase
+#from zugphase import zugphase
 
 from deepSort.trackingDeepSort import *                                         
 from deepSort import nn_matching        
 
-from TrackerBox import *
+from CounterBox import *
                                                                                 
 # loading all the class labels (objects)labels                                  
 
@@ -39,8 +39,12 @@ thickness = 2
 videoLocation = '../videos/'
 outputLocationOF = '../Output/OF'     
 outputLocationYOLO = '../Output/Yolo'  
-outputLocationSORT = '../Output/SORT'
+outputLocationTracker = '../Output/SORT'
 outputLocationMOG = '../Output/MOG'
+
+#Classic or DeepLearning
+classic = False
+
 
 # Video settings
 
@@ -129,10 +133,11 @@ def draw_detections(location, image, detections, show_state, direction = None, m
             text = f"{labels[int(detections[i].get_class())]}: {int(detections[i].get_tracking_id())}"
 
         if not direction is None:   #draw arrows if directions and magnitude are definded
-            if magintude[i] > 1:    #Only draw arrow if box is moving      
-                endX = int(x+100*np.sin( direction[i][0]))
-                endY = int(y+100*np.cos( direction[i][0]))
-                cv2.arrowedLine(image, (x,y), (endX, endY), (0, 0, 255), 3, 8, 0, 0.1)
+            if len(magintude) > 0 :
+                if magintude[i] > 1:    #Only draw arrow if box is moving      
+                    endX = int(x+100*np.sin( direction[i][0]))
+                    endY = int(y+100*np.cos( direction[i][0]))
+                    cv2.arrowedLine(image, (x,y), (endX, endY), (0, 0, 255), 3, 8, 0, 0.1)
             #degree = direction[i][0] * 180 / np.pi
             #text +=  f"Dir: {degree} Mag: {magintude[i][0]:.1f}"
 
@@ -147,6 +152,53 @@ def draw_detections(location, image, detections, show_state, direction = None, m
 
     cv2.imwrite(location+"/Output_" + str(count) + ".jpg", image)
 
+
+def classicPipeLine(image):
+
+    #Detect Gaus:
+    detections = detect_image_mog(image, mog_object_detector)
+    #draw_detections(outputLocationMOG, image, detetctions, False)
+
+    #Tracking SORT:
+    tracking_boxes = [] 
+    for d in detections:
+        t,l,b,r = d.get_tlbr()
+        tracking_boxes.append([t,l,b,r,d.get_confidence()])
+    track_bbs_ids = sort_tracker.update(np.array(tracking_boxes))
+    trackingDetections = []
+    for d in track_bbs_ids:
+        trackingDetections.append(Detection([d[0],d[1],d[2]-d[0],d[3]-d[1]], 0.0, 0, None, d[4]))
+
+    draw_detections(outputLocationSORT,image, trackingDetections)
+
+    return track_bbs_ids
+
+def deepLearningPipeLine(image):
+    #Detect Yolo:
+    detections = detect_image_yolo(image,allowedClasses)
+    draw_detections(outputLocationYOLO, image, detections, False)
+
+    #Tracking DEEPSORT:
+    tracker.predict()
+    tracker.update(detections)
+    track_bbs_ids = []    
+    magnitudes = []
+    angles = []                                     
+    for track in tracker.tracks:                                                
+        if not track.is_confirmed() or track.time_since_update > 1:             
+            continue       
+                                                        
+        bbox = track.to_tlbr()
+        class_id = track.get_class()
+        # Bestimmung der Richtung des Objekts
+        mag, ang = track.direction()
+        magnitudes.append(mag)
+        angles.append(ang)                                             
+        track_bbs_ids.append(Detection([bbox[0], bbox[1], bbox[2]-bbox[0], bbox[3]-bbox[1]], 0.0, class_id, None, track.track_id))
+
+    draw_detections(outputLocationTracker,image, track_bbs_ids, False)
+
+    return track_bbs_ids
 
 
 
@@ -177,7 +229,7 @@ mog_object_detector = cv2.createBackgroundSubtractorMOG2(history=100, varThresho
 tracker = Tracker(metric,max_iou_distance) 
 
 # initialize trackerBox   
-trackerBox = TrackerBox(0*image_w, 0.7*image_h, 1*image_w, 0.9*image_h)#define TrackerBox tl,br
+counterBox = CounterBox(0*image_w, 0.7*image_h, 1*image_w, 0.9*image_h)#define TrackerBox tl,br
 start_point = (0, int(0.7*image_h))
 end_point = (image_w, int(0.7*image_h))
 
@@ -192,61 +244,27 @@ while success:
 
     if count >= 0:
 
-
         image = image[crop_img_y:crop_img_h, crop_img_x:crop_img_w] #Crop image
         image = cv2.line(image, start_point, end_point, (255,255,255), 5)
 
-        ############################
 
-        #Detection Start
-        detections = detect_image_yolo(image,allowedClasses)
-
-        
-        draw_detections(outputLocationMOG, image, detect_image_mog(image, mog_object_detector), False)
-
-        #draw_detections(outputLocationYOLO,image,detections)
-
-        #Tracking SORT Start
-        #tracking_boxes = [] 
-        #for d in detections:
-        #    t,l,b,r = d.get_tlbr()
-        #    tracking_boxes.append([t,l,b,r,d.get_confidence()])
-        #track_bbs_ids = sort_tracker.update(np.array(tracking_boxes))
-        #trackingDetections = []
-        #for d in track_bbs_ids:
-        #    trackingDetections.append(Detection([d[0],d[1],d[2]-d[0],d[3]-d[1]], 0.0, 0, None, d[4]))
-        #draw_detections(outputLocationSORT,image, trackingDetections)
-
-        #Tracking DEEPSORT Start
-        # Call the tracker
-        tracker.predict()
-        tracker.update(detections)
-        track_bbs_ids = []    
-        magnitudes = []
-        angles = []                                                      
-        for track in tracker.tracks:                                                
-            if not track.is_confirmed() or track.time_since_update > 1:             
-                continue                                                            
-            bbox = track.to_tlbr()
-            class_id = track.get_class()
-            # Bestimmung der Richtung des Objekts
-            mag, ang = track.direction()
-            magnitudes.append(mag)
-            angles.append(ang)                                              
-            track_bbs_ids.append(Detection([bbox[0], bbox[1], bbox[2]-bbox[0], bbox[3]-bbox[1]], 0.0, class_id, None, track.track_id))
-        draw_detections(outputLocationSORT,image, track_bbs_ids, False)  
+        track_bbs_ids = []
+        if classic:
+            track_bbs_ids = classicPipeLine(image)
+        else:
+            track_bbs_ids = deepLearningPipeLine(image)
 
         # Objektzähler
-        trackerBox.add( track_bbs_ids )
-        print(trackerBox.getDict())
+        counterBox.add( track_bbs_ids )
+        print(counterBox.getDict())
 
         # Zugphase
-        tracking_objects_states = zugphase(track_bbs_ids, angles, magnitudes, tracking_objects_states)
+        #tracking_objects_states = zugphase(track_bbs_ids, angles, magnitudes, tracking_objects_states)
 
-        #OpticalFlow Start
-        prev_gray, imageOF, magnitude, angle, mask = opticalFlow(prev_gray, image)
+        #OpticalFlow:
+        #prev_gray, imageOF, magnitude, angle, mask = opticalFlow(prev_gray, image)
         #magnitudes, angles = calculateMeanColorInBB(detections, magnitude, angle, image_w, image_h, mask)
-        draw_detections(outputLocationOF, image, detections, True, angles, magnitudes)
+        #draw_detections(outputLocationOF, image, detections, True, angles, magnitudes)
 
     count += 1
 

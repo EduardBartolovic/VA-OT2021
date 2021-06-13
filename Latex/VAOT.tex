@@ -90,12 +90,6 @@
 
 
 	\section{Konzept}
-	Ziel des Projektes ist es klassische Verfahren mit neueren DeepLearning Methoden zu vergleichen.
-	Dafür ist für beide Arten eine Pipeline geschaffen worden.\\
-	Für die Klassische Verfahren wurde für die Objekterkennung Gausmixture verwendet und für das Tracking Sort. Für die DeepLearning Verfahren wurde für die Objekterkennung ein Neuronales Netz  und für das Tracking wurde Deepsort verwendet. Mit einem Objektzähler können am Ende der Pipelines die Objekte gezählt oder mit einer Zustandserkennung die Bewegungen und Stillstand erfasst werden. Die Abbildung \ref{Konzept} visualisiert das Konzept.\\
-	\\
-	Bilder werden mittels OpenCV Bibliotheken Frame für Frame aus einem Video ausgelesen.
-	Es ist möglich Bilder vor der weiteren Verarbeitung noch beliebig zuzuschneiden um nur relevant Bereiche zu betrachten. Dies hat den Vorteil das die Performance steigt und auch die Genauigkeit mancher Algorithmen zunimmt. Diese Bilder werden dann in die Pipeline gelegt.
 	
 	\begin{figure*}[!h]
 		\begin{center}
@@ -104,9 +98,12 @@
 			\label{Konzept}
 		\end{center}
 	\end{figure*}
-	
-
-	
+	Ziel des Projektes ist es klassische Verfahren mit neueren DeepLearning Methoden zu vergleichen.
+	Dafür ist für beide Arten eine Pipeline geschaffen worden.\\
+	Für die Klassische Verfahren wurde für die Objekterkennung Gausmixture verwendet und für das Tracking Sort. Für die DeepLearning Verfahren wurde für die Objekterkennung ein Neuronales Netz  und für das Tracking wurde Deepsort verwendet. Mit einem Objektzähler können am Ende der Pipelines die Objekte gezählt oder mit einer Zustandserkennung die Bewegungen und Stillstand erfasst werden. Die Abbildung \ref{Konzept} visualisiert das Konzept.\\
+	\\
+	Bilder werden mittels OpenCV Bibliotheken Frame für Frame aus einem Video ausgelesen.
+	Es ist möglich Bilder vor der weiteren Verarbeitung noch beliebig zuzuschneiden um nur relevant Bereiche zu betrachten. Dies hat den Vorteil das die Performance steigt und auch die Genauigkeit mancher Algorithmen zunimmt. Diese Bilder werden dann in die Pipeline gelegt.
 	
 	\section{Objekterkennung: Gauß Mixture}
 	
@@ -116,15 +113,25 @@
 	YOLO ist ein Neuronal Netz für die Echtzeit-Objekterkennung. YOLO ist die Abkürzung für 'You Only Look Once' was übersetzt 'Man sieht nur einmal hin' heißt. Die Aufgabe der Objekterkennung besteht darin, den Ort und die Bounding Box im Bild zu bestimmen, sowie die Objekte zu klassifizieren. Frühere Methoden, wie R-CNN und seine Variationen, verwendeten eine Pipeline, um diese Aufgabe in mehreren Schritten durchzuführen. Dies ist in der Ausführung langsam und aufwendiger zu trainieren, da jede einzelne Komponente separat trainiert werden muss. YOLO, erledigt beide Aufgaben mit einem einzigen Convolutional Neural Network. Es betrachtet dabei die Objekterkennung als ein Regressionsproblem auf räumlich getrennte Bounding Boxes und zugehörige Klassenwahrscheinlichkeiten.\cite{b1}\\
 	Das Bild in ein S × S-Gitter mit den Residualblöcken aufgeteilt. Wenn der Mittelpunkt eines Objekts in eine Gitterzelle fällt, ist diese Gitterzelle für die Erkennung dieses Objekts zuständig. Jede Gitterzelle sagt B Bounding Boxes und C Klassen Konfidenzwerte für diese Boxen voraus \cite{b1}\\
 	Diese Klassen Konfidenzwerte zeigen, wie sicher das Modell ist, dass die Boundingbox ein Objekt enthält und auch wie genau die Box das Objekt beschreibt. Die Konfidenz wird wie folgt definiert:
-	\[ c = Pr(Objekt) * IOU_{pred}^{truth} \]
+	\[ c = Pr(Objekt) * IoU_{pred}^{truth} \]
+	Die IoU ist zwischen zwei Boxen A und B ist wie folgt definiert:
+	\[ IoU = \frac{A \cap B}{A \cup B} \]
 	Jede Boundingbox enthält die 5 Vorhersagen: x,y,w,h,c.
 	Jede Gitterzelle sagt auch bedingte Klassenwahrscheinlichkeiten $Pr(Class_{i}|Object)$, voraus.  Diese Wahrscheinlichkeiten beziehen sich auf die Gitterzelle, die ein Objekt enthält.
 	Zum Testzeitpunkt wird die bedingten Klassenwahrscheinlichkeiten und die individuellen Box-Vertrauensvorhersagen multipliziert, wodurch wir klassenspezifische Vertrauenswerte für jede Box erhalten.  Diese Werte kodieren sowohl die Wahrscheinlichkeit, dass diese Klasse in der Box vorkommt, als auch, wie gut die vorhergesagte Box zum Objekt passt.
-	\[ Pr(Class_{i}|Object)*Pr(Object)*IOU_{truth}^{pred}= Pr(Class_{i})*IOU_{truth}^{pred} \]
+	\[ Pr(Class_{i}|Object)*Pr(Object)*IoU_{truth}^{pred}= Pr(Class_{i})*IoU_{truth}^{pred} \]
 	........Netzwerk???...........
 	........LossFunction???...........
 	
-	In YoloV2 wurden Ankerboxen eingeführt. Da Objekte meist immer ähnliche Formen haben kann man eine gewisse Menge an sogenannten Ankerboxen definieren welche als Basis Boundingboxen fingieren. So wird anstatt die absolute Größen von Boxen in Bezug auf das gesamte Bild vorherzusagen, eine Ankerbox ausgewählt die am besten zu dem gewünschten Objekten passende verwendet. Diese Ankerboxen kann man mittels Clusteralgorithmen wie K-Means und den Boundingboxen aus dem Datensatz berechnen werden. Dies hat vor allem den Vorteil das mehr Boundingboxen vorhersagbar sind als noch zuvor. \cite{b3}\\
+	In YoloV2 wurden Ankerboxen eingeführt. Da Objekte meist immer ähnliche Formen haben kann man eine gewisse Menge an sogenannten Ankerboxen definieren welche als Basis Boundingboxen fingieren. So wird anstatt die absolute Größen von Boxen in Bezug auf das gesamte Bild vorherzusagen, eine Ankerbox ausgewählt die am besten zu dem gewünschten Objekten passende verwendet. Die Abbildunf \ref{Anker} zeigt dieses Konzept.
+	\begin{figure}[!h]
+		\begin{center}
+			\includegraphics[width=6cm]{Media/Ankerboxen.png}
+			\caption{Passende Ankerboxen werden ausgewählt\cite{b0}}
+			\label{Anker}
+		\end{center}
+	\end{figure}
+	Diese Ankerboxen kann man mittels Clusteralgorithmen wie K-Means und den Boundingboxen aus dem Datensatz berechnen werden. Dies hat vor allem den Vorteil das die Boundingboxenbesser zu den Objekten des jeweiligen Datensatzes besser passen. \cite{b3}\\ ++++++++BILD KMEANS ANKER+++++++
 	.....
 	YoloV3??
 	YoloV4??
@@ -140,18 +147,30 @@
 		\item Züge
 	\end{enumerate}
 	Das Modell könnte noch besser arbeiten wenn es nur auf die Klassen trainiert würde die für unser Projekt relevant sind. Dies hätte aber den Rahmen des Projektes gesprengt.\\
-	Deshalb lassen sich je nach Szenario per Parameter die relevanten Klassen auswählen. Das Modell prädiktiert trotzdem noch alle Klassen. Die nicht relevanten werden einfach nur Postprocessing herausgefiltert. Das Ergebnis einer Prädiktion ist eine Liste von Objekten welches aus den x,y Koordinate des Mittelpunktes der Boundingbox, der Breite w, der Höhe h, der Klasse und des Konfidenzwerts besteht.\\
-	Ein weitere Postprocesingschritt ist die Non-Maxima-Suppression.
+	Deshalb lassen sich je nach Szenario per Parameter die relevanten Klassen auswählen. Das Modell prädiktiert trotzdem noch alle Klassen. Die nicht relevanten werden einfach nur Postprocessing herausgefiltert.\\
+	Ein weitere Postprocesingschritt ist es die Detektion die eine zu geringe Sicherheit besitzen zu entfernen.\\
+	Die übrigen Boxen durchlaufen eine Non-Maxima-Suppression.
+	Der Output kann überschneidende Boundingboxen besitzen die eigentlich zur selben Klasse gehören. Diese Duplikate können mittels der Non-Maxima-Suppression entfernt werden. Hierfür wird die IOU der Boxen berechnet. Sollte die IOU einen Threshold überschreiten dann wird das Duplikat entfernt. Die Grafik \ref{NMS} zeigt wie zu viele überlappende Boxen durch eine ersetzt werden.\\
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=6cm]{Media/NMS.png}
 			\caption{Non-Maxima-Suppression}
 			\label{NMS}
 		\end{center}
-	\end{figure}
-	Der Output kann überschneidende Boundingboxen besitzen die eigentlich zur selben Klasse gehören. Diese Duplikate können mittels der Non-Maxima-Suppression entfernt werden. Hierfür wird die IOU der Boxen berechnet. Sollte die IOU einen Threshold überschreiten dann wird das Duplikat entfernt.
+	\end{figure}\\
+	Das Ergebnis einer Prädiktion ist eine Liste von Objekten welches aus den x,y Koordinate des Mittelpunktes der Boundingbox, der Breite w, der Höhe h, der Klasse und des Konfidenzwerts besteht.
 	
 	\subsection{Fehler in der Erkennung}
+	YoloV4 ist nicht perfekt. So gibt es gelegentlich Fehler:
+	\textbf{Falschklassifizierung:}\\
+	\begin{figure}[!h]
+		\begin{center}
+			\includegraphics[width=7cm]{Media/Output_480 - Kopie.jpg}
+			\caption{Falschklassifizierung}
+			\label{FK}
+		\end{center}
+	\end{figure}\\
+	
 	...falsch Klassifizierung wegen schlechter Datensatz....
 	Zu großer Datensatz...
 	
@@ -212,6 +231,7 @@
 	
 	\begin{thebibliography}{00}
 		\bibitem{z1}https://www.zeit.de/news/2020-10/18/s-bahn-stammstrecke-in-muenchen-fuer-arbeiten-gesperrt
+		\bibitem{b0}https://medium.com/@sarangzambare/object-detection-using-non-max-supression-over-yolov2-382a90212b51
 		\bibitem{b1}https://arxiv.org/pdf/1506.02640v5.pdf
 		\bibitem{b2}https://arxiv.org/pdf/2004.10934.pdf
 		\bibitem{b3}https://arxiv.org/pdf/1612.08242.pdf

@@ -181,6 +181,13 @@
 			\label{FaK2}
 		\end{center}
 	\end{figure}\\
+	\begin{figure}[!h]
+		\begin{center}
+			\includegraphics[width=7cm]{Media/Output_108 - Kopie (2).jpg}
+			\caption{Falschklassifizierung}
+			\label{FaK3}
+		\end{center}
+	\end{figure}\\
 
 	\textbf{Fehlende Klassifikationen:}\\
 	Ein etwas häufigerer Fehler ist das Klassifikationen Fehlen. Dies kann mehrere Gründe haben. So zeigt die Abbildung \ref{Fek} zwei Typische Gründe. Grund Nummer eins ist es das Objekte teilweise verdeckt sind. In Kombination wenn Objekte sehr klein sind ist es nahezu nicht mehr möglich zuverlässig Detektion zu bekommen. INPUT NETZ YOLO? Zu grobes GRID?? 
@@ -191,8 +198,15 @@
 			\label{FeK}
 		\end{center}
 	\end{figure}\\
+	\begin{figure}[!h]
+		\begin{center}
+			\includegraphics[width=7cm]{Media/Output_108 - Kopie.jpg}
+			\caption{Fehlende Klassifikationen}
+			\label{FeK2}
+		\end{center}
+	\end{figure}\\
 	\textbf{Unpassende Boundingboxen:}\\
-	Yolo hat eine große schwäche da es nur rechteckige Boundingboxen vorhersagen kann. Das resultiert in manchen Szenarien zu sehr unpassenden Boundingboxen. Beispielsweise kann man in der Abbildung \ref{UB} gut erkennen das wegen dem Bus welcher Diagonal steht die Boxen zu groß werden. Das selbe gilt für noch längere Objekte wie die Züge.++++++++ZUG BILD++
+	Yolo hat eine große schwäche da es nur rechteckige Boundingboxen vorhersagen kann. Das resultiert in manchen Szenarien zu sehr unpassenden Boundingboxen. Beispielsweise kann man in der Abbildung \ref{UB} gut erkennen das wegen dem Bus welcher Diagonal steht die Boxen zu groß werden. Das selbe gilt für noch längere Objekte wie die Züge.++++++++ZUG BILD++. Auch kann die Box für das Objekt etwas falsch anliegen wenn Bäume oder Laternen ein Teil verdecken.
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=7cm]{Media/Output_777 - Kopie.jpg}
@@ -200,12 +214,19 @@
 			\label{UB}
 		\end{center}
 	\end{figure}\\
-	
+	\begin{figure}[!h]
+		\begin{center}
+			\includegraphics[width=7cm]{Media/Output_276 - Kopie.jpg}
+			\caption{Unpassende Boundingboxen}
+			\label{UB2}
+		\end{center}
+	\end{figure}\\
+
 	...falsch Klassifizierung wegen schlechter Datensatz....
 	Zu großer Datensatz...
 	
 	YOLO besitzt starke räumliche Beschränkungen für die Boundingbox-Vorhersagen, da es pro Gitterzelle nur eine begrenzte Anzahl an Vorhersagen treffen kann. Diese Anzahl ist direkt Abhängig von der Anzahl der Ankerboxen \cite{b3}. Diese räumliche Beschränkung begrenzt die Anzahl der Objekte in der Nähe, die das Modell vorhersagen kann. 
-	-------------Problem zu viele Elemente nebeneinander..... wegen zu großen matschigen Grid zu wenig Ankerboxen????--------------
+	-------------Problem zu viele Elemente nebeneinander..... wegen zu großen maschigen Grid zu wenig Ankerboxen????--------------
 
 	\section{Tracking: Sort}
 	SORT berechnet auf Basis des Kalman Filters und der Hungarian Methode die Bewegung des Objekts und weist je nach Status eine eindeutige Identifikationsnummer zu. Der Kalman-Filter funktioniert für die Problemstellung sehr gut, da dieser ein lineares System mit gaußisches Rauschen voraussetzt. Dies ist gegeben durch die gleichmäßige Bewegung der Züge/ Autos in eine Richtung.

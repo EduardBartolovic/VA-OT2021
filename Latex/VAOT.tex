@@ -161,9 +161,7 @@
 	Jede Gitterzelle sagt auch bedingte Klassenwahrscheinlichkeiten $Pr(Class_{i}|Object)$, voraus.  Diese Wahrscheinlichkeiten beziehen sich auf die Gitterzelle, die ein Objekt enthält.
 	Zum Testzeitpunkt wird die bedingten Klassenwahrscheinlichkeiten und die individuellen Box-Vertrauensvorhersagen multipliziert, wodurch wir klassenspezifische Vertrauenswerte für jede Box erhalten.  Diese Werte kodieren sowohl die Wahrscheinlichkeit, dass diese Klasse in der Box vorkommt, als auch, wie gut die vorhergesagte Box zum Objekt passt.
 	\[ Pr(Class_{i}|Object)*Pr(Object)*IoU_{truth}^{pred}= Pr(Class_{i})*IoU_{truth}^{pred} \]
-	........Netzwerk???...........
-	........LossFunction???...........
-	In YoloV2 wurden Ankerboxen eingeführt. Da Objekte meist immer ähnliche Formen haben kann man eine gewisse Menge an sogenannten Ankerboxen definieren welche als Basis Boundingboxen fingieren. So wird anstatt die absolute Größen von Boxen in Bezug auf das gesamte Bild vorherzusagen, eine Ankerbox ausgewählt die am besten zu dem gewünschten Objekten passende verwendet. Die Abbildunf \ref{Anker} zeigt dieses Konzept.
+	In YoloV2 wurden Ankerboxen eingeführt. Da Objekte meist immer ähnliche Formen haben kann man eine gewisse Menge an sogenannten Ankerboxen definieren welche als Basis Boundingboxen fingieren. So wird anstatt die absolute Größen von Boxen in Bezug auf das gesamte Bild vorherzusagen, eine Ankerbox ausgewählt die am besten zu dem gewünschten Objekten passende verwendet. Die Abbildung \ref{Anker} zeigt dieses Konzept.
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=6cm]{Media/Ankerboxen.png}

@@ -146,6 +146,25 @@
 	\[ c = Pr(Objekt) * IoU_{pred}^{truth} \]
 	Die IoU ist zwischen zwei Boxen A und B ist wie folgt definiert:
 	\[ IoU = \frac{A \cap B}{A \cup B} \]
+	\begin{figure}[h]
+		\begin{center}
+			\includegraphics[width=8cm]{Media/Iou.png}
+			\caption{Intersection-Over-Union}
+			\label{IoU}
+		\end{center}
+	\end{figure}\\
+	In Abbildung \ref{IoU} ist die Berechnung der Intersection-Over-Union dargestellt. Sie beschreibt das Verhältnis der Schnittfläche einer Bounding Box mit der Grundwahrheit bezüglich der Gesamtfläche von Bounding Box und Grundwahrheit. Je genauer die beiden Flächen übereinander liegen desto höher der Wert, desto besser ist die Vorhersage der Bounding Box.\\
+	\\
+	In der zweiten Version von Yolo wurde an mehreren Stellen etwas verbessert. So wurde zum Beispiel Batch-Normalization in Convolutioonal-Layers eingefügt.
+	Eine weitere wichtige Änderung sind Ankerboxen. Da Objekte meist immer ähnliche Formen haben kann man eine gewisse Menge an sogenannten Ankerboxen definieren welche als Basis Boundingboxen fingieren. So wird anstatt die absolute Größen von Boxen in Bezug auf das gesamte Bild vorherzusagen, eine Ankerbox ausgewählt die am besten zu dem gewünschten Objekten passende verwendet. Die Abbildung \ref{Anker} zeigt dieses Konzept.
+	\begin{figure}[!h]
+		\begin{center}
+			\includegraphics[width=6cm]{Media/Ankerboxen.png}
+			\caption{Passende Ankerboxen werden ausgewählt\cite{b0}}
+			\label{Anker}
+		\end{center}
+	\end{figure}
+	Diese Ankerboxen kann man mittels Clusteralgorithmen wie K-Means und den Boundingboxen aus dem Datensatz berechnen. Dies hat vor allem den Vorteil das die Boundingboxen besser zu den Objekten des jeweiligen Datensatzes besser passen. \cite{b3}\\
 	Jede Vorhersagen für eine Boundingbox enthält die 4 Koordinaten: $t_x, t_y, t_w, t_h$. $t_x $ und $ t_y$ sind die x an y Koordinaten, relative Zellen Mittelpunkt. $t_w$ und $ t_h$ sind die Skalierungsfaktoren relativ zu Ankerboxdimensionen. $p_w$ und $p_h$ sind die Breite und Höhe der Ankerbox. Dabei gibt es noch einen Gitterzellenoffset $c_x$ und $c_y$.
 	\[ b_x = \sigma(t_x) + c_x \]
 	\[ b_y = \sigma(t_y) + c_y \]
@@ -158,29 +177,30 @@
 			\label{PredictionBox}
 		\end{center}
 	\end{figure} 
+	++++++++GEHT BESTIMMT BESSER++++++++
 	Jede Gitterzelle sagt auch bedingte Klassenwahrscheinlichkeiten $Pr(Class_{i}|Object)$, voraus.  Diese Wahrscheinlichkeiten beziehen sich auf die Gitterzelle, die ein Objekt enthält.
 	Zum Testzeitpunkt wird die bedingten Klassenwahrscheinlichkeiten und die individuellen Box-Vertrauensvorhersagen multipliziert, wodurch wir klassenspezifische Vertrauenswerte für jede Box erhalten.  Diese Werte kodieren sowohl die Wahrscheinlichkeit, dass diese Klasse in der Box vorkommt, als auch, wie gut die vorhergesagte Box zum Objekt passt.
 	\[ Pr(Class_{i}|Object)*Pr(Object)*IoU_{truth}^{pred}= Pr(Class_{i})*IoU_{truth}^{pred} \]
-	In YoloV2 wurden Ankerboxen eingeführt. Da Objekte meist immer ähnliche Formen haben kann man eine gewisse Menge an sogenannten Ankerboxen definieren welche als Basis Boundingboxen fingieren. So wird anstatt die absolute Größen von Boxen in Bezug auf das gesamte Bild vorherzusagen, eine Ankerbox ausgewählt die am besten zu dem gewünschten Objekten passende verwendet. Die Abbildung \ref{Anker} zeigt dieses Konzept.
-	\begin{figure}[!h]
-		\begin{center}
-			\includegraphics[width=6cm]{Media/Ankerboxen.png}
-			\caption{Passende Ankerboxen werden ausgewählt\cite{b0}}
-			\label{Anker}
-		\end{center}
-	\end{figure}
-	Diese Ankerboxen kann man mittels Clusteralgorithmen wie K-Means und den Boundingboxen aus dem Datensatz berechnen. Dies hat vor allem den Vorteil das die Boundingboxenbesser zu den Objekten des jeweiligen Datensatzes besser passen. \cite{b3}\\
+	++++++++++++++++++++
 	\\
-	In der dritten Version wurde vorallem die Genauigkeit weiter verbessert. So wurden Restblöcke, Skip-Verbindungen und Upsampling Techinken hinzugefügt. Das Netzwerk wuchs damit drastisch auf insgesamt 106 Convolutional-Layer.
+	In der dritten Version wurde vor allem die Genauigkeit weiter verbessert. So wurden Restblöcke, Skip-Verbindungen und Upsampling Techinken hinzugefügt. Das Netzwerk wuchs damit drastisch auf insgesamt 106 Convolutional-Layer.
 	Der Featureextraktor Darknet-53 besitzt 53 Convolutional-Layer und zusätzlich vereinzelte Abkürzungen im Netz.\\
 	Eine weitere Änderung betrifft den Softmax layer für die Bestimmung der Zielklasse. Früher wurde immer nur die Klasse ausgewählt die den höchsten Score erzielte. Dies hat sich geändert. Dadurch das die Klassenvorhersage mit Hilfe einer Logistische Regession stattfindet kann ein Objekt mehre Label gleichzeitig haben wie zum Beispiel Person und Frau. Diese Multilabelklassifikation wird für unser Projekt aber nicht benötigt.\\
 	Ein weitere Neuerung ist das Vorhersagen über drei verschiedene Skalierungen. Das System extrahiert Merkmale mit einem ähnlichen Konzept wie bei Merkmalspyramidennetzen. Hinter dem Featureextraktor liegen mehrere Faltungsschichten. Die letzte dieser Schichten sagt einen 3-D-Tensor voraus, der Bounding Box, Objekthaftigkeit und Klassenvorhersagen enthält. In dem Fall für den COCO Datensatz werden pro Skalierung 3 Boxen vorausgesagt. Der Tensor entspreche dann für 4 Bounding-Box-Offsets, 1 Objektvorhersage und 80 Klassenvorhersagen $N*N*[3*(4 + 1 + 80)]$. In YOLOv3 erfolgt die Erkennung durch Anwendung von 1 x 1 Erkennungs Kernel auf Feature-Maps dreier verschiedener Skalierungen an drei verschiedenen Stellen im Netzwerk. SKALIERUNG. Diese Technik verbessert die Genauigkeit vor allem bei kleineren Objekten.\\
-	Yolov3 ist damit in der Lage in jeder Zelle 9 Boundingboxen wegen 3 Ankerboxen für jede der 3 Skalierungstufe vorhersagen.\cite{b4}\\
+	Yolov3 ist damit in der Lage in jeder Zelle 9 Boundingboxen wegen der 3 Ankerboxen für jede der 3 Skalierungstufe vorhersagen.\cite{b4}\\
+	\\
+	YoloV4 
 	
-	YoloV4??
-	....
+	
+	\begin{figure}[!h]
+		\begin{center}
+			\includegraphics[width=9cm]{Media/YoloV4Arch.png}
+			\caption{Das Konzept von YoloV4 \cite{b2}}
+			\label{NMS}
+		\end{center}
+	\end{figure}
 
-	...\\
+	...\cite{b2}\\
 	Wir mussten unser Modell nicht mehr trainieren da es bereits mit dem Microsoft COCO Datensatz trainiert wurde. Es sind 80 verschiedene Klassen erkennbar. Wir interessieren uns aber nur für einen kleineren Teil wie:
 	\begin{enumerate}
 		\item Personen
@@ -288,14 +308,7 @@
 	Kann zu dem aktuell getrackten Objekt in dem Frame keine Bounding Box zugeordnet werden, wird der Zustand des Systems auch ohne die Korrektur durch die Messung berechnet. Kann in einem späteren Frame wieder eine Bounding Box zugeordnet werden, wird der Zustand durch diese Detektion erneut aktualisiert. 
 	Die Hungarian Methode wird verwendet, um die Detektion einem existierenden getrackten Objekt zuzuordnen. Hierfür wird die Intersection-over-Union Distance zwischen jeder Detektion und allen bereits erkannten Objekten verglichen und als Gewichtung verwendet.
 	
-	\begin{figure}[h]
-		\begin{center}
-			\includegraphics[width=8cm]{Media/Iou.png}
-			\caption{Intersection-Over-Union}
-			\label{figure_4}
-		\end{center}
-	\end{figure}
-	In Abbildung \ref{figure_4} ist die Berechnung der Intersection-Over-Union dargestellt. Sie beschreibt das Verhältnis der Schnittfläche einer Bounding Box mit der Grundwahrheit bezüglich der Gesamtfläche von Bounding Box und Grundwahrheit. Je genauer die beiden Flächen übereinander liegen desto höher der Wert, desto besser ist die Vorhersage der Bounding Box.
+
 	
 	Die Zuweisung der ID erfolgt anschließend über die optimale Lösung der Hungarian Methode.
 	
@@ -348,7 +361,7 @@
 		\bibitem{z1}https://www.zeit.de/news/2020-10/18/s-bahn-stammstrecke-in-muenchen-fuer-arbeiten-gesperrt
 		\bibitem{b0}https://medium.com/@sarangzambare/object-detection-using-non-max-supression-over-yolov2-382a90212b51
 		\bibitem{b1}https://arxiv.org/pdf/1506.02640v5.pdf
-		\bibitem{b2}https://arxiv.org/pdf/2004.10934.pdf
+		\bibitem{b2}https://arxiv.org/pdf/2004.10934.pdf %V4
 		\bibitem{b3}https://arxiv.org/pdf/1612.08242.pdf %V2
 		\bibitem{b4}https://pjreddie.com/media/files/papers/YOLOv3.pdf %V3
 		\bibitem{b5}https://jonathan-hui.medium.com/real-time-object-detection-with-yolo-yolov2-28b1b93e2088 % V1 Loss

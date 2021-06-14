@@ -122,7 +122,6 @@
 	\[ Pr(Class_{i}|Object)*Pr(Object)*IoU_{truth}^{pred}= Pr(Class_{i})*IoU_{truth}^{pred} \]
 	........Netzwerk???...........
 	........LossFunction???...........
-	
 	In YoloV2 wurden Ankerboxen eingeführt. Da Objekte meist immer ähnliche Formen haben kann man eine gewisse Menge an sogenannten Ankerboxen definieren welche als Basis Boundingboxen fingieren. So wird anstatt die absolute Größen von Boxen in Bezug auf das gesamte Bild vorherzusagen, eine Ankerbox ausgewählt die am besten zu dem gewünschten Objekten passende verwendet. Die Abbildunf \ref{Anker} zeigt dieses Konzept.
 	\begin{figure}[!h]
 		\begin{center}
@@ -133,7 +132,10 @@
 	\end{figure}
 	Diese Ankerboxen kann man mittels Clusteralgorithmen wie K-Means und den Boundingboxen aus dem Datensatz berechnen werden. Dies hat vor allem den Vorteil das die Boundingboxenbesser zu den Objekten des jeweiligen Datensatzes besser passen. \cite{b3}\\ ++++++++BILD KMEANS ANKER+++++++
 	.....
-	YoloV3??
+	In der dritten Version wurde vorallem die Genauigkeit weiter verbessert. So wurden Restblöcke, Skip-Verbindungen und Upsampling Techinken hinzugefügt die Yolov2 auf einen modernen Stand gebracht haben. ALLE 3 ERKLÄREN. Das Netzwerk wuchs auch drastisch auf 106 Convolutional-Layer. Darknet-53.. MEHR NETZWERK. SCALES... LOSSFUNCTION??...
+	Eine weitere Änderung betrifft den Softmax layer für die Bestimmung der Zielklasse. Früher wurde immer nur die Klasse ausgewählt die den höchsten Wert erhielt. Dies hat sich geändert. Dadurch das die Klassenvorhersage mit Hilfe einer Logistische Regession stattfindet kein ein Objekt mehre Label gleichzeitig haben. Diese Multilabelklassifikation wird für unser Projekt aber nicht benötigt.
+	
+	
 	YoloV4??
 	....
 	In diesem Projekt verwendeten wir die 4te und damit aktuell neueste Version von Yolo\cite{b2}. So bietet jede Version inkrementelle Verbesserung zum jeweiligen Vorgänger.\\

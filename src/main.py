@@ -44,7 +44,7 @@ outputLocationMOG = '../Output/MOG'
 outputLocationSORT = '../Output/SORT'
 outputLocationZugphase = '../Output/Zugphase'
 #Classic or DeepLearning
-classic = False
+classic = True
 
 
 # Video settings
@@ -156,19 +156,19 @@ def classicPipeLine(image):
 
     #Detect Gaus:
     detections = detect_image_mog(image, mog_object_detector)
-    #draw_detections(outputLocationMOG, image, detetctions, False)
+    draw_detections(outputLocationMOG, image, detections, False)
 
     #Tracking SORT:
     tracking_boxes = [] 
     for d in detections:
         t,l,b,r = d.get_tlbr()
-        tracking_boxes.append([t,l,b,r,d.get_confidence()])
-    track_bbs_ids = sort_tracker.update(np.array(tracking_boxes))
+        tracking_boxes.append([t,l,b,r, d.get_confidence()])
+    track_bbs_ids = tracker.update(np.array(tracking_boxes))
     trackingDetections = []
     for d in track_bbs_ids:
-        trackingDetections.append(Detection([d[0],d[1],d[2]-d[0],d[3]-d[1]], 0.0, 0, None, d[4]))
+        trackingDetections.append(Detection([d[0], d[1], d[2]-d[0], d[3]-d[1]], 0.0, 0, None, d[4]))
 
-    draw_detections(outputLocationSORT,image, trackingDetections)
+    draw_detections(outputLocationSORT, image, trackingDetections, False)
 
     return track_bbs_ids
 
@@ -223,9 +223,11 @@ image_h, image_w = image.shape[:2]
 prev_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 mog_object_detector = cv2.createBackgroundSubtractorMOG2(history=100, varThreshold=40)
 
-# initialize tracker    
-#sort_tracker = Sort()# tracker -> Sort                                                        
-tracker = Tracker(metric,max_iou_distance) 
+# initialize tracker
+if classic:
+    tracker = Sort()
+else:                                                 
+    tracker = Tracker(metric,max_iou_distance) #DeepSort
 
 # initialize trackerBox   
 counterBox = CounterBox(0*image_w, 0.7*image_h, 1*image_w, 0.9*image_h)#define TrackerBox tl,br

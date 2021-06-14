@@ -163,14 +163,18 @@ def classicPipeLine(image):
     for d in detections:
         t,l,b,r = d.get_tlbr()
         tracking_boxes.append([t,l,b,r, d.get_confidence()])
-    track_bbs_ids = tracker.update(np.array(tracking_boxes))
+
     trackingDetections = []
-    for d in track_bbs_ids:
-        trackingDetections.append(Detection([d[0], d[1], d[2]-d[0], d[3]-d[1]], 0.0, 0, None, d[4]))
+    if len(tracking_boxes) > 0:
+        track_bbs_ids = tracker.update(np.array(tracking_boxes))
+        for d in track_bbs_ids:
+            trackingDetections.append(Detection([d[0], d[1], d[2]-d[0], d[3]-d[1]], 0.0, -1, None, d[4]))
+
+    image = cv2.line(image, start_point, end_point, (255,255,255), 5) #Draw Line
 
     draw_detections(outputLocationSORT, image, trackingDetections, False)
 
-    return track_bbs_ids
+    return trackingDetections
 
 def deepLearningPipeLine(image):
     #Detect Yolo:
@@ -194,6 +198,8 @@ def deepLearningPipeLine(image):
         angles.append(ang)
         magnitudes.append(mag)                                      
         track_bbs_ids.append(Detection([bbox[0], bbox[1], bbox[2]-bbox[0], bbox[3]-bbox[1]], 0.0, class_id, None, track.track_id, dir_vec))
+
+    image = cv2.line(image, start_point, end_point, (255,255,255), 5) #Draw Line
 
     draw_detections(outputLocationDeepSORT,image, track_bbs_ids, False)
 
@@ -221,10 +227,10 @@ image = image[crop_img_y:crop_img_h, crop_img_x:crop_img_w]
 image_h, image_w = image.shape[:2]
 
 prev_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-mog_object_detector = cv2.createBackgroundSubtractorMOG2(history=100, varThreshold=40)
 
 # initialize tracker
 if classic:
+    mog_object_detector = cv2.createBackgroundSubtractorMOG2(history=100, varThreshold=40)
     tracker = Sort()
 else:                                                 
     tracker = Tracker(metric,max_iou_distance) #DeepSort
@@ -248,7 +254,7 @@ while success:
     if count >= 0:
 
         image = image[crop_img_y:crop_img_h, crop_img_x:crop_img_w] #Crop image
-        image = cv2.line(image, start_point, end_point, (255,255,255), 5)
+        
 
         angles = []
         magnitudes = []

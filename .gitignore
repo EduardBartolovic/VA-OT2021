@@ -1,5 +1,5 @@
 *.jpg
-src/zugphase.py
+.gitignore
 .vscode/
 *.pyc
 *.mp4

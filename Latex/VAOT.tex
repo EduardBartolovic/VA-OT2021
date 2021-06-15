@@ -189,7 +189,7 @@
 	Ein weitere Neuerung ist das Vorhersagen über drei verschiedene Skalierungen. Das System extrahiert Merkmale mit einem ähnlichen Konzept wie bei Merkmalspyramidennetzen. Hinter dem Featureextraktor liegen mehrere Faltungsschichten. Die letzte dieser Schichten sagt einen 3-D-Tensor voraus, der Bounding Box, Objekthaftigkeit und Klassenvorhersagen enthält. In dem Fall für den COCO Datensatz werden pro Skalierung 3 Boxen vorausgesagt. Der Tensor entspreche dann für 4 Bounding-Box-Offsets, 1 Objektvorhersage und 80 Klassenvorhersagen $N*N*[3*(4 + 1 + 80)]$. In YOLOv3 erfolgt die Erkennung durch Anwendung von 1 x 1 Erkennungs Kernel auf Feature-Maps dreier verschiedener Skalierungen an drei verschiedenen Stellen im Netzwerk. SKALIERUNG. Diese Technik verbessert die Genauigkeit vor allem bei kleineren Objekten.\\
 	Yolov3 ist damit in der Lage in jeder Zelle 9 Boundingboxen wegen der 3 Ankerboxen für jede der 3 Skalierungstufe vorhersagen.\cite{b4}\\
 	\\
-	YoloV4 hat einige Neuerungen. So nennt das Paper \cite{b2} \textit{Bag of Freebies}. Damit sind Verbesserungen gemeint die die Genauigkeit des Modells zur Trainingszeit verbessern aber die Inferenzzeit nicht beeinflussen. So wurde stark das Training optimiert. Bei dem Training werden Bilder zusätzlich aus dem Datensatz generiert. Existierende Bilder werden dupliziert und dann rotiert, zugeschnitten, verzerrt, verdunkelt, etc. und dann auch durch das Netz geschickt. 
+	YoloV4 hat die Geschwindigkeit und Genauigkeit verbessert. So nennt das Paper \cite{b2} \textit{Bag of Freebies}. Damit sind Verbesserungen gemeint die die Genauigkeit des Modells zur Trainingszeit verbessern aber die Inferenzzeit nicht beeinflussen. So wurde stark das Training optimiert. Bei dem Training werden Bilder zusätzlich aus dem Datensatz generiert. Existierende Bilder werden dupliziert und dann rotiert, zugeschnitten, verzerrt, verdunkelt, etc. und dann auch durch das Netz geschickt. 
 	Auch Techninken wie \textit{ranom erase} und \textit{Cut Out} werden angewendet. Beide Löschen die Pixel aus zufälligen Rechtecken im Bildern und ersetzten sie mit einem zufälligen Wert.	Diese Data Augmentation sorgt für eine verbesserte Generalisierungfähigkeit des Modells.\\
 	Regularisierungmethoden wie \textit{DropOut}, \textit{DropConnect} und \textit{DropBlock} wurden gegen Overfitting eingesetzt.\\
 	SMOOTHLABEL????????\\
@@ -235,39 +235,38 @@
 	
 	YoloV4 ist nicht perfekt. So gibt es gelegentlich Fehler:
 	\textbf{Falschklassifizierung:}\\
-	Selten Klassifiziert das Netz falsch. So wie in der Abbildung \ref{FaK} zu sehen ist wurde ein Bus als Pkw klassifiziert. Das Modell ist sich in diesem Beispiel auch nur unsicher mit $31\%$. Der Fehler lässt sich vermutlich erklären da die Frontpartie des Bus einem Pkw sehr ähnelt und der Rest des Fahrzeuges wegen einem Baum und einer Laterne verdeckt wird.
+	Selten Klassifiziert das Netz falsch. So wie in der Abbildung \ref{FaK} zu sehen ist wurde ein Bus als Pkw klassifiziert. Das Modell ist sich in diesem Beispiel auch nur unsicher mit $31\%$. Der Fehler lässt sich vermutlich erklären da die Frontpartie des Bus einem Pkw sehr ähnelt und der Rest des Fahrzeuges wegen einem Baum und einer Laterne verdeckt wird. Auch ist zu vermuten, dass das Netz falsche Merkmale gelernt hat. Dies könnte mit Sicherheit verbessert werden wenn das Modell nur auf die für uns relevanten Klassen trainiert worden wäre. Die folgenden Abbildungen \ref{FaK}, \ref{FaK2}, \ref{FaK3} und \ref{FaK4} sind Beispiele für Falsche Klassifikationen. Speziell ist natürlich der Fehler in Bild \ref{FaK4}. Hier wurde ein Anhänger als Fahrzeug klassifiziert. Der Ursprung dieses Fehlers kann unterschiedliche Gründe haben.
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=7cm]{Media/Output_480 - Kopie.jpg}
-			\caption{Falschklassifizierung}
+			\caption{Falschklassifizierung eines Bus wegen Verdeckung}
 			\label{FaK}
 		\end{center}
 	\end{figure}\\
-	Außerdem DATENSATZ+++++++++++++++
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=7cm]{Media/Output_847 - Kopie.jpg}
-			\caption{Falschklassifizierung}
+			\caption{Falschklassifizierung des Dachs als Pkw}
 			\label{FaK2}
 		\end{center}
 	\end{figure}\\
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=7cm]{Media/Output_108 - Kopie (2).jpg}
-			\caption{Falschklassifizierung}
+			\caption{Falschklassifizierung eines Hausdachs}
 			\label{FaK3}
 		\end{center}
 	\end{figure}\\
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=7cm]{Media/Output_829 - Kopie.jpg}
-			\caption{Falschklassifizierung}
-			\label{FaK3}
+			\caption{Falschklassifizierung eines Anhängers}
+			\label{FaK4}
 		\end{center}
 	\end{figure}\\
 
-	\textbf{Fehlende Klassifikationen:}\\
-	Ein etwas häufigerer Fehler ist das Klassifikationen Fehlen. Dies kann mehrere Gründe haben. So zeigt die Abbildung \ref{Fek} zwei Typische Gründe. Grund Nummer eins ist es das Objekte teilweise verdeckt sind. In Kombination wenn Objekte sehr klein sind ist es nahezu nicht mehr möglich zuverlässig Detektion zu bekommen. INPUT NETZ YOLO? Zu grobes GRID?? 
+	\textbf{Fehlende Detektion:}\\
+	Ein etwas häufigerer Fehler ist das Detektionen Fehlen. Dies kann mehrere Gründe haben. So zeigt die Abbildung \ref{FeK} zwei Typische Gründe. Grund Nummer eins ist es das Objekte teilweise verdeckt sind. In Kombination wenn Objekte sehr klein sind ist es nahezu nicht mehr möglich zuverlässig Detektion zu bekommen.
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=7cm]{Media/Output_680 - Kopie.jpg}
@@ -363,6 +362,27 @@
 	Da nun ein Objekt erfolgreich erkannt, verfolgt und seine Bewegungsrichtung erkannt werden kann, wird nun für Objekte die der Klasse Zug zugeordnet sind, die aktuelle Zugphase bestimmt.  
 	Durch YOLO werden die Bounding Boxen pro Frame bestimmt. Durch Abgleich der TrackingID kann festgestellt werden, ob es sich immer um den selben Zug handelt. Für jede der Detektionen des ausgewählten Zugs wird durch Optical Flow die Magnitude und die Richtungswinkel bestimmt. Dabei wurde die durchschnittliche Richtung über die gesamten Richtungsvektoren der Bounding Box des Zuges bestimmt. Dies wurde im Verlauf des Projekt durch die Richtungsbestimmung des Kalmanfilters ersetzt. Dieser berechnet zusammen mit dem nächsten Zustand auch die den Richtungsvektor. Fährt der Zug ein, hat dieses Objekt durch die Bewegung eine Magnitude größer 1. Der Richtungsvektor wird zur Visualisierung in das Bild als Pfeil eingefügt. Sobald der Zug erkannt wird und eine Richtung bestimmt wird, wechselt dessen Zustand von „Kein Zug“ zu „Einfahrend“. Dabei wird immer für 5 Frames geprüft ob die Richtung gleichbleibend ist. Sollte für eine Länge von 10 Frames die Magnitude unter 0 fallen ändert sich der Zustand des Zuges zu „Haltend“. Beginnt der Zug sich wieder zu bewegen und die Bewegung ist gleichbleibend in eine Richtung wird der Zustand auf „Abfahrend“ gesetzt, bis der Zug außerhalb des Bildes ist und nicht mehr erkannt wird.
 	
+
+	
+	\section{Vergleich klassischen Methoden mit Deep-Learning}
+	\textbf{Eigenschaften der klassischen Verfahren:}
+	\begin{itemize}
+		\item Klassische Verfahren sind deutlich besser nach zu vollziehen. Dies gilt vor allem für Fehler....
+		
+		\item Klassische Verfahren sind deutlich schneller. Diese Verfahren sind um den Faktor X schneller als DeepLearningverfahren...........
+		
+		\item Klassische Verfahren können auch gute Leistung erzielen mit genug feinschliff......
+	\end{itemize}
+
+	\textbf{Eigenschaften der Deep-Learning Verfahren:}
+	\begin{itemize}
+		\item Deep-Learning Verfahren sind deutlich schlechter nach zu vollziehen. Dies gilt vor allem für Fehler....
+		
+		\item Klassische Verfahren sind deutlich schneller. Diese Verfahren sind um den Faktor X schneller als DeepLearningverfahren...........
+		
+		\item Die Deep-Learning Verfahren verzeichnen vorallem gute Out-Of-The-Box Leistung. 
+	\end{itemize}
+	
 	\begin{thebibliography}{00}
 		\bibitem{z1}https://www.zeit.de/news/2020-10/18/s-bahn-stammstrecke-in-muenchen-fuer-arbeiten-gesperrt
 		\bibitem{b0}https://medium.com/@sarangzambare/object-detection-using-non-max-supression-over-yolov2-382a90212b51
@@ -372,8 +392,6 @@
 		\bibitem{b4}https://pjreddie.com/media/files/papers/YOLOv3.pdf %V3
 		\bibitem{b5}https://jonathan-hui.medium.com/real-time-object-detection-with-yolo-yolov2-28b1b93e2088 % V1 Loss
 	\end{thebibliography}
-	
-	\section{Vergleich klassischen Methoden mit DeepLearning}
 	
 	\section{Anhang}
 	

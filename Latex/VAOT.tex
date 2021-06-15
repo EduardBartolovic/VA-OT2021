@@ -165,7 +165,7 @@
 		\end{center}
 	\end{figure}
 	Diese Ankerboxen kann man mittels Clusteralgorithmen wie K-Means und den Boundingboxen aus dem Datensatz berechnen. Dies hat vor allem den Vorteil das die Boundingboxen besser zu den Objekten des jeweiligen Datensatzes besser passen. \cite{b3}\\
-	Jede Vorhersagen für eine Boundingbox enthält die 4 Koordinaten: $t_x, t_y, t_w, t_h$. $t_x $ und $ t_y$ sind die x an y Koordinaten, relative Zellen Mittelpunkt. $t_w$ und $ t_h$ sind die Skalierungsfaktoren relativ zu Ankerboxdimensionen. $p_w$ und $p_h$ sind die Breite und Höhe der Ankerbox. Dabei gibt es noch einen Gitterzellenoffset $c_x$ und $c_y$.
+	Jede Vorhersagen für eine Boundingbox enthält die 4 Koordinaten: $t_x, t_y, t_w, t_h$. $t_x$ und $ t_y$ sind die x an y Koordinaten, relative Zellen Mittelpunkt. $t_w$ und $ t_h$ sind die Skalierungsfaktoren relativ zu Ankerboxdimensionen. $p_w$ und $p_h$ sind die Breite und Höhe der Ankerbox. Dabei gibt es noch einen Gitterzellenoffset $c_x$ und $c_y$.
 	\[ b_x = \sigma(t_x) + c_x \]
 	\[ b_y = \sigma(t_y) + c_y \]
 	\[ b_w = p_w e^{t_w} \]
@@ -189,9 +189,17 @@
 	Ein weitere Neuerung ist das Vorhersagen über drei verschiedene Skalierungen. Das System extrahiert Merkmale mit einem ähnlichen Konzept wie bei Merkmalspyramidennetzen. Hinter dem Featureextraktor liegen mehrere Faltungsschichten. Die letzte dieser Schichten sagt einen 3-D-Tensor voraus, der Bounding Box, Objekthaftigkeit und Klassenvorhersagen enthält. In dem Fall für den COCO Datensatz werden pro Skalierung 3 Boxen vorausgesagt. Der Tensor entspreche dann für 4 Bounding-Box-Offsets, 1 Objektvorhersage und 80 Klassenvorhersagen $N*N*[3*(4 + 1 + 80)]$. In YOLOv3 erfolgt die Erkennung durch Anwendung von 1 x 1 Erkennungs Kernel auf Feature-Maps dreier verschiedener Skalierungen an drei verschiedenen Stellen im Netzwerk. SKALIERUNG. Diese Technik verbessert die Genauigkeit vor allem bei kleineren Objekten.\\
 	Yolov3 ist damit in der Lage in jeder Zelle 9 Boundingboxen wegen der 3 Ankerboxen für jede der 3 Skalierungstufe vorhersagen.\cite{b4}\\
 	\\
-	YoloV4 
-	
-	
+	YoloV4 hat einige Neuerungen. So nennt das Paper \cite{b2} \textit{Bag of Freebies}. Damit sind Verbesserungen gemeint die die Genauigkeit des Modells zur Trainingszeit verbessern aber die Inferenzzeit nicht beeinflussen. So wurde stark das Training optimiert. Bei dem Training werden Bilder zusätzlich aus dem Datensatz generiert. Existierende Bilder werden dupliziert und dann rotiert, zugeschnitten, verzerrt, verdunkelt, etc. und dann auch durch das Netz geschickt. 
+	Auch Techninken wie \textit{ranom erase} und \textit{Cut Out} werden angewendet. Beide Löschen die Pixel aus zufälligen Rechtecken im Bildern und ersetzten sie mit einem zufälligen Wert.	Diese Data Augmentation sorgt für eine verbesserte Generalisierungfähigkeit des Modells.\\
+	Regularisierungmethoden wie \textit{DropOut}, \textit{DropConnect} und \textit{DropBlock} wurden gegen Overfitting eingesetzt.\\
+	SMOOTHLABEL????????\\
+	Auch wird die Lossfunktion angepasst. Bei den bisherigen Versionen wurde die Mittlere quadratische Abweichung für das Regressionsproblem verwendet. Diese Regression wird dann unabhängig für alle Vorhersagen von $t_x, t_y, t_w, t_h$ verwendet. Sinnvoller ist es die IoU der Objekte in Betracht zu ziehen. Deshalb verwendet YoloV4 \textit{CIoU} als Lossfunktion um die Integrität der Objekte mit einzubeziehen. 
+	Weitere Verbesserungen die das Paper \cite{b2}, die die Laufzeit leicht erhöhen werden \textit{Bag of Specials} genannt. Dazu gehören zum Beispiel \textit{Squeeze-and-Excitation}, \textit{Spatial Attention Module}, Vergrößerung des Rezeptionsfeldes des Modells und Stärkung der Fähigkeit zur Merkmalsintegration.
+	++++++++++++++\\
+	Im Backbone wird eine \textit{MISH} Aktivierungsfunktion verwendet:
+	\[ f(x) = x* \tanh (\ln (1+e^x)) \]
+	Die Komponenten in der Architektur wurde auch ersetzt. Im \textit{Backbone} läuft nun \textit{CSPDarknet53}. Im \textit{Neck}  wird \textit{Spatial pyramid pooling} (SPP) und \textit{Path Aggregation Network} (PAN) verwendet.++++++++++\\
+	Am \textit{Head} wurde nichts geändert und  ist damit identisch zu YoloV3 \cite{b2}.
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=9cm]{Media/YoloV4Arch.png}
@@ -199,8 +207,6 @@
 			\label{NMS}
 		\end{center}
 	\end{figure}
-
-	...\cite{b2}\\
 	Wir mussten unser Modell nicht mehr trainieren da es bereits mit dem Microsoft COCO Datensatz trainiert wurde. Es sind 80 verschiedene Klassen erkennbar. Wir interessieren uns aber nur für einen kleineren Teil wie:
 	\begin{enumerate}
 		\item Personen
@@ -225,7 +231,7 @@
 	Das Ergebnis einer Prädiktion ist eine Liste von Objekten welches aus den x,y Koordinate des Mittelpunktes der Boundingbox, der Breite w, der Höhe h, der Klasse und des Konfidenzwerts besteht.
 	
 	\subsection{Fehler in der Erkennung}
-	BRUDERMÜHL / ZUG FEHLT
+	 ZUG FEHLT
 	
 	YoloV4 ist nicht perfekt. So gibt es gelegentlich Fehler:
 	\textbf{Falschklassifizierung:}\\

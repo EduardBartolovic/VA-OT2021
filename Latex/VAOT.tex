@@ -184,9 +184,17 @@
 	\[ class = argmax_i(C)\]
 	\[ score = max(P)\]\\
 	In der dritten Version wurde vor allem die Genauigkeit weiter verbessert. So wurden Restblöcke, Skip-Verbindungen und Upsampling Techinken hinzugefügt. Das Netzwerk wuchs damit drastisch auf insgesamt 106 Convolutional-Layer.
-	Der Featureextraktor Darknet-53 besitzt 53 Convolutional-Layer und zusätzlich vereinzelte Abkürzungen im Netz.\\
+	Der Featureextraktor Darknet19 aus YoloV2 wurde durch Darknet-53 ersetzt. Darknet-53 besitzt 53 Convolutional-Layer und beinhaltet zusätzlich vereinzelte Abkürzungen im Netz.\\
 	Eine weitere Änderung betrifft den Softmax layer für die Bestimmung der Zielklasse. Früher wurde immer nur die Klasse ausgewählt die den höchsten Score erzielte. Dies hat sich geändert. Dadurch das die Klassenvorhersage mit Hilfe einer Logistische Regession stattfindet kann ein Objekt mehre Label gleichzeitig haben wie zum Beispiel Person und Frau. Diese Multilabelklassifikation wird für unser Projekt aber nicht benötigt.\\
-	Ein weitere Neuerung ist das Vorhersagen über drei verschiedene Skalierungen. Das System extrahiert Merkmale mit einem ähnlichen Konzept wie bei Merkmalspyramidennetzen (FPN). Diese Technik verbessert die Genauigkeit vor allem bei kleineren Objekten. +++FPN++++++++++++ Hinter dem Featureextraktor liegen mehrere Faltungsschichten. Die letzte dieser Schichten sagt einen 3-D-Tensor voraus, der Bounding Box, Objekthaftigkeit und Klassenvorhersagen enthält. Es werden aber für jede der drei Skalierung drei Boxen vorausgesagt. Der Tensor entspreche dann für 4 Bounding-Box-Offsets, 1 Objektvorhersage und 80 Klassenvorhersagen $N*N*[3*(4 + 1 + 80)]$.\cite{b4}\\
+	Ein weitere Neuerung ist das Vorhersagen über drei verschiedene Skalierungen. Das System extrahiert Merkmale mit einem ähnlichen Konzept wie bei Merkmalspyramidennetzen (FPN). Diese Technik verbessert die Genauigkeit vor allem bei kleineren Objekten. So werden Feature-Map aus einer früheren Schicht aus dem Netzwerk extrahiert und mit höher gesampelten Features durch Verkettung zusammen gefügt. Mit weiteren Faltungsschichten werden diese kombinierte Feature-Map verarbeitet. So profitiert man man von Vorhersagen für alle der drei Sklarierungen und damit von allen vorherigen Berechnungen sowie von den feinkörnigen Merkmalen aus der frühen Phase des Netzwerks. Die Abbildung \ref{FPN} zeigt das Konzept eines Merkmalspyramidennetzwerks.
+	\begin{figure}[!h]
+		\begin{center}
+			\includegraphics[width=6cm]{Media/FPN.png}
+			\caption{Darstellung eines Merkmalspyramidennetzwerks \cite{b6}}
+			\label{FPN}
+		\end{center}
+	\end{figure}\\
+	Die letzte dieser Schichten der jeweiligen Skalierungen sagt einen 3-D-Tensor voraus, der Bounding Box, Objekthaftigkeit und Klassenvorhersagen enthält. Es werden aber für jede der drei Skalierung drei Boxen vorausgesagt. Der Tensor entspreche dann für 4 Bounding-Box-Offsets, 1 Objektvorhersage und 80 Klassenvorhersagen $N*N*[3*(4 + 1 + 80)]$.\cite{b4}\\
 	\\
 	YoloV4 hat die Geschwindigkeit und Genauigkeit verbessert. So nennt das Paper \cite{b2} zum Beispiel \textit{Bag of Freebies}. Damit sind Verbesserungen gemeint die die Genauigkeit des Modells zur Trainingszeit verbessern aber die Inferenzzeit nicht beeinflussen. So wurde stark das Training optimiert. Bei dem Training werden Bilder zusätzlich aus dem Datensatz generiert. Existierende Bilder werden dupliziert und dann rotiert, zugeschnitten, verzerrt, verdunkelt, etc. und dann auch durch das Netz geschickt. 
 	Auch Techninken wie \textit{Random Erease} und \textit{Cut Out} werden angewendet. Beide löschen die Pixel aus zufälligen Rechtecken im Bildern und ersetzten sie mit einem zufälligen Wert.	Diese Data Augmentation sorgt für eine verbesserte Generalisierungfähigkeit des Modells.\\
@@ -195,7 +203,7 @@
 	Weitere Verbesserungen die auf Kosten der Laufzeit gehen werden \textit{Bag of Specials} genannt. Dazu gehören zum Beispiel \textit{Squeeze-and-Excitation}, \textit{Spatial Attention Module}, Vergrößerung des Rezeptionsfeldes des Modells und Stärkung der Fähigkeit zur Merkmalsintegration.\\
 	Im Backbone wird eine \textit{MISH}-Aktivierungsfunktion verwendet:
 	\[ f(x) = x* \tanh (\ln (1+e^x)) \]
-	Die Komponenten in der Architektur wurde auch ersetzt. Im \textit{Backbone} läuft nun \textit{CSPDarknet53}. Dies basiert auf dem Darknet53 aus YoloV3 und wird mit Cross-Stage-Partial-Networks erweitert. Im Hals des Netzes wird \textit{Spatial pyramid pooling} (SPP) und \textit{Path Aggregation Network} (PANet) verwendet. SPP wurde in der hinsicht zu YoloV3 modifiziert, um die räumliche Dimension der Ausgabe beizubehalten. PANet ersetzt das FPN aus YoloV3.\\
+	Die Komponenten in der Architektur wurde auch ersetzt. Im \textit{Backbone} läuft nun \textit{CSPDarknet53}. Dies basiert auf dem Darknet53 aus YoloV3 und wird mit Cross-Stage-Partial-Networks erweitert. Im Hals des Netzes wird \textit{Spatial pyramid pooling} (SPP) und \textit{Path Aggregation Network} (PANet) verwendet. SPP wurde in der hinsicht zu YoloV3 modifiziert, um die räumliche Dimension der Ausgabe beizubehalten. PANet ersetzt die Merkmalspyramidennetzen (FPN) aus YoloV3.\\
 	+++++MEHR INFORMATIONEN? PANet+++++++++
 	Am \textit{Head} der für Prädiktion verantworlich ist wurde nichts geändert und  ist damit identisch zu YoloV3 \cite{b2}. Diese Architektur wird in er Abbildung \ref{V4Arch} dargestellt.
 	\begin{figure}[!h]
@@ -382,6 +390,7 @@
 		\bibitem{b3}https://arxiv.org/pdf/1612.08242.pdf %V2
 		\bibitem{b4}https://pjreddie.com/media/files/papers/YOLOv3.pdf %V3
 		\bibitem{b5}https://jonathan-hui.medium.com/real-time-object-detection-with-yolo-yolov2-28b1b93e2088 % V1 Loss
+		\bibitem{b6}https://openaccess.thecvf.com/content\_cvpr\_2017/papers/Lin\_Feature\_Pyramid\_Networks\_CVPR\_2017\_paper.pdf % FPN
 	\end{thebibliography}
 	
 	\section{Anhang}

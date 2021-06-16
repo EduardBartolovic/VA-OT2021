@@ -65,7 +65,7 @@
 	\section{Videomaterial}
 	Für dieses Projekt wurden mehrere Aufnahmen aufgenommen. Ziel war es keine zu chaotischen aber auch nicht zu einfache Aufnahmen zu erstellen. Auch sollten verschiedene Szenarien abgebildet werden.\\
 	\textbf{Verkehrsaufnahmen am Brudermühltunnel am Mittleren Ring:}\\
-	Dieser Teil des Mittleren Rings ist sehr verkehrsreich und Autobahnähnlich ausgebaut. Es gibt mehrere Fahrspuren. Alle Fahrzeuge fahren im Sichtfeld in eine Richtung. Es sind ein paar Laternen und Bäume in der Aufnahme die die Sicht etwas beeinträchtigen. Es sind nur Pkwim Datensatz enthalten. Teilweise missachten Fahrzeuge den Sicherheitsabstand und fahren sehr nah aufeinander auf.
+	Dieser Teil des Mittleren Rings ist sehr verkehrsreich und Autobahnähnlich ausgebaut. Es gibt mehrere Fahrspuren. Alle Fahrzeuge fahren im Sichtfeld in eine Richtung. Es sind ein paar Laternen und Bäume in der Aufnahme die die Sicht etwas beeinträchtigen. Es sind nur Pkwim Datensatz enthalten. Teilweise missachten Fahrzeuge den Sicherheitsabstand und fahren sehr nah aufeinander auf. Das Video hat 60 Bilder pro Sekunde und hat eine Bildauflösung $3840$ × $2160$. Es wurde kein Stativ verwendet sondern nur die interne Stabilisierung des Smartphones genutzt.
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=7cm]{Media/BrudermuhlRaw.png}
@@ -74,7 +74,7 @@
 		\end{center}
 	\end{figure}\\
 	\textbf{Verkehrsaufnahmen am Candidtunnel:}\\
-	Eine stark befahrene Straße mit einer viel zahl von Verkehrsteilnehmern. Es herrscht zwei Richtungsverkehr mit insgesamt sechs Fahrspuren. In eine Richtung stehen die Fahrzeuge in einem Stau. Durch Regen spiegeln viele Oberflächen. Die Bäume bewegen sich aufgrund von stärkeren Wind und verdecken einen Teil der Fahrbahn. Diese Aufnahme ist die Anspruchsvollste. In diesem Video sind neben Pkw auch Busse enthalten.
+	Eine stark befahrene Straße mit einer viel zahl von Verkehrsteilnehmern. Es herrscht zwei Richtungsverkehr mit insgesamt sechs Fahrspuren. In eine Richtung stehen die Fahrzeuge in einem Stau. Durch Regen spiegeln viele Oberflächen. Die Bäume bewegen sich aufgrund von stärkeren Wind und verdecken einen Teil der Fahrbahn. Diese Aufnahme ist die Anspruchsvollste. In diesem Video sind neben Pkw auch Busse enthalten. Das Video hat 60 Bilder pro Sekunde und hat eine Bildauflösung $3840$ × $2160$. Es wurde kein Stativ verwendet sondern nur die interne Stabilisierung des Smartphones genutzt.
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=7cm]{Media/CandidRaw.png}
@@ -83,7 +83,7 @@
 		\end{center}
 	\end{figure}\\
 	\textbf{Zugaufnahmen an der Donnersbergerbrücke:}\\
-	Eine Aufnahme der einer der am stärksten befahren Bahnstrecken Europas \cite{z1}. Hier existiert viel Zugverkehr auf mehreren Gleisen mit unterschiedlichen Zugtypen. Beobachtet werden die vier Gleise der zwei Bahnsteige der S-Bahnhalts Donnersbergerbrücke. Ein Hindernis sind die Masten, Signale und das Bahnsteigdach welche einen guten Blick auf die Züge erschweren. In dieser Aufnahme sind Züge und Fußgänger enthalten. Der Fokus liegt aber bei den Zügen.
+	Eine Aufnahme der einer der am stärksten befahren Bahnstrecken Europas \cite{z1}. Hier existiert viel Zugverkehr auf mehreren Gleisen mit unterschiedlichen Zugtypen. Beobachtet werden die vier Gleise der zwei Bahnsteige der S-Bahnhalts Donnersbergerbrücke. Ein Hindernis sind die Masten, Signale und das Bahnsteigdach welche einen guten Blick auf die Züge erschweren. In dieser Aufnahme sind Züge und Fußgänger enthalten. Der Fokus liegt aber bei den Zügen. Das Video hat 30 Bilder pro Sekunde und hat eine Bildauflösung $1920$ × $1080$. Es wurde ein Stativ verwendet.
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=7cm]{Media/DonnersbergerRaw.png}
@@ -197,19 +197,22 @@
 	Die letzte dieser Schichten der jeweiligen Skalierungen sagt einen 3-D-Tensor voraus, der Bounding Box, Objekthaftigkeit und Klassenvorhersagen enthält. Es werden aber für jede der drei Skalierung drei Boxen vorausgesagt. Der Tensor entspreche dann für 4 Bounding-Box-Offsets, 1 Objektvorhersage und 80 Klassenvorhersagen $N*N*[3*(4 + 1 + 80)]$.\cite{b4}\\
 	\\
 	YoloV4 hat die Geschwindigkeit und Genauigkeit verbessert. So nennt das Paper \cite{b2} zum Beispiel \textit{Bag of Freebies}. Damit sind Verbesserungen gemeint die die Genauigkeit des Modells zur Trainingszeit verbessern aber die Inferenzzeit nicht beeinflussen. So wurde stark das Training optimiert. Bei dem Training werden Bilder zusätzlich aus dem Datensatz generiert. Existierende Bilder werden dupliziert und dann rotiert, zugeschnitten, verzerrt, verdunkelt, etc. und dann auch durch das Netz geschickt. 
-	Auch Techninken wie \textit{Random Erease} und \textit{Cut Out} werden angewendet. Beide löschen die Pixel aus zufälligen Rechtecken im Bildern und ersetzten sie mit einem zufälligen Wert.	Diese Data Augmentation sorgt für eine verbesserte Generalisierungfähigkeit des Modells.\\
+	Auch Techninken wie \textit{Cut Mix} und \textit{Mosaic Dataaugmentation} werden angewendet. Bei älteren Verfahren werden Bildteile gelöscht. Bei den beiden verwendeten Verfahren werden stattdessen Bildteile aus den Trainingsdaten ausgeschnitten und kombiniert, wobei die Ground-Truth-Labels ebenfalls angespasst werden müssen. Diese Data Augmentation sorgt für eine verbesserte Generalisierungfähigkeit des Modells.\\
 	Regularisierungmethoden wie \textit{DropOut}, \textit{DropConnect} und \textit{DropBlock} wurden gegen Overfitting eingesetzt.\\
 	Auch wird die Lossfunktion angepasst. Bei den bisherigen Versionen wurde die Mittlere quadratische Abweichung (MSE) für das Regressionsproblem verwendet. Diese Regression wird dann unabhängig für alle Vorhersagen von $t_x, t_y, t_w, t_h$ verwendet. Sinnvoller ist es die Koordinaten zusammen als die IoU der Boundingboxen in Betracht zu ziehen. Deshalb verwendet YoloV4 \textit{CIoU} als Lossfunktion um die Integrität der Objekte mit einzubeziehen.
 	Weitere Verbesserungen die auf Kosten der Laufzeit gehen werden \textit{Bag of Specials} genannt. Dazu gehören zum Beispiel \textit{Squeeze-and-Excitation}, \textit{Spatial Attention Module}, Vergrößerung des Rezeptionsfeldes des Modells und Stärkung der Fähigkeit zur Merkmalsintegration.\\
-	Im Backbone wird eine \textit{MISH}-Aktivierungsfunktion verwendet:
+	Im Backbone wird eine \textit{MISH}-Aktivierungsfunktion verwendet. Diese ist eine glatte und nicht-monotone neuronale Aktivierungsfunktion, die wie folgt definiert werden kann:
 	\[ f(x) = x* \tanh (\ln (1+e^x)) \]
-	Die Komponenten in der Architektur wurde auch ersetzt. Im \textit{Backbone} läuft nun \textit{CSPDarknet53}. Dies basiert auf dem Darknet53 aus YoloV3 und wird mit Cross-Stage-Partial-Networks erweitert. Im Hals des Netzes wird \textit{Spatial pyramid pooling} (SPP) und \textit{Path Aggregation Network} (PANet) verwendet. SPP wurde in der hinsicht zu YoloV3 modifiziert, um die räumliche Dimension der Ausgabe beizubehalten. PANet ersetzt die Merkmalspyramidennetzen (FPN) aus YoloV3.\\
-	+++++MEHR INFORMATIONEN? PANet+++++++++
-	Am \textit{Head} der für Prädiktion verantworlich ist wurde nichts geändert und  ist damit identisch zu YoloV3 \cite{b2}. Diese Architektur wird in er Abbildung \ref{V4Arch} dargestellt.
+	Sie arbeitet besser als zum Beispiel \textit{ReLU} oder Swish \cite{b7}.\\
+	Die Komponenten in der Architektur wurde auch ersetzt. Im \textit{Backbone} läuft nun \textit{CSPDarknet53}. Dies basiert auf dem Darknet53 aus YoloV3 und wird mit Cross-Stage-Partial-Networks erweitert. Im Hals des Netzes wird \textit{Spatial pyramid pooling} (SPP), \textit{Path Aggregation Network} (PANet) und \textit{Spatial Attention Module} (SAM) statt den Merkmalspyramidennetzen (FPN) aus YoloV3 verwendet.\\
+	SPP wendet verschiedene Strategien bei unterschiedlichen Skalierungen an. Sie ersetzt den letzte Pooling-Layer durch einen räumlichen Pyramiden-Pooling-Layer. Die Feature-Maps werden räumlich in $m$ × $m$ Bins unterteilt. In Yolo wird eine modifiziert Version von SPP verwendet die die räumliche Dimension der Ausgabe beibehalten.
+	In FPN werden die Objekte separat und unabhängig voneinander auf verschiedenen Skalenebenen erkannt. Dies kann zu doppelten Vorhersagen führen. PAN kombiniert deshalb die Informationen aus allen Ebenen.\\
+	SAM verbessert die räumliche Aufmerksamkeit.\\
+	Am \textit{Head} der für Prädiktion verantworlich ist wurde nichts geändert und  ist damit identisch zu YoloV3 \cite{b2}\cite{b8}. Diese Architektur mit der viel zahl an Komponenten wird in er Abbildung \ref{V4Arch} dargestellt.
 	\begin{figure}[!h]
 		\begin{center}
-			\includegraphics[width=9cm]{Media/YoloV4Arch.png}
-			\caption{Das Konzept von YoloV4 \cite{b2}}
+			\includegraphics[width=9cm]{Media/YoloV4Arch.jpeg}
+			\caption{Das Konzept von YoloV4 \cite{b8}}
 			\label{V4Arch}
 		\end{center}
 	\end{figure}\\
@@ -391,6 +394,8 @@
 		\bibitem{b4}https://pjreddie.com/media/files/papers/YOLOv3.pdf %V3
 		\bibitem{b5}https://jonathan-hui.medium.com/real-time-object-detection-with-yolo-yolov2-28b1b93e2088 % V1 Loss
 		\bibitem{b6}https://openaccess.thecvf.com/content\_cvpr\_2017/papers/Lin\_Feature\_Pyramid\_Networks\_CVPR\_2017\_paper.pdf % FPN
+		\bibitem{b7}https://arxiv.org/vc/arxiv/papers/1908/1908.08681v1.pdf%MISH
+		\bibitem{b8}https://jonathan-hui.medium.com/yolov4-c9901eaa8e61 %Yolov4 Hui
 	\end{thebibliography}
 	
 	\section{Anhang}

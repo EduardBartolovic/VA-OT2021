@@ -198,7 +198,7 @@
 	\\
 	YoloV4 hat die Geschwindigkeit und Genauigkeit verbessert. So nennt das Paper \cite{b2} zum Beispiel \textit{Bag of Freebies}. Damit sind Verbesserungen gemeint die die Genauigkeit des Modells zur Trainingszeit verbessern aber die Inferenzzeit nicht beeinflussen. So wurde stark das Training optimiert. Bei dem Training werden Bilder zusätzlich aus dem Datensatz generiert. Existierende Bilder werden dupliziert und dann rotiert, zugeschnitten, verzerrt, verdunkelt, etc. und dann auch durch das Netz geschickt. 
 	Auch Techninken wie \textit{Cut Mix} und \textit{Mosaic Dataaugmentation} werden angewendet. Bei älteren Verfahren werden Bildteile gelöscht. Bei den beiden verwendeten Verfahren werden stattdessen Bildteile aus den Trainingsdaten ausgeschnitten und kombiniert, wobei die Ground-Truth-Labels ebenfalls angespasst werden müssen. Diese Data Augmentation sorgt für eine verbesserte Generalisierungfähigkeit des Modells.\\
-	Regularisierungmethoden wie \textit{DropOut}, \textit{DropConnect} und \textit{DropBlock} wurden gegen Overfitting eingesetzt.\\
+	Regularisierungmethoden wie \textit{DropOut} und \textit{DropBlock} wurden gegen Overfitting eingesetzt.\\
 	Auch wird die Lossfunktion angepasst. Bei den bisherigen Versionen wurde die Mittlere quadratische Abweichung (MSE) für das Regressionsproblem verwendet. Diese Regression wird dann unabhängig für alle Vorhersagen von $t_x, t_y, t_w, t_h$ verwendet. Sinnvoller ist es die Koordinaten zusammen als die IoU der Boundingboxen in Betracht zu ziehen. Deshalb verwendet YoloV4 \textit{CIoU} als Lossfunktion um die Integrität der Objekte mit einzubeziehen.
 	Weitere Verbesserungen die auf Kosten der Laufzeit gehen werden \textit{Bag of Specials} genannt. Dazu gehören zum Beispiel \textit{Squeeze-and-Excitation}, \textit{Spatial Attention Module}, Vergrößerung des Rezeptionsfeldes des Modells und Stärkung der Fähigkeit zur Merkmalsintegration.\\
 	Im Backbone wird eine \textit{MISH}-Aktivierungsfunktion verwendet. Diese ist eine glatte und nicht-monotone neuronale Aktivierungsfunktion, die wie folgt definiert werden kann:
@@ -240,7 +240,6 @@
 	Das Ergebnis einer Prädiktion ist eine Liste von Objekten welches aus den x,y Koordinate des Mittelpunktes der Boundingbox, der Breite w, der Höhe h, der Klasse und des Konfidenzwerts besteht.
 	
 	\subsection{Fehler in der Erkennung}
-	ZUG FEHLT+++++++++++\\
 	YoloV4 ist nicht perfekt. So gibt es gelegentlich Fehler:
 	\textbf{Falschklassifizierung:}\\
 	Selten Klassifiziert das Netz falsch. So wie in der Abbildung \ref{FaK} zu sehen ist wurde ein Bus als Pkw klassifiziert. Das Modell ist sich in diesem Beispiel auch nur unsicher mit $31\%$. Der Fehler lässt sich vermutlich erklären da die Frontpartie des Bus einem Pkw sehr ähnelt und der Rest des Fahrzeuges wegen einem Baum und einer Laterne verdeckt wird. Auch ist zu vermuten, dass das Netz falsche Merkmale gelernt hat. Dies könnte mit Sicherheit verbessert werden wenn das Modell nur auf die für uns relevanten Klassen trainiert worden wäre. Die folgenden Abbildungen \ref{FaK}, \ref{FaK2}, \ref{FaK3} und \ref{FaK4} sind Beispiele für falsche Klassifikationen. Speziell ist vorallem der Fehler in Bild \ref{FaK4}. Hier wurde ein Anhänger als Fahrzeug klassifiziert. Der Ursprung dieses Fehlers kann unterschiedliche Gründe haben. Dies liegt wahrscheinlich auch am Datensatz selbst.
@@ -290,21 +289,36 @@
 		\end{center}
 	\end{figure}\\
 	\textbf{Unpassende Boundingboxen:}\\
-	Yolo hat durch seine Eigenschaft nur rechteckige Boundingboxen vorhersagen zu können eine große Schwäche. Das resultiert in manchen Szenarien zu sehr unpassenden Boundingboxen. Beispielsweise kann man in der Abbildung \ref{UB} gut erkennen das wegen dem Busses welcher Diagonal steht die Boxen zu groß werden. Der Effekt tritt noch verstärkter auf bei  noch längere Objekte wie die Zügen.++++++++ZUG BILD++. Auch kann die Box für das Objekt etwas falsch anliegen wenn Bäume oder Laternen ein Teil verdecken wie in Abbildung \ref{UB2} zu sehen ist. Diese unpassenden Boxen erschweren das Tracking ungemein. Dazu später aber noch mehr.
+	Yolo hat durch seine Eigenschaft nur rechteckige Boundingboxen vorhersagen zu können eine große Schwäche. Das resultiert in manchen Szenarien zu sehr unpassenden Boundingboxen. Beispielsweise kann man in der Abbildung \ref{UB} gut erkennen das wegen dem Busses welcher Diagonal steht die Boxen zu groß werden. Der Effekt tritt noch verstärkter auf bei noch längere Objekten wie Zügen wie zum Beispiel in Bild \ref{UB4} zusehen. Der Fehler der in Abbildung \ref{UB3} zu sehen ist hängt womöglich von Fehlern im Training zusammen. Züge wurden vielleicht an Bahnsteigen schlecht gelabelt was dem Netz dann beigebracht hat Bahnsteige als Züge zu klassifizieren. Auch kann die Box für das Objekt etwas falsch anliegen wenn Bäume oder Laternen ein Teil verdecken wie in Abbildung \ref{UB2} zu sehen ist. Diese unpassenden Boxen erschweren das Tracking ungemein. Dazu später aber noch mehr. 
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=7cm]{Media/Output_777 - Kopie.jpg}
-			\caption{Unpassende Boundingboxen}
+			\caption{Unpassende Boundingbox}
 			\label{UB}
 		\end{center}
 	\end{figure}\\
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=7cm]{Media/Output_276 - Kopie.jpg}
-			\caption{Unpassende Boundingboxen}
+			\caption{Unpassende Boundingbox}
 			\label{UB2}
 		\end{center}
 	\end{figure}\\
+	\begin{figure}[!h]
+		\begin{center}
+			\includegraphics[width=7cm]{Media/Output_564.jpg}
+			\caption{Unpassende Boundingbox}
+			\label{UB3}
+		\end{center}
+	\end{figure}\\
+	\begin{figure}[!h]
+		\begin{center}
+			\includegraphics[width=7cm]{Media/Output_2126.jpg}
+			\caption{Unpassende Boundingbox}
+			\label{UB4}
+		\end{center}
+	\end{figure}\\
+
 	
 	\section{Tracking: Sort}
 	SORT berechnet auf Basis des Kalman Filters und der Hungarian Methode die Bewegung des Objekts und weist je nach Status eine eindeutige Identifikationsnummer zu. Die Hungarian Methode, auch Kuhn-Munkres-Algorithmus genannt, wird für das Lösen von Zuordnungsproblemen in einem gewichteten kompletten bipartiten Graph genutzt. Hierbei wird die Zuordnung anhand der minimalen Gewichtung, zwischen den Elementen gelöst. Gegeben ist ein Graph $G = (A \cup B, E) $. Zwischen $A$ und $B$ wird nun die Verbindung mit der kleinsten Gewichtung gesucht. Hierfür wird eine Kostenmatrix $C$ erstellt mit $c_{ij}$ als Kosten um $a_i \in A$, $b_j \in B$ zuzuordnen. 

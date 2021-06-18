@@ -287,7 +287,7 @@
 		\end{center}
 	\end{figure}\\
 	\textbf{Unpassende Boundingboxen:}\\
-	Yolo hat durch seine Eigenschaf nur rechteckige Boundingboxen vorhersagen zu können eine große Schwäche. Das resultiert in manchen Szenarien zu sehr unpassenden Boundingboxen. Beispielsweise kann man in der Abbildung \ref{UB} gut erkennen das wegen dem Busses welcher Diagonal steht die Boxen zu groß werden. Der Effekt tritt noch verstärkter auf bei  noch längere Objekte wie die Zügen.++++++++ZUG BILD++. Auch kann die Box für das Objekt etwas falsch anliegen wenn Bäume oder Laternen ein Teil verdecken wie in Abbildung \ref{UB2} zu sehen ist. Diese unpassenden Boxen erschweren das Tracking ungemein. Dazu später aber noch mehr.
+	Yolo hat durch seine Eigenschaft nur rechteckige Boundingboxen vorhersagen zu können eine große Schwäche. Das resultiert in manchen Szenarien zu sehr unpassenden Boundingboxen. Beispielsweise kann man in der Abbildung \ref{UB} gut erkennen das wegen dem Busses welcher Diagonal steht die Boxen zu groß werden. Der Effekt tritt noch verstärkter auf bei  noch längere Objekte wie die Zügen.++++++++ZUG BILD++. Auch kann die Box für das Objekt etwas falsch anliegen wenn Bäume oder Laternen ein Teil verdecken wie in Abbildung \ref{UB2} zu sehen ist. Diese unpassenden Boxen erschweren das Tracking ungemein. Dazu später aber noch mehr.
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=7cm]{Media/Output_777 - Kopie.jpg}
@@ -314,7 +314,7 @@
 	
 	
 	
-	Die Zuweisung der ID erfolgt anschließend über die optimale Lösung der Hungarian Methode.
+	Die Zuweisung der ID erfolgt anschließend über die optimale Lösung der Hungarian Methode, auch Kuhn-Munkres-Algorithmus genannt. Diese wird für das Lösen von Zuordnungsproblemen in einem gewichteten kompletten bipartiten Graph genutzt. Hierbei wird die Zuordnung anhand der minimalen Gewichtung, zwischen den Elementen gelöst. Gegeben ist ein Graph $G = (A \cup B, E) $. Zwischen $A$ und $B$ wird nun die Verbindung mit der kleinsten Gewichtung gesucht. Hierfür wird eine Kostenmatrix $C$ erstellt mit $c_{ij}$ als Kosten um $a_i \in A$, $b_j \in B$ zuzuordnen. Die Matrix $C$ wird anschließend reduziert. In diesem Beispiel werden Objekte den Detektionen zugeordnet. Als Gewichtung dienen die Distanzen der IoU, welche minimal sein soll.
 	
 	\section{Tracking: DeepSort}
 	
@@ -343,6 +343,129 @@
 	$D = \lambda * D_k + (1-\lambda) * D_a$. Hierbei ist $D_k$ die Mahalanobis Distanz und $D_a$ die kleinste Kosinus-Distanz zwischen den Feature-Vektoren. $\lambda$ dient als ein Gewichtungsfaktor.
 	
 	Kann DeepSORT erfolgreich ein bereits verfolgtes Objekt zu einer Detektion assoziieren, wird anschließend eine TrackingID erstellt. Hierbei muss beachtet werden, dass im Zuge der Verbesserung von SORT weitere Sicherheiten eingebaut wurden. Ein neu getracktes Objekt erhält nicht sofort eine endgültige Identifikationsnummer. Erst nachdem das Objekt in drei hintereinander liegenden Frames erfolgreich getrackt werden konnte erhält es eine Nummer. Das Objekt erhält des weiteren einen Zähler $a$, der die Anzahl an Frames zählt, seitdem das Objekt nicht mehr erfolgreich assoziiert werden konnte. Ist eine maximale Anzahl $Age_{max}$ erreicht gilt das Objekt als verloren oder außer Reichweite der Kamera und wird aus der Objektliste entfernt. Dieser Zähler wird jedoch zurückgesetzt, sollte zuvor das Objekt erneut erfolgreich assoziiert werden.
+	
+	\subsubsection{Ergebnisse des Tracking}
+	Das Tracking basiert auf YOLO, daher wird es beeinträchtigt wenn YOLO Objekte nicht erkennt. Der Kalman-Filter kann zwar in Fällen von fehlenden Detektionen weiterhin eine Vorhersage liefern, allerdings nur bei gleichbleibender Bewegung in eine Richtung. 
+	
+	Geprüft wurde wie lange der Tracker erfolgreich stehende und fahrende Autos verfolgen kann. In den meisten Fällen ist dabei kein Problem festzustellen. Problematisch ist, wenn der Objekt-Detektor über mehrere Frames ein Objekt nicht erkennt.
+	
+	In den Aufzeichnung des Brudermühl-Tunnels zeigt sich die Problematik der
+	unregelmäßigen Detektionen deutlich. Ein Teil der Straße wird durch die Laterne
+	verdeckt, wodurch für eine Frames keine Detektion möglich ist. Die Fahrzeuge
+	erhalten eine neue ID. Nachdem die Laterne jedoch passiert wurde wird die alte
+	Nummerierung teilweise wieder zurückgesetzt, sodass lediglich eine Unterbrechung
+	erfolgt.
+	
+	Durch die fehlenden Bounding Boxen entfernt sich das Fahrzeug zu schnell und kann nicht
+	mehr der zuvor festgelegten Tracking-ID zugeordnet werden.
+
+	Objekte können durch zu schnelle Bewegung die ID des zuvor sich an der Stelle
+	befindenden Objekts übernehmen, dies ist zu sehen in Abbildung \ref{track4}-\ref{track6}.
+	Dabei wechselt Fahrzeug 6 auf die ID 69. Da ist im Abbildung \ref{track5} wieder zurück auf 6
+	wechselt ist die ID 69 offen. Da Fahrzeug 63 für kurze Zeit hinter der Laterne kein Bounding Box erhält wird fälschlicherweise die ID 69 zugewiesen.
+	Dies wird in der nächsten Abbildung \ref{track6} nicht mehr korrigiert.
+	
+	\begin{figure}[!h]
+		\begin{center}
+			\includegraphics[width=7cm]{Media/switch1.jpg}
+			\caption{Im Hintergrund zu sehen Auto 6, 24 und 48 die die Lampe passieren}
+			\label{track3}
+		\end{center}
+	\end{figure}
+	\begin{figure}[!h]
+		\begin{center}
+			\includegraphics[width=7cm]{Media/switch2.jpg}
+			\caption{Tracken nach passieren der Lampe von 24 und 48 erfolgreich, wechselt der ID von Auto 6 auf 69, Fahrzeug 63 im Hintergrund}
+			\label{track4}
+		\end{center}
+	\end{figure}
+	\begin{figure}[!h]
+		\begin{center}
+			\includegraphics[width=7cm]{Media/switch3.jpg}
+			\caption{Wechselt von ursprünglich 6 von 69 zurück auf 6 }
+			\label{track5}
+		\end{center}
+	\end{figure}
+	\begin{figure}[!h]
+		\begin{center}
+			\includegraphics[width=7cm]{Media/switch4.jpg}
+			\caption{Wechsel von Fahrzeug 63 auf 69, dahinterliegende Fahrzeug erhält 63}
+			\label{track6}
+		\end{center}
+	\end{figure}
+
+	
+	In den Aufzeichnungen des Candid-Tunnels zeigen sich Probleme bei der Verfolgung von weiter entfernten Fahrzeugen und stehenden Fahrzeugen.
+	
+	Die Verfolgung der stehenden Fahrzeuge funktioniert gut, allerdings kommt es zu
+	häufigen Änderungen der ID bei den weiter entfernten sich bewegenden Fahrzeugen.
+	Nahe sich bewegende Fahrzeuge können zuverlässig verfolgt werden.
+	
+	Fahrzeuge mit fehlenden Detektionen erhalten ebenfalls neue IDs nach mehreren
+	Frames. Die IDs werden zu schnell verworfen, wodurch neue IDs erstellt werden.
+	Der wechselt auf neue IDs ist in den Abbildungen \ref{track1} bis \ref{track2} 
+	gezeigt.
+	
+		\begin{figure}[!h]
+		\begin{center}
+			\includegraphics[width=7cm]{Media/track1.jpg}
+			\caption{Track-ID bei stehenden Fahrzeuge 6 und 30}
+			\label{track1}
+		\end{center}
+	\end{figure}
+	\begin{figure}[!h]
+		\begin{center}
+			\includegraphics[width=7cm]{Media/track3.jpg}
+			\caption{Keine Detektion der Fahrzeuge 6 und 30}
+			%Hier ebenfalls zu sehen fehlende Erkennungen
+			\label{track1.5}
+		\end{center}
+	\end{figure}
+	\begin{figure}[!h]
+		\begin{center}
+			\includegraphics[width=7cm]{Media/track2.jpg}
+			\caption{Änderung der Track-ID bei stehenden Fahrzeugen - 6 und 30 wechseln zu 95 und 115}
+			%Hier ebenfalls zu sehen fehlende Erkennungen
+			\label{track2}
+		\end{center}
+	\end{figure}
+	
+	In den Abbildungen \ref{LLost1}-\ref{LLost3} ist der Verlust der ID des blauen Trucks zu
+	beobachten. Gleichzeit zeigt der Richtungspfeil in die entgegengesetzte Richtung. Hier
+	versagt der Kalman-Filter in der Richtungsbestimmung. Die Vorhersage kann nicht
+	mehr der Detektion zugeordnet werden und eine neue ID wird gewählt
+	
+	\begin{figure}[!h]
+		\begin{center}
+			\includegraphics[width=7cm]{Media/LLost1.jpg}
+			\caption{Fahrzeug mit ID 61, Richtungspfeil zeigt in entgegengesetzte Richtung}
+			\label{LLost1}
+		\end{center}
+	\end{figure}
+	\begin{figure}[!h]
+		\begin{center}
+			\includegraphics[width=7cm]{Media/LLost2.jpg}
+			\caption{Keine Detektion des Fahrzeugs 61}
+			\label{LLost2}
+		\end{center}
+	\end{figure}
+	\begin{figure}[!h]
+		\begin{center}
+			\includegraphics[width=7cm]{Media/LLost3.jpg}
+			\caption{Neuzuweisung der ID}
+			\label{LLost3}
+		\end{center}
+	\end{figure}
+	
+	Parameter die konfiguriert werden können sind die Zahl der Frames, ab wann der
+	Track gelöscht wird. Zudem die Distanz zwischen einer Detektion und der von dem
+	Kalman-Filter bestimmten Position. Zusätzlich kann der Wert der IoU-Distanz angegeben werden.
+	Durch die Anpassung der maximalen IoU-Distanz
+	kann ein häufiger Wechsel der ID mit direkt benachbarten Fahrzeugen vermieden werden.
+	
+	
+	
+
 	
 	\section{Zählen von Objekten}
 	Wir testeten verschiedene Verfahren zu Zählen der gefundenen Objekte die das Video passieren.\\

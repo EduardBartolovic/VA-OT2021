@@ -1,4 +1,5 @@
 Output/
+Latex/VAOT.pdf
 .gitignore
 .vscode/
 *.pyc

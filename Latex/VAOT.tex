@@ -198,15 +198,15 @@
 	\\
 	YoloV4 hat die Geschwindigkeit und Genauigkeit verbessert. So nennt das Paper \cite{b2} zum Beispiel \textit{Bag of Freebies}. Damit sind Verbesserungen gemeint die die Genauigkeit des Modells zur Trainingszeit verbessern aber die Inferenzzeit nicht beeinflussen. So wurde stark das Training optimiert. Bei dem Training werden Bilder zusätzlich aus dem Datensatz generiert. Existierende Bilder werden dupliziert und dann rotiert, zugeschnitten, verzerrt, verdunkelt, etc. und dann auch durch das Netz geschickt. 
 	Auch Techninken wie \textit{Cut Mix} und \textit{Mosaic Dataaugmentation} werden angewendet. Bei älteren Verfahren werden Bildteile gelöscht. Bei den beiden verwendeten Verfahren werden stattdessen Bildteile aus den Trainingsdaten ausgeschnitten und kombiniert, wobei die Ground-Truth-Labels ebenfalls angespasst werden müssen. Diese Data Augmentation sorgt für eine verbesserte Generalisierungfähigkeit des Modells.\\
-	Regularisierungmethoden wie \textit{DropOut}, \textit{DropConnect} und \textit{DropBlock} wurden gegen Overfitting eingesetzt.\\
+	Regularisierungmethoden wie \textit{DropOut} und \textit{DropBlock} wurden gegen Overfitting eingesetzt.\\
 	Auch wird die Lossfunktion angepasst. Bei den bisherigen Versionen wurde die Mittlere quadratische Abweichung (MSE) für das Regressionsproblem verwendet. Diese Regression wird dann unabhängig für alle Vorhersagen von $t_x, t_y, t_w, t_h$ verwendet. Sinnvoller ist es die Koordinaten zusammen als die IoU der Boundingboxen in Betracht zu ziehen. Deshalb verwendet YoloV4 \textit{CIoU} als Lossfunktion um die Integrität der Objekte mit einzubeziehen.
 	Weitere Verbesserungen die auf Kosten der Laufzeit gehen werden \textit{Bag of Specials} genannt. Dazu gehören zum Beispiel \textit{Squeeze-and-Excitation}, \textit{Spatial Attention Module}, Vergrößerung des Rezeptionsfeldes des Modells und Stärkung der Fähigkeit zur Merkmalsintegration.\\
 	Im Backbone wird eine \textit{MISH}-Aktivierungsfunktion verwendet. Diese ist eine glatte und nicht-monotone neuronale Aktivierungsfunktion, die wie folgt definiert werden kann:
 	\[ f(x) = x* \tanh (\ln (1+e^x)) \]
 	Sie arbeitet besser als zum Beispiel \textit{ReLU} oder Swish \cite{b7}.\\
-	Die Komponenten in der Architektur wurde auch ersetzt. Im \textit{Backbone} läuft nun \textit{CSPDarknet53}. Dies basiert auf dem Darknet53 aus YoloV3 und wird mit Cross-Stage-Partial-Networks erweitert. Im Hals des Netzes wird \textit{Spatial pyramid pooling} (SPP), \textit{Path Aggregation Network} (PANet) und \textit{Spatial Attention Module} (SAM) statt den Merkmalspyramidennetzen (FPN) aus YoloV3 verwendet.\\
-	SPP wendet verschiedene Strategien bei unterschiedlichen Skalierungen an. Sie ersetzt den letzte Pooling-Layer durch einen räumlichen Pyramiden-Pooling-Layer. Die Feature-Maps werden räumlich in $m$ × $m$ Bins unterteilt. In Yolo wird eine modifiziert Version von SPP verwendet die die räumliche Dimension der Ausgabe beibehalten.
-	In FPN werden die Objekte separat und unabhängig voneinander auf verschiedenen Skalenebenen erkannt. Dies kann zu doppelten Vorhersagen führen. PAN kombiniert deshalb die Informationen aus allen Ebenen.\\
+	Die Komponenten in der Architektur wurde auch ersetzt. Im \textit{Backbone} läuft nun \textit{CSPDarknet53}. Dies basiert auf dem Darknet53 aus YoloV3 und wird mit Cross-Stage-Partial-Networks erweitert. Im Hals des Netzes wird \textit{Spatial pyramid pooling} (SPP) verwendet. \textit{Path Aggregation Network} (PANet) und \textit{Spatial Attention Module} (SAM) ersetzen die Merkmalspyramidennetze (FPN) die YoloV3 verwendet.\\
+	\textit{Convolutional-Layer} brauchen keine feste Bildgröße und erzeugen deshalb  Feature-Maps beliebiger Größen. \textit{Fullyconnected-Layer} benötigen stattdessen per Definition eine Eingabe mit fester Länge. SPP entfernt genau diese Restriktion. SPP wendet verschiedene Strategien bei unterschiedlichen Skalierungen an. Die Feature-Maps werden räumlich in $m$ × $m$ Bins unterteilt. Dann wird ein Maximumpool auf jeden Bin für jeden Kanal angewendet. In YoloV4 wird eine modifiziert Version von SPP verwendet die die räumliche Dimension der Ausgabe beibehaltet \cite{b9}.
+	In FPN werden die Objekte separat und unabhängig voneinander auf verschiedenen Skalenebenen erkannt. Dies kann zu doppelten Vorhersagen führen. PAN erweitert FPN mit einem Bottom-up-Pfad der die Weitergabe von Informationen aus den unteren Ebenen erleichtern. Durch adaptives Featurepooling kann auf jede Vorhersagen aus allen Ebenen zugriffen werden.\cite{b10}\\
 	SAM verbessert die räumliche Aufmerksamkeit.\\
 	Am \textit{Head} der für Prädiktion verantworlich ist wurde nichts geändert und  ist damit identisch zu YoloV3 \cite{b2}\cite{b8}. Diese Architektur mit der viel zahl an Komponenten wird in er Abbildung \ref{V4Arch} dargestellt.
 	\begin{figure}[!h]
@@ -240,8 +240,7 @@
 	Das Ergebnis einer Prädiktion ist eine Liste von Objekten welches aus den x,y Koordinate des Mittelpunktes der Boundingbox, der Breite w, der Höhe h, der Klasse und des Konfidenzwerts besteht.
 	
 	\subsection{Fehler in der Erkennung}
-	ZUG FEHLT+++++++++++\\
-	YoloV4 ist nicht perfekt. So gibt es gelegentlich Fehler:
+	YoloV4 ist nicht perfekt. So gibt es gelegentlich Falschklassifizierungen, fehlende Detektionen oder unpassende Boundingboxen. Dieser Abschnitt zeigt Beispiele für diese Art von Fehler auf.\\
 	\textbf{Falschklassifizierung:}\\
 	Selten Klassifiziert das Netz falsch. So wie in der Abbildung \ref{FaK} zu sehen ist wurde ein Bus als Pkw klassifiziert. Das Modell ist sich in diesem Beispiel auch nur unsicher mit $31\%$. Der Fehler lässt sich vermutlich erklären da die Frontpartie des Bus einem Pkw sehr ähnelt und der Rest des Fahrzeuges wegen einem Baum und einer Laterne verdeckt wird. Auch ist zu vermuten, dass das Netz falsche Merkmale gelernt hat. Dies könnte mit Sicherheit verbessert werden wenn das Modell nur auf die für uns relevanten Klassen trainiert worden wäre. Die folgenden Abbildungen \ref{FaK}, \ref{FaK2}, \ref{FaK3} und \ref{FaK4} sind Beispiele für falsche Klassifikationen. Speziell ist vorallem der Fehler in Bild \ref{FaK4}. Hier wurde ein Anhänger als Fahrzeug klassifiziert. Der Ursprung dieses Fehlers kann unterschiedliche Gründe haben. Dies liegt wahrscheinlich auch am Datensatz selbst.
 	\begin{figure}[!h]
@@ -290,21 +289,36 @@
 		\end{center}
 	\end{figure}\\
 	\textbf{Unpassende Boundingboxen:}\\
-	Yolo hat durch seine Eigenschaft nur rechteckige Boundingboxen vorhersagen zu können eine große Schwäche. Das resultiert in manchen Szenarien zu sehr unpassenden Boundingboxen. Beispielsweise kann man in der Abbildung \ref{UB} gut erkennen das wegen dem Busses welcher Diagonal steht die Boxen zu groß werden. Der Effekt tritt noch verstärkter auf bei  noch längere Objekte wie die Zügen.++++++++ZUG BILD++. Auch kann die Box für das Objekt etwas falsch anliegen wenn Bäume oder Laternen ein Teil verdecken wie in Abbildung \ref{UB2} zu sehen ist. Diese unpassenden Boxen erschweren das Tracking ungemein. Dazu später aber noch mehr.
+	Yolo hat durch seine Eigenschaft nur rechteckige Boundingboxen vorhersagen zu können eine große Schwäche. Das resultiert in manchen Szenarien zu sehr unpassenden Boundingboxen. Beispielsweise kann man in der Abbildung \ref{UB} gut erkennen das wegen dem Busses welcher Diagonal steht die Boxen zu groß werden. Der Effekt tritt noch verstärkter auf bei noch längere Objekten wie Zügen wie zum Beispiel in Bild \ref{UB4} zusehen. Der Fehler der in Abbildung \ref{UB3} zu sehen ist hängt womöglich von Fehlern im Training zusammen. Züge wurden vielleicht an Bahnsteigen schlecht gelabelt was dem Netz dann beigebracht hat Bahnsteige als Züge zu klassifizieren. Auch kann die Box für das Objekt etwas falsch anliegen wenn Bäume oder Laternen ein Teil verdecken wie in Abbildung \ref{UB2} zu sehen ist. Diese unpassenden Boxen erschweren das Tracking ungemein. Dazu später aber noch mehr. 
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=7cm]{Media/Output_777 - Kopie.jpg}
-			\caption{Unpassende Boundingboxen}
+			\caption{Unpassende Boundingbox}
 			\label{UB}
 		\end{center}
 	\end{figure}\\
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=7cm]{Media/Output_276 - Kopie.jpg}
-			\caption{Unpassende Boundingboxen}
+			\caption{Unpassende Boundingbox}
 			\label{UB2}
 		\end{center}
 	\end{figure}\\
+	\begin{figure}[!h]
+		\begin{center}
+			\includegraphics[width=7cm]{Media/Output_564.jpg}
+			\caption{Unpassende Boundingbox}
+			\label{UB3}
+		\end{center}
+	\end{figure}\\
+	\begin{figure}[!h]
+		\begin{center}
+			\includegraphics[width=7cm]{Media/Output_2126.jpg}
+			\caption{Unpassende Boundingbox}
+			\label{UB4}
+		\end{center}
+	\end{figure}\\
+
 	
 	\section{Tracking: Sort}
 	SORT berechnet auf Basis des Kalman Filters und der Hungarian Methode die Bewegung des Objekts und weist je nach Status eine eindeutige Identifikationsnummer zu. Die Hungarian Methode, auch Kuhn-Munkres-Algorithmus genannt, wird für das Lösen von Zuordnungsproblemen in einem gewichteten kompletten bipartiten Graph genutzt. Hierbei wird die Zuordnung anhand der minimalen Gewichtung, zwischen den Elementen gelöst. Gegeben ist ein Graph $G = (A \cup B, E) $. Zwischen $A$ und $B$ wird nun die Verbindung mit der kleinsten Gewichtung gesucht. Hierfür wird eine Kostenmatrix $C$ erstellt mit $c_{ij}$ als Kosten um $a_i \in A$, $b_j \in B$ zuzuordnen. 
@@ -490,27 +504,19 @@
 	
 	
 	\section{Vergleich klassischen Methoden mit Deep-Learning}
-	\textbf{Eigenschaften der klassischen Verfahren:}
-	\begin{itemize}
-		\item Klassische Verfahren sind deutlich besser nach zu vollziehen. Dies gilt vor allem für Fehler....
+	Beide Verfahren haben ihre Stärken und Schwächen. Im Trackingteil sind beide Verfahren sich relativ ähnlich. Vor allem unterscheiden sich unsere Pipelines in der Objekterkennung welches dann aber auch maßgeblich die Trackingergebnisse beeinflusst. In der folgenden Liste werden die Vor- und Nachteile beider Verfahren nach unserer Erkenntnissen aufgeschlüsselt.
+	\begin{enumerate}
+		\item \textbf{Genauigkeit:} Die Deep-Learning Verfahren verzeichnen vorallem gute Out-Of-The-Box Leistung. Ohne große Hyperparameteroptimierung erreicht man schnell eine ausgezeichnete Performance. Klassische Verfahren können dabei auch sehr gute Leistung erzielen wenn genug Optimierung stattfindet. Der Aufwand der Optimierung ist aber stark von der Situation abhängig.\\
+		So stellten wir fest das die klassischen Verfahren deutlich fehleranfälliger bei schlechten Videoaufnahmen waren. Verwackelte Aufnahmen stellten eine große Herausforderung dar. Gegenmaßnahmen dafür sind ein Stativ oder andere auf Software basierende Verfahren. Die Objekterkennung basierend auf YoloV4 hat überhaupt kein Problem mit verwackelten Bildern da es jeden Frame unabhängig von einander betrachtet.
 		
-		\item Klassische Verfahren sind deutlich schneller. Diese Verfahren sind um den Faktor X schneller als DeepLearningverfahren...........
+		\item \textbf{Laufzeit:} Bei der Laufzeit haben die klassischen Verfahren einen klaren Vorteil. Hier erzielten wir etwa doppelt so viele Bilder pro Sekunde als bei den DeepLearning Methoden. Außerdem dürfte es schwieriger sein DeepLearning Verfahren auf Embedded Geräten lauffähig zu bekommen. Prinzipiell sollten beide Methoden auf Grafikkarten beschleunigt werden können.
 		
-		\item Klassische Verfahren können auch gute Leistung erzielen mit genug feinschliff......
+		\item \textbf{Nachvollziehbarkeit:} Bei Fehlern in der Objekterkennung bei Yolo ist es häufig schwierig nachzuvollziehen wie diese entstanden. Auch ist das behandeln dieser Fehler schwieriger. Bei MOG ist dies deutlich einfacher da man nur das Graubild untersuchen muss und dann die Hyperparameter anpassen muss.
 		
-		\item Die Klassische Verfahren haben schwächen bei verwackelten Aufnahmen. Gegenmaßnahmen sind ein Stativ oder auf Software basierende Verfahren.
-	\end{itemize}
-	
-	\textbf{Eigenschaften der Deep-Learning Verfahren:}
-	\begin{itemize}
-		\item Deep-Learning Verfahren sind deutlich schlechter nach zu vollziehen. Dies gilt vor allem für Fehler....
+		\item \textbf{Implementierungsaufwand:} Es kann gesagt werden das die Implementierung der klassischen Verfahren deutlich einfacher ist wie die der DeepLearning Methoden. Außerdem muss beachtet werden das ein trainiertes Netz vorhanden sein muss. Ist dieses nicht vorhanden muss erst ein Datensatz aufwendig erstellt werden mit welchen dann ein Netz trainiert werden muss.
 		
-		\item Klassische Verfahren sind deutlich schneller. Diese Verfahren sind um den Faktor X schneller als DeepLearningverfahren...........
-		
-		\item Die Deep-Learning Verfahren verzeichnen vorallem gute Out-Of-The-Box Leistung. 
-		
-		\item Die Objekterkennung YoloV4 hat überhaupt kein Problem mit verwackelten Bildern da es jeden Frame unabhängig von einander betrachtet.
-	\end{itemize}
+	\end{enumerate}
+	Zusammenfassend lässt sich sagen das beide Verfahren ihre Stärken haben. Die Entscheidung welche Methode verwendet werden sollte hängt stark von der Situation ab.
 	
 	\begin{thebibliography}{00}
 		\bibitem{z1}https://www.zeit.de/news/2020-10/18/s-bahn-stammstrecke-in-muenchen-fuer-arbeiten-gesperrt
@@ -523,6 +529,8 @@
 		\bibitem{b6}https://openaccess.thecvf.com/content\_cvpr\_2017/papers/Lin\_Feature\_Pyramid\_Networks\_CVPR\_2017\_paper.pdf % FPN
 		\bibitem{b7}https://arxiv.org/vc/arxiv/papers/1908/1908.08681v1.pdf%MISH
 		\bibitem{b8}https://jonathan-hui.medium.com/yolov4-c9901eaa8e61 %Yolov4 Hui
+		\bibitem{b9}https://arxiv.org/pdf/1406.4729.pdf %SPP
+		\bibitem{b10}https://arxiv.org/pdf/1803.01534.pdf %PAN
 	\end{thebibliography}
 	
 	\section{Anhang}

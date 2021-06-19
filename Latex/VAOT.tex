@@ -511,7 +511,10 @@
 		
 		\item \textbf{Laufzeit:} Bei der Laufzeit haben die klassischen Verfahren einen klaren Vorteil. Hier erzielten wir etwa doppelt so viele Bilder pro Sekunde als bei den DeepLearning Methoden. Außerdem dürfte es schwieriger sein DeepLearning Verfahren auf Embedded Geräten lauffähig zu bekommen. Prinzipiell sollten beide Methoden auf Grafikkarten beschleunigt werden können.
 		
-		\item \textbf{Nachvollziehbarkeit:} Bei Fehlern in der Objekterkennung bei Yolo ist es häufig schwierig nachzuvollziehen wie diese entstanden. Bei MOG ist dies deutlich einfacher da man nur das Graubild untersuchen muss.
+		\item \textbf{Nachvollziehbarkeit:} Bei Fehlern in der Objekterkennung bei Yolo ist es häufig schwierig nachzuvollziehen wie diese entstanden. Auch ist das behandeln dieser Fehler schwieriger. Bei MOG ist dies deutlich einfacher da man nur das Graubild untersuchen muss und dann die Hyperparameter anpassen muss.
+		
+		\item \textbf{Implementierungsaufwand:} Es kann gesagt werden das die Implementierung der klassischen Verfahren deutlich einfacher ist wie die der DeepLearning Methoden. Außerdem muss beachtet werden das ein trainiertes Netz vorhanden sein muss. Ist dieses nicht vorhanden muss erst ein Datensatz aufwendig erstellt werden mit welchen dann ein Netz trainiert werden muss.
+		
 	\end{enumerate}
 	Zusammenfassend lässt sich sagen das beide Verfahren ihre Stärken haben. Die Entscheidung welche Methode verwendet werden sollte hängt stark von der Situation ab.
 	

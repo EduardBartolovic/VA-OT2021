@@ -204,8 +204,8 @@
 	Im Backbone wird eine \textit{MISH}-Aktivierungsfunktion verwendet. Diese ist eine glatte und nicht-monotone neuronale Aktivierungsfunktion, die wie folgt definiert werden kann:
 	\[ f(x) = x* \tanh (\ln (1+e^x)) \]
 	Sie arbeitet besser als zum Beispiel \textit{ReLU} oder Swish \cite{b7}.\\
-	Die Komponenten in der Architektur wurde auch ersetzt. Im \textit{Backbone} läuft nun \textit{CSPDarknet53}. Dies basiert auf dem Darknet53 aus YoloV3 und wird mit Cross-Stage-Partial-Networks erweitert. Im Hals des Netzes wird \textit{Spatial pyramid pooling} (SPP), \textit{Path Aggregation Network} (PANet) und \textit{Spatial Attention Module} (SAM) statt den Merkmalspyramidennetzen (FPN) aus YoloV3 verwendet.\\
-	SPP wendet verschiedene Strategien bei unterschiedlichen Skalierungen an. Sie ersetzt den letzte Pooling-Layer durch einen räumlichen Pyramiden-Pooling-Layer. Die Feature-Maps werden räumlich in $m$ × $m$ Bins unterteilt. In Yolo wird eine modifiziert Version von SPP verwendet die die räumliche Dimension der Ausgabe beibehalten.
+	Die Komponenten in der Architektur wurde auch ersetzt. Im \textit{Backbone} läuft nun \textit{CSPDarknet53}. Dies basiert auf dem Darknet53 aus YoloV3 und wird mit Cross-Stage-Partial-Networks erweitert. Im Hals des Netzes wird \textit{Spatial pyramid pooling} (SPP) verwendet. \textit{Path Aggregation Network} (PANet) und \textit{Spatial Attention Module} (SAM) ersetzen die Merkmalspyramidennetze (FPN) die YoloV3 verwendet.\\
+	\textit{Convolutional-Layer} brauchen keine feste Bildgröße und erzeugen deshalb  Feature-Maps beliebiger Größen. \textit{Fullyconnected-Layer} benötigen stattdessen per Definition eine Eingabe mit fester Länge. SPP entfernt genau diese Restriktion. SPP wendet verschiedene Strategien bei unterschiedlichen Skalierungen an. Die Feature-Maps werden räumlich in $m$ × $m$ Bins unterteilt. Dann wird ein Maximumpool auf jeden Bin für jeden Kanal angewendet. In YoloV4 wird eine modifiziert Version von SPP verwendet die die räumliche Dimension der Ausgabe beibehaltet \cite{b9}.
 	In FPN werden die Objekte separat und unabhängig voneinander auf verschiedenen Skalenebenen erkannt. Dies kann zu doppelten Vorhersagen führen. PAN kombiniert deshalb die Informationen aus allen Ebenen.\\
 	SAM verbessert die räumliche Aufmerksamkeit.\\
 	Am \textit{Head} der für Prädiktion verantworlich ist wurde nichts geändert und  ist damit identisch zu YoloV3 \cite{b2}\cite{b8}. Diese Architektur mit der viel zahl an Komponenten wird in er Abbildung \ref{V4Arch} dargestellt.
@@ -529,6 +529,7 @@
 		\bibitem{b6}https://openaccess.thecvf.com/content\_cvpr\_2017/papers/Lin\_Feature\_Pyramid\_Networks\_CVPR\_2017\_paper.pdf % FPN
 		\bibitem{b7}https://arxiv.org/vc/arxiv/papers/1908/1908.08681v1.pdf%MISH
 		\bibitem{b8}https://jonathan-hui.medium.com/yolov4-c9901eaa8e61 %Yolov4 Hui
+		\bibitem{b9}https://arxiv.org/pdf/1406.4729.pdf %SPP
 	\end{thebibliography}
 	
 	\section{Anhang}

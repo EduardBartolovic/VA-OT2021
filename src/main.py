@@ -75,6 +75,11 @@ nn_budget = None
 max_iou_distance = 0.2
 metric = nn_matching.NearestNeighborDistanceMetric(
     "cosine", max_cosine_distance, nn_budget)  # DeepSort parameter
+kernel_e = np.ones((5, 5), np.uint8)
+kernel_d = np.ones((9, 9), np.uint8)
+iterations_e = 2
+iterations_d = 2
+threshold = 7000
 
 #Video Candid
 #videoFile = 'Candidtunnel.mp4'
@@ -87,6 +92,11 @@ metric = nn_matching.NearestNeighborDistanceMetric(
 #nn_budget = None
 #max_iou_distance = 0.2
 #metric = nn_matching.NearestNeighborDistanceMetric("cosine", max_cosine_distance, nn_budget)# DeepSort parameter
+#kernel_e = np.ones((5, 5), np.uint8)
+#kernel_d = np.ones((9, 9), np.uint8)
+#iterations_e = 2
+#iterations_d = 2
+#threshold = 7000
 
 #Video Kanal
 #videoFile = 'Kanal.mp4'
@@ -155,7 +165,7 @@ def draw_detections(location, image, detections, show_state):
 def classicPipeLine(image):
 
     #Detect Gaus:
-    detections = detect_image_mog(image, mog_object_detector)
+    detections = detect_image_mog(image, mog_object_detector, kernel_e, kernel_d, iterations_e, iterations_d, threshold)
     draw_detections(outputLocationMOG, image, detections, False)
 
     #Tracking SORT:
@@ -230,7 +240,7 @@ prev_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
 # initialize tracker
 if classic:
-    mog_object_detector = cv2.createBackgroundSubtractorMOG2(history=100, varThreshold=40)
+    mog_object_detector = cv2.createBackgroundSubtractorMOG2(history=100, varThreshold=200)
     tracker = Sort()
 else:                                                 
     tracker = Tracker(metric,max_iou_distance) #DeepSort

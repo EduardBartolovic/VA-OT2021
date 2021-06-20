@@ -592,7 +592,7 @@
 	kann ein häufiger Wechsel der ID mit direkt benachbarten Fahrzeugen vermieden werden.
 	
 	\subsubsection{Ergebnisse des Tracking mit SORT}
-	Erneut basiert der Tracking-Algorithmus auf den Erkennungen des Objekt-Detektors. In Falle von SORT handelt es sich dabei um Gaussmixture. Dieser liefert teilweise für ein Objekt mehrere Erkennung. Dies liegt daran, dass Gaussmixture nicht das gesamte Objekt erkennt und die definierten Boundingboxen nicht das gesamte Objekt umschließen. SORT verarbeitet nur die erhaltenen Boundingboxen und kann daher nicht erkennen ob mehrere Boundingboxen zu einem Objekt gehören. Zu sehen ist die Problematik in Abbildung \ref{sortdouble}. Hierbei wurden zwei Boundingboxen für den Bus definiert. Ebenfalls zu erkennen ist, dass weder das gezeigte Auto, noch der Bus von einer Boundingbox einheitlich umschlossen sind. SORT kann allerdings die definierten Boxen korrekt verfolgen bis der Bus beziehungsweise das Auto den durch Gaussmixture abgedeckten Bereich verlässt. 
+	Erneut basiert der Tracking-Algorithmus auf den Erkennungen des Objekt-Detektors. In Falle von SORT handelt es sich dabei um Gaussmixture. Dieser liefert teilweise für ein Objekt mehrere Erkennung. Dies liegt daran, dass Gaussmixture bei großen Objekte nicht das gesamte Objekt erkennt, sondern einzelne Flächen und die definierten Boundingboxen nur diese Flächen umschließen. SORT verarbeitet nur die erhaltenen Boundingboxen und kann daher nicht erkennen ob mehrere Boundingboxen zu einem Objekt gehören. Zu sehen ist die Problematik in Abbildung \ref{sortdouble}. Hierbei wurden zwei Boundingboxen für den Bus definiert. Ebenfalls zu erkennen ist, dass weder das gezeigte Auto, noch der Bus von einer Boundingbox einheitlich umschlossen sind. SORT kann allerdings die definierten Boxen korrekt verfolgen bis der Bus beziehungsweise das Auto den durch Gaussmixture abgedeckten Bereich verlässt. 
 	
 	\begin{figure}[!h]
 		\begin{center}
@@ -603,6 +603,7 @@
 	\end{figure}
 
 	Da dieser Bereich sehr klein ist, ist auch die zurückgelegte Strecke der Fahrzeuge nicht ausreichend, um eine Aussage über das Tracking mit SORT über längere Distanz zu treffen. 
+	Im Beispiel der Aufnahmen des Candid-Tunnels konnte außer den doppelten Erkennung keiner Fehler erkannt werden, da es hier keine Verdeckungen innerhalb des definierten Bereichs gab.
 	
 	
 	\section{Zählen von Objekten}

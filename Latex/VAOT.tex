@@ -64,83 +64,82 @@
 	
 	
 	\section{Videomaterial}
-	Für dieses Projekt wurden mehrere Aufnahmen aufgenommen. Ziel war es keine zu chaotischen aber auch nicht zu einfache Aufnahmen zu erstellen. Auch sollten verschiedene Szenarien abgebildet werden.\\
+	Für dieses Projekt wurden mehrere Aufnahmen aufgenommen. Ziel war es keine zu chaotischen aber auch nicht zu einfache Aufnahmen zu erstellen. Auch sollten verschiedene Szenarien abgebildet werden. Es wurden drei Aufnahmen angefertigt.\\
 	\textbf{Verkehrsaufnahmen am Brudermühltunnel am Mittleren Ring:}\\
-	Dieser Teil des Mittleren Rings ist sehr verkehrsreich und Autobahnähnlich ausgebaut. Es gibt mehrere Fahrspuren. Alle Fahrzeuge fahren im Sichtfeld in eine Richtung. Es sind ein paar Laternen und Bäume in der Aufnahme die die Sicht etwas beeinträchtigen. Es sind nur Pkwim Datensatz enthalten. Teilweise missachten Fahrzeuge den Sicherheitsabstand und fahren sehr nah aufeinander auf. Das Video hat 60 Bilder pro Sekunde und hat eine Bildauflösung $3840$ × $2160$. Es wurde kein Stativ verwendet sondern nur die interne Stabilisierung des Smartphones genutzt.
+	Dieser Teil des Mittleren Rings ist sehr verkehrsreich und Autobahnähnlich ausgebaut. Es gibt mehrere Fahrspuren. Alle Fahrzeuge fahren im Sichtfeld in eine Richtung. Es sind ein paar Laternen und Bäume in der Aufnahme die die Sicht etwas beeinträchtigen. Es sind nur Pkw im Datensatz enthalten. Teilweise missachten Fahrzeuge den Sicherheitsabstand und fahren sehr nah aufeinander auf. Dies erschwert die Detektion. Das Video hat 60 Bilder pro Sekunde und hat eine Bildauflösung $3840$ × $2160$. Es wurde kein Stativ verwendet sondern nur die interne Stabilisierung des Smartphones genutzt.
 	\begin{figure}[!h]
 		\begin{center}
-			\includegraphics[width=7cm]{Media/BrudermuhlRaw.png}
+			\includegraphics[width=6cm]{Media/BrudermuhlRaw.png}
 			\caption{Verkehrsaufnahmen am Brudermühltunnel}
 			\label{BrudermuhlRaw}
 		\end{center}
 	\end{figure}\\
 	\textbf{Verkehrsaufnahmen am Candidtunnel:}\\
-	Eine stark befahrene Straße mit einer viel zahl von Verkehrsteilnehmern. Es herrscht zwei Richtungsverkehr mit insgesamt sechs Fahrspuren. In eine Richtung stehen die Fahrzeuge in einem Stau. Durch Regen spiegeln viele Oberflächen. Die Bäume bewegen sich aufgrund von stärkeren Wind und verdecken einen Teil der Fahrbahn. Diese Aufnahme ist die Anspruchsvollste. In diesem Video sind neben Pkw auch Busse enthalten. Das Video hat 60 Bilder pro Sekunde und hat eine Bildauflösung $3840$ × $2160$. Es wurde kein Stativ verwendet sondern nur die interne Stabilisierung des Smartphones genutzt.
+	Eine stark befahrene Straße mit einer viel zahl von Verkehrsteilnehmern. Es herrscht Zweirichtungsverkehr mit insgesamt sechs Fahrspuren. In eine Richtung stehen die Fahrzeuge in einem Stau. Durch Regen spiegeln viele Oberflächen. Die Bäume bewegen sich aufgrund von stärkeren Wind und verdecken einen Teil der Fahrbahn. Diese Aufnahme ist die Anspruchsvollste. In diesem Video sind neben Pkw auch Busse enthalten. Das Video hat 60 Bilder pro Sekunde und hat eine Bildauflösung $3840$ × $2160$. Es wurde kein Stativ verwendet sondern nur die interne Stabilisierung des Smartphones genutzt.
 	\begin{figure}[!h]
 		\begin{center}
-			\includegraphics[width=7cm]{Media/CandidRaw.png}
+			\includegraphics[width=6cm]{Media/CandidRaw.png}
 			\caption{Verkehrsaufnahmen am Candidtunnel}
 			\label{CandidtunnelRaw}
 		\end{center}
 	\end{figure}\\
 	\textbf{Zugaufnahmen an der Donnersbergerbrücke:}\\
-	Eine Aufnahme der einer der am stärksten befahren Bahnstrecken Europas \cite{z1}. Hier existiert viel Zugverkehr auf mehreren Gleisen mit unterschiedlichen Zugtypen. Beobachtet werden die vier Gleise der zwei Bahnsteige der S-Bahnhalts Donnersbergerbrücke. Ein Hindernis sind die Masten, Signale und das Bahnsteigdach welche einen guten Blick auf die Züge erschweren. In dieser Aufnahme sind Züge und Fußgänger enthalten. Der Fokus liegt aber bei den Zügen. Das Video hat 30 Bilder pro Sekunde und hat eine Bildauflösung $1920$ × $1080$. Es wurde ein Stativ verwendet.
+	Eine Aufnahme einer der am stärksten befahren Bahnstrecken Europas\cite{z1}. Hier existiert viel Zugverkehr auf mehreren Gleisen mit unterschiedlichen Zugtypen. Beobachtet werden die vier Gleise der zwei Bahnsteige des S-Bahnhalts Donnersbergerbrücke. Ein Hindernis sind die Masten, Signale, Bäume und das Bahnsteigdach welche einen guten Blick auf die Züge erschweren. In dieser Aufnahme sind Züge und Fußgänger enthalten. Der Fokus liegt aber auf den Zügen. Das Video hat 30 Bilder pro Sekunde und hat eine Bildauflösung $1920$ × $1080$. Es wurde ein Stativ verwendet.\\
 	\begin{figure}[!h]
 		\begin{center}
-			\includegraphics[width=7cm]{Media/DonnersbergerRaw.png}
+			\includegraphics[width=6cm]{Media/DonnersbergerRaw.png}
 			\caption{Zugaufnahmen an der Donnersbergerbrücke}
 			\label{DonnersbergerRaw}
 		\end{center}
 	\end{figure}
 	
-	\section{Konzept}
-	
 	\begin{figure*}[!h]
 		\begin{center}
 			\includegraphics[width=16cm]{Media/KonzeptVAOT.png}
-			\caption{Konzept für das Projekt}
+			\caption{Konzept für das Projekt mit zwei Pipelines.}
 			\label{Konzept}
 		\end{center}
 	\end{figure*}
+	
+	\section{Konzept}
 	Ziel des Projektes ist es klassische Verfahren mit neueren DeepLearning Methoden zu vergleichen.
 	Dafür ist für beide Arten eine Pipeline geschaffen worden.\\
 	Für die Klassische Methoden wurde für die Objekterkennung das Gausmixture Verfahren verwendet und für das Tracking den SORT Algorithmus. Für die DeepLearning Verfahren wurde für die Objekterkennung ein Neuronales Netz  und für das Tracking wurde Deepsort verwendet.\\
 	Mit einem Objektzähler können am Ende der beiden Pipelines die Objekte gezählt oder mit einer Zustandserkennung die Bewegungen und Stillstand erfasst werden. Die Abbildung \ref{Konzept} visualisiert das Konzept.\\
-	\\
+	Bilder werden mittels der OpenCV Bibliotheksmethoden Frame für Frame aus einem Video ausgelesen.
 	Bevor mit der Erkennung von Objekten begonnen werden kann, werden die Videoaufnahmen so erstellt, angepasst und eingeschränkt, dass bessere Ergebnisse bei der Erkennung erzielt werden können.
 	\section{Preprocessing}
-	Bilder werden mittels der OpenCV Bibliotheksmethoden Frame für Frame aus einem Video ausgelesen. Des weiteren ist es möglich Bilder vor der weiteren Verarbeitung noch beliebig zuzuschneiden um nur relevant Bereiche zu betrachten. Dies hat den Vorteil das die Performance steigt und auch die Genauigkeit mancher Algorithmen zunimmt. Diese Bilder werden dann in die Pipeline gelegt.\\
-	Es muss die Objektzählerbox definiert werden.
+	Es ist möglich Bilder vor der weiteren Verarbeitung noch beliebig zuzuschneiden um nur relevant Bereiche zu betrachten. Dies hat den Vorteil das die Performance steigt und auch die Genauigkeit mancher Algorithmen zunimmt. Diese Bilder werden dann in die Pipeline gelegt.\\
+	Bevor das Zuschneiden beginnt kann, während und nach der Videoaufnahme, das Video stabilisiert werden.
 	\subsection{Videostabilisierung}
-	Der erste Teil des Preprocessing beginnt vor, während und nach der Videoaufnahme, indem das Video stabilisiert wird. Dabei gibt es folgende Ansätze zur Videostabilisierung:\\
-	\textbf{Mechanische Videostabilisierung}\\
-	Im ersten Ansatz versucht man unerwünschte Bewegungen im Video, die durch das Wackeln der Hand entstehen, durch ein Kamerastativ oder ein Gimbal, welches mit Hilfe von Sensoren Bewegungen ausgleicht, zu vermeiden. Diese Art der Stabilisierung findet vor bzw. während der Aufnahme statt.\\
+	Es gibt folgende Ansätze zur Videostabilisierung:\\
+	\textbf{Mechanische Videostabilisierung:}\\
+	Im ersten Ansatz versucht man unerwünschte Bewegungen im Video, die durch das Wackeln der Hand entstehen, durch ein Kamerastativ oder ein Gimbal, welches mit Hilfe von Sensoren Bewegungen ausgleicht, zu vermeiden. Diese Art der Stabilisierung findet vor bzw. während der Aufnahme statt.
+	In unserer Aufnahme der Donnersbergerbrücke wurde ein Stativ verwendet.\\
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=6cm]{Media/GimbalStativ.png}
 			\caption{Ein Stativ und ein Gimbal \cite{g1}\cite{g2}}
 			\label{GS}
 		\end{center}
-	\end{figure}
-	\textbf{Optische Videostabilisierung}\\
-	Die zweite Vorgehensweise bewegt anders als oben nicht die gesamte Kamera, sondern nur Teile im Objektiv oder beim Bildsensor. Es wird also entweder der Bildkreis über dem Bildsensor oder der Bildsensor unter dem Bildkreis verschoben. Beschleunigungssensoren erkennen hier die Bewegung der Kamera und passen dementsprechend die optischen Elemente an, damit das Bild stabilisiert wird. Das Ganze findet während der Aufnahme statt.
-	
-	\textbf{Optische Videostabilisierung}\\
+	\end{figure}\\
+	\textbf{Optische Videostabilisierung:}\\
 	Die zweite Vorgehensweise bewegt anders als oben nicht die gesamte Kamera, sondern nur Teile im Objektiv oder beim Bildsensor. Es wird also entweder der Bildkreis über dem Bildsensor oder der Bildsensor unter dem Bildkreis verschoben. Beschleunigungssensoren erkennen hier die Bewegung der Kamera und passen dementsprechend die optischen Elemente an, damit das Bild stabilisiert wird. Das Ganze findet während der Aufnahme statt.\\
-	\textbf{Digitale Videostabilisierung}\\
+	\textbf{Optische Videostabilisierung:}\\
+	Die zweite Vorgehensweise bewegt anders als oben nicht die gesamte Kamera, sondern nur Teile im Objektiv oder beim Bildsensor. Es wird also entweder der Bildkreis über dem Bildsensor oder der Bildsensor unter dem Bildkreis verschoben. Beschleunigungssensoren erkennen hier die Bewegung der Kamera und passen dementsprechend die optischen Elemente an, damit das Bild stabilisiert wird. Das Ganze findet während der Aufnahme statt. Diese Technik wird in dem genutzten Smartphone verwendet.\\
+	\textbf{Digitale Videostabilisierung:}\\
 	Der letzte Ansatz erfolgt nach der Aufnahme über Software und es ist keine zusätzliche Hardware nötig. Mit Hilfe von Algorithmen werden die Unterschiede zwischen zwei hintereinander folgenden Frames herausgefunden, unerwünschte Bewegungen entfernt und Anschluss zu einem stabilisierten Video zusammengefügt. Im Folgenden soll diese Art der Stabilisierung genauer vorgestellt werden.
 	Dabei wird nicht genauer auf die mathematischen Hintergründe eingegangen, sondern nur die Vorgehensweise beschrieben und auf die Algorithmen dahinter verwiesen.\\
-	\textbf{Videostabilisierung - Implementierung}\\
+	\textbf{Videostabilisierung - Implementierung:}
 	\begin{enumerate}
 		\item Im ersten Schritt werden die Frames eingelesen und in ein Grauwertebild umgewandelt.
 		
 		\item Anschließend wird die Bewegung zwischen dem aktuellen und dem vorherigen Frame herausgefunden. Theoretisch würden 2 Punkte zur Bestimmung reichen, allerdings sollten für eine stabile Schätzung deutlich mehr Punkte verwendet werden.
 		Bildregionen mit besonders vielen Ecken eignen sich hier besonders gut, weshalb mithilfe von goodFeaturesToTrack() von OpenCV die gewünschten Features detektiert werden.
 		Diese Funktion besteht aus einer Modifikation des Harris-Corner-Detectors durch Shi-Tomasi.
-		
 		\begin{figure}[!h]
 			\begin{center}
-				\includegraphics[width=7.5cm]{Media/VideoStab.png}
+				\includegraphics[width=8cm]{Media/VideoStab.png}
 				\caption{+++++++++++CAPTION++++++++++}
 				\label{VS1}
 			\end{center}
@@ -150,7 +149,7 @@
 		
 		\begin{figure}[!h]
 			\begin{center}
-				\includegraphics[width=7cm]{Media/VideoStab2.png}
+				\includegraphics[width=8cm]{Media/VideoStab2.png}
 				\caption{+++++++++++CAPTION++++++++++}
 				\label{VS2}
 			\end{center}
@@ -167,8 +166,7 @@
 		\item Im letzten Schritt wird der Unterschied zwischen der originalen und der geglätteten Trajektorie berechnet und auf die ursprüngliche Transformation addiert, wodurch man eine geglättete Transformation erhält. Diese wird nun auf die Frames angewandt. Um Artefakte zu vermeiden, werden die Bilder um den Bildmittelpunkt minimal skaliert, dadurch können schwarze „Flecken“ an den Bildrändern vermieden werden, solange die Kamerabewegungen nicht zu extrem sind.
 		
 	\end{enumerate}
-	
-	\textbf{Videostabilisierung – Ergebnis}
+	\textbf{Videostabilisierung – Ergebnis:}\\
 	In der Abbildung \ref{VS3} sieht man links die Detektion auf dem Originalvideo und rechts die Detektion auf dem stabilisierten Video. Während die Fahrzeugdetektion fast identisch ist, fällt auf, dass die Bewegungen in den Bäumen und der restlichen Umgebung deutlich geringer sind. Zwar konnten nicht alle unerwünschten Bewegungen entfernt werden, aber es konnte eine sichtbare Verbesserung erzielt werden.
 	\begin{figure*}[!h]
 		\begin{center}
@@ -176,11 +174,10 @@
 			\caption{Ergebnis der Videostabilisierung in einer ++++++++++++++ Darstellung}
 			\label{VS3}
 		\end{center}
-	\end{figure*}
-	
-	\textbf{Videostabilisierung – weiterer Ansatz}
+	\end{figure*}\\
+	\textbf{Videostabilisierung – Alternativer Ansatz:}\\
 	Ein weiterer Ansatz, um die restlichen weißen Punkte zu entfernen ist diese mit einer Erosion zu entfernen und mit einer Dilatation die übrig gebliebenen Fahrzeuge wieder deutlich zu machen.
-	Wie in der folgenden Bilderfolge zu sehen ist verschieden durch die Erosion die unerwünschten Bewegungen, die nicht durch die Videostabilisierung entfernt werden konnten. Die nun kaum sichtbaren Flächen der Fahrzeuge werden mit der Dilatation wieder so weit vergrößert, dass diese wieder gut zu detektieren sind.\\
+	Wie in der folgenden Bilderfolge zu sehen ist verschieden durch die Erosion die unerwünschten Bewegungen, die nicht durch die Videostabilisierung entfernt werden konnten. Die nun kaum sichtbaren Flächen der Fahrzeuge werden mit der Dilatation wieder so weit vergrößert, dass diese wieder gut zu detektieren sind. Diese Schritte kann man gut in den Grafik 9 beobachten.\\
 	\begin{figure}
 		\begin{subfigure}{}
 			\centering\includegraphics[width=7cm]{Media/MOG1.png}
@@ -197,7 +194,7 @@
 		\begin{subfigure}{}
 			\centering\includegraphics[width=7cm]{Media/MOG4.png}
 			\caption{++++++++++++++++++++++}
-		\end{subfigure}
+		\end{subfigure}	
 	\end{figure}
 	
 	
@@ -207,7 +204,7 @@
 	Im ersten Schritt wird der Funktion eine Anzahl an Frames zum „Lernen“ zugeteilt. Aus diesen wird der unbewegte Hintergrund bestimmt, welcher später subtrahiert wird, sodass nur die bewegten Objekte übrigbleiben.
 	Der Algorithmus modelliert für jeden Pixel den Hintergrund mit unterschiedlich gewichteten Gauss-Funktionen.  Diese K-Funktionen enthalten eine Gewichtung $(\omega_i,t)$, den durchschnittlichen Intensitätswert $(\mu_i,t)$ und die Standardabweichung $(\sigma_i,t)$ für den i-ten Gaussian zum Zeitpunkt t.
 	\[ \sum_{i-1}^{K} \omega_i,t * \eta(u; \mu_i,\sigma_i)  \]
-	WAS MACHT ETA??????????\\
+	WAS MACHT ETA??????+++++++++????\\
 	Mit jedem neuen Pixel (z.B. Kamerabewegung oder Fahrzeugbewegung) werden die Gauss-Funktionen frameweise geupdatet. Dabei wird die Pixelhistorie und der neue Pixelwert berücksichtigt. Falls nun zu einem neuen Pixel keiner der Gauss-Funktionen innerhalb eines Thresholds passt, wird der Pixel als Vordergrund deklariert, ansonsten als Hintergrund. Die Abbildung \ref{mogKonzept} zeigt ++++++++++++++\\
 	\begin{figure}[!h]
 		\begin{center}
@@ -219,20 +216,19 @@
 	Vereinfacht beschrieben zählt der Algorithmus in den Lernbildern die Zeit, in welcher ein Pixel den gleichen Intensitätswert hat und bestimmt so den Hintergrund. Ändert sich nun dieser Wert, wird an dem Pixel eine Bewegung erkannt, dieser als Vordergrund bestimmt und die Parameter geupdatet.\\
 	\\
 	\textbf{Probleme MOG}\\
-	Eine Schwierigkeit bei der Objekterkennung ist, dass die Bewegungen hauptsächlich bei großen Intensitätsunterschieden wie der Wechsel von Straße zu Fahrzeuganfang und von Fahrzeugende zur Straße, erkannt werden. Große Flächen wie die Motorhaube, Windschutzscheibe und die Dachfläche werden nicht erkannt, da diese so lange einen Pixel mit einem sehr ähnlichen Intensitätswert „bedecken“, dass dieser zwischendurch als Hintergrund festgelegt wird. Dabei kann es passieren, dass je nach Thresholdgröße mehrere Objekte in einem Fahrzeug erkannt werden.
+	Eine Schwierigkeit bei der Objekterkennung ist, dass die Bewegungen hauptsächlich bei großen Intensitätsunterschieden wie der Wechsel von Straße zu Fahrzeuganfang und von Fahrzeugende zur Straße, erkannt werden. Große Flächen wie die Motorhaube, Windschutzscheibe und die Dachfläche werden nicht erkannt, da diese so lange einen Pixel mit einem sehr ähnlichen Intensitätswert „bedecken“, dass dieser zwischendurch als Hintergrund festgelegt wird. Dabei kann es passieren, dass je nach Thresholdgröße mehrere Objekte in einem Fahrzeug erkannt werden. ++++Bezug auf Grafik \ref{mogFehler}+++++
 	\begin{figure}[!h]
 		\begin{center}
-			\includegraphics[width=7cm]{Media/MOGVergleich.png}
-			\caption{++++++++++++++++++++++++++}
-			\label{mogKonzept}
+			\includegraphics[width=8cm]{Media/MOGVergleich.png}
+			\caption{+++++++++++++++++++++++++++++++++++}
+			\label{mogFehler}
 		\end{center}
 	\end{figure}
 	
-	
 	\section{Objekterkennung: YoloV4}
-	YOLO ist ein Neuronal Netz für die Echtzeit-Objekterkennung. In diesem Projekt verwendeten wir die 4te und damit aktuellste Version von Yolo\cite{b2}. So bietet jede Version inkrementelle Verbesserung zum jeweiligen Vorgänger. In dem folgenden Abschnitt werden die wichtigsten Punkte aller Versionen erläutert.\\
+	YOLO ist ein Neuronal Netz für die Echtzeit-Objekterkennung. In diesem Projekt verwendeten wir die vierte und damit aktuellste Version von Yolo\cite{b2}. So bietet jede Version inkrementelle Verbesserung zum jeweiligen Vorgänger. In dem folgenden Abschnitt werden die wichtigsten Punkte aller Versionen erläutert.\\
 	YOLO ist die Abkürzung für 'You Only Look Once' was übersetzt 'Man sieht nur einmal hin' heißt. Die Aufgabe der Objekterkennung besteht darin, den Ort und die Größe der Bounding Box im Bild zu bestimmen, sowie die Objekte zu klassifizieren. Frühere Methoden, wie R-CNN und seine Variationen, verwendeten eine Pipeline, um diese Aufgabe in mehreren Schritten durchzuführen. Dies ist in der Ausführung langsam und aufwendiger zu trainieren, da jede einzelne Komponente separat trainiert werden muss. YOLO, erledigt beide Aufgaben mit einem einzigen Convolutional Neural Network. Es betrachtet dabei die Objekterkennung als ein Regressionsproblem auf räumlich getrennte Bounding Boxes und zugehörige Klassenwahrscheinlichkeiten.\\
-	Die verwendete Loss-Funktion betrachtet drei Komponenten:
+	Für die Regression verwendete Loss-Funktion betrachtet drei Komponenten:
 	\begin{enumerate}
 		\item \textbf{Localization loss:} Differenz zwischen vorhergesagten Bounding-Box-Werten (x,y,w und h) und tatsächlichen Bounding-Box-Werten.
 		\[ \lambda_{coord} \sum_{i=0}^{S^2}\sum_{j=0}^{B} \mathbb{1}_{i j}^{obj} [(x_i - \hat{x}_i )^2 + (y_i - \hat{y}_i )^2] \]
@@ -251,8 +247,7 @@
 		Wenn $\mathbb{1}_{i}^{obj} = 1$ dann wurde ein Objekt in Zelle $i$ gefunden.
 		$\hat{p}_i(c)$ beschreibt die Klassenwahrscheinlichkeit für die Klasse $c$ in der Zelle $i$ \cite{b5}.
 	\end{enumerate}
-	
-	Zusammengesetzt sieht der Loss wie folgt aus.
+	Zusammengesetzt sieht der Loss wie folgt aus:
 	\[ \lambda_{coord} \sum_{i=0}^{S^2}\sum_{j=0}^{B} \mathbb{1}_{i j}^{obj} [(x_i - \hat{x}_i )^2 + (y_i - \hat{y}_i )^2] \]
 	\[ + \lambda_{coord} \sum_{i=0}^{S^2}\sum_{j=0}^{B} \mathbb{1}_{i j}^{obj} [(\sqrt{w_i} - \sqrt{\hat{w}_i} )^2 + (\sqrt{h_i} - \sqrt{\hat{h}_i} )^2] \]
 	\[ + \sum_{i=0}^{S^2}\sum_{j=0}^{B} \mathbb{1}_{i j}^{obj} (C_i - \hat{C}_i)^2 \]
@@ -270,7 +265,7 @@
 			\label{IoU}
 		\end{center}
 	\end{figure}\\
-	In Abbildung \ref{IoU} ist die Berechnung der Intersection-Over-Union dargestellt. Sie beschreibt das Verhältnis der Schnittfläche einer Bounding Box mit der Grundwahrheit bezüglich der Gesamtfläche von Bounding Box und Grundwahrheit. Je genauer die beiden Flächen übereinander liegen desto höher der Wert, desto besser ist die Vorhersage der Bounding Box. ++QUELLE++\\
+	In Abbildung \ref{IoU} ist die Berechnung der Intersection-Over-Union dargestellt. Sie beschreibt das Verhältnis der Schnittfläche einer Bounding Box mit der Grundwahrheit bezüglich der Gesamtfläche von Bounding Box und Grundwahrheit. Je genauer die beiden Flächen übereinander liegen desto höher der Wert, desto besser ist die Vorhersage der Bounding Box.\\
 	\\
 	In der zweiten Version von Yolo wurde an mehreren Stellen etwas verbessert. So wurde zum Beispiel Batch-Normalization in Convolutioonal-Layers eingefügt.\\
 	Die Inputgröße des Netzes wurde von $224*224$ auf $448*448$ erhöht.\\
@@ -294,7 +289,7 @@
 	Außerdem wir der \textit{objectness score} $t_o$ vorhergesagt.
 	\[ P_r(Object)*IoU_{b}^{object} = \sigma(t_o) \]
 	$\sigma(t_o)$ entspricht dem Box Konfidenz Score.
-	Der Output des Modells enthält für jede Gitterzelle n Boxen, wobei n der Anzahl der Ankerboxen entspricht. Jede Box ist ein Vektor aus 4 Koordinaten objectness score und der Klassen C. Der Vektor enthält: $[b_x,b_y,b_w,b_h, b_o, C]$\cite{b3}.
+	Der Output des Modells enthält für jede Gitterzelle n Boxen, wobei n der Anzahl der Ankerboxen entspricht. Jede Box ist ein Vektor aus vier Koordinaten, dem \textit{Objectnessscore} und der Klassenwahrscheinlichkeiten C. Der Vektor enthält: $[b_x,b_y,b_w,b_h, b_o, C]$\cite{b3}.
 	\[ C = [c_1, c_2,..., c_{80}]^T\]
 	\[ P = [P_r * c_1, P_r * c_2, ..., P_r * c_{80}] \]
 	\[ class = argmax_i(C)\]
@@ -310,19 +305,19 @@
 			\label{FPN}
 		\end{center}
 	\end{figure}\\
-	Die letzte dieser Schichten der jeweiligen Skalierungen sagt einen 3-D-Tensor voraus, der Bounding Box, Objekthaftigkeit und Klassenvorhersagen enthält. Es werden aber für jede der drei Skalierung drei Boxen vorausgesagt. Der Tensor entspreche dann für 4 Bounding-Box-Offsets, 1 Objektvorhersage und 80 Klassenvorhersagen $N*N*[3*(4 + 1 + 80)]$.\cite{b4}\\
+	Die letzte dieser Schichten der jeweiligen Skalierungen sagt einen 3-D-Tensor voraus, der Bounding Box, Objekthaftigkeit und Klassenvorhersagen enthält. Es werden aber für jede der drei Skalierung drei Boxen vorausgesagt. Der Tensor enthält dann die vier Bounding-Box-Offsets, eine Objektvorhersage und 80 Klassenvorhersagen $N*N*[3*(4 + 1 + 80)]$ \cite{b4}.\\
 	\\
 	YoloV4 hat die Geschwindigkeit und Genauigkeit verbessert. So nennt das Paper \cite{b2} zum Beispiel \textit{Bag of Freebies}. Damit sind Verbesserungen gemeint die die Genauigkeit des Modells zur Trainingszeit verbessern aber die Inferenzzeit nicht beeinflussen. So wurde stark das Training optimiert. Bei dem Training werden Bilder zusätzlich aus dem Datensatz generiert. Existierende Bilder werden dupliziert und dann rotiert, zugeschnitten, verzerrt, verdunkelt, etc. und dann auch durch das Netz geschickt. 
 	Auch Techninken wie \textit{Cut Mix} und \textit{Mosaic Dataaugmentation} werden angewendet. Bei älteren Verfahren werden Bildteile gelöscht. Bei den beiden verwendeten Verfahren werden stattdessen Bildteile aus den Trainingsdaten ausgeschnitten und kombiniert, wobei die Ground-Truth-Labels ebenfalls angespasst werden müssen. Diese Data Augmentation sorgt für eine verbesserte Generalisierungfähigkeit des Modells.\\
 	Regularisierungmethoden wie \textit{DropOut} und \textit{DropBlock} wurden gegen Overfitting eingesetzt.\\
-	Auch wird die Lossfunktion angepasst. Bei den bisherigen Versionen wurde die Mittlere quadratische Abweichung (MSE) für das Regressionsproblem verwendet. Diese Regression wird dann unabhängig für alle Vorhersagen von $t_x, t_y, t_w, t_h$ verwendet. Sinnvoller ist es die Koordinaten zusammen als die IoU der Boundingboxen in Betracht zu ziehen. Deshalb verwendet YoloV4 \textit{CIoU} als Lossfunktion um die Integrität der Objekte mit einzubeziehen.
+	Auch wird die Lossfunktion aus YoloV1 angepasst. Bei den bisherigen Versionen wurde die mittlere quadratische Abweichung (MSE) für das Regressionsproblem verwendet. Diese Regression wird dann unabhängig für alle Vorhersagen von $t_x, t_y, t_w, t_h$ verwendet. Sinnvoller ist es die Koordinaten zusammen als die IoU der Boundingboxen in Betracht zu ziehen. Deshalb verwendet YoloV4 \textit{CIoU} als Lossfunktion um die Integrität der Objekte mit einzubeziehen.\\
 	Weitere Verbesserungen die auf Kosten der Laufzeit gehen werden \textit{Bag of Specials} genannt. Dazu gehören zum Beispiel \textit{Squeeze-and-Excitation}, \textit{Spatial Attention Module}, Vergrößerung des Rezeptionsfeldes des Modells und Stärkung der Fähigkeit zur Merkmalsintegration.\\
 	Im Backbone wird eine \textit{MISH}-Aktivierungsfunktion verwendet. Diese ist eine glatte und nicht-monotone neuronale Aktivierungsfunktion, die wie folgt definiert werden kann:
 	\[ f(x) = x* \tanh (\ln (1+e^x)) \]
 	Sie arbeitet besser als zum Beispiel \textit{ReLU} oder Swish \cite{b7}.\\
 	Die Komponenten in der Architektur wurde auch ersetzt. Im \textit{Backbone} läuft nun \textit{CSPDarknet53}. Dies basiert auf dem Darknet53 aus YoloV3 und wird mit Cross-Stage-Partial-Networks erweitert. Im Hals des Netzes wird \textit{Spatial pyramid pooling} (SPP) verwendet. \textit{Path Aggregation Network} (PANet) und \textit{Spatial Attention Module} (SAM) ersetzen die Merkmalspyramidennetze (FPN) die YoloV3 verwendet.\\
-	\textit{Convolutional-Layer} brauchen keine feste Bildgröße und erzeugen deshalb  Feature-Maps beliebiger Größen. \textit{Fullyconnected-Layer} benötigen stattdessen per Definition eine Eingabe mit fester Länge. SPP entfernt genau diese Restriktion. SPP wendet verschiedene Strategien bei unterschiedlichen Skalierungen an. Die Feature-Maps werden räumlich in $m$ × $m$ Bins unterteilt. Dann wird ein Maximumpool auf jeden Bin für jeden Kanal angewendet. In YoloV4 wird eine modifiziert Version von SPP verwendet die die räumliche Dimension der Ausgabe beibehaltet \cite{b9}.
-	In FPN werden die Objekte separat und unabhängig voneinander auf verschiedenen Skalenebenen erkannt. Dies kann zu doppelten Vorhersagen führen. PAN erweitert FPN mit einem Bottom-up-Pfad der die Weitergabe von Informationen aus den unteren Ebenen erleichtern. Durch adaptives Featurepooling kann auf jede Vorhersagen aus allen Ebenen zugriffen werden.\cite{b10}\\
+	\textit{Convolutional-Layer} brauchen keine feste Bildgröße und erzeugen deshalb  Feature-Maps beliebiger Größen. \textit{Fullyconnected-Layer} benötigen stattdessen per Definition eine Eingabe mit fester Länge. SPP entfernt genau diese Restriktion. SPP wendet verschiedene Strategien bei unterschiedlichen Skalierungen an. Die Feature-Maps werden räumlich in $m$ × $m$ Bins unterteilt. Dann wird ein Maximumpool auf jeden Bin für jeden Kanal angewendet. In YoloV4 wird eine modifiziert Version von SPP verwendet die die räumliche Dimension der Ausgabe beibehaltet \cite{b9}.\\
+	In den FPN aus YoloV3 werden die Objekte separat und unabhängig voneinander auf verschiedenen Skalenebenen erkannt. Dies kann zu doppelten Vorhersagen führen. PAN erweitert FPN mit einem Bottom-up-Pfad der die Weitergabe von Informationen aus den unteren Ebenen erleichtern. Durch adaptives Featurepooling kann auf jede Vorhersagen aus allen Ebenen zugriffen werden.\cite{b10}\\
 	SAM verbessert die räumliche Aufmerksamkeit.\\
 	Am \textit{Head} der für Prädiktion verantworlich ist wurde nichts geändert und  ist damit identisch zu YoloV3 \cite{b2}\cite{b8}. Diese Architektur mit der viel zahl an Komponenten wird in er Abbildung \ref{V4Arch} dargestellt.
 	\begin{figure}[!h]
@@ -345,7 +340,7 @@
 	Dennoch kann man je nach Szenario per Parameter die relevanten Klassen auswählen. Das Modell prädiktiert trotzdem noch alle Klassen. Die nicht relevanten werden einfach nur im Postprocessing herausgefiltert.\\
 	Ein weitere Postprocesingschritt ist es die Detektion die eine zu geringe Sicherheit besitzen zu entfernen.\\
 	Die übrigen Boxen durchlaufen eine Non-Maxima-Suppression.
-	Der Output kann überschneidende Boundingboxen besitzen die eigentlich zur selben Klasse gehören. Diese Duplikate können mittels der Non-Maxima-Suppression entfernt werden. Hierfür wird die IOU der Boxen berechnet. Sollte die IOU einen Threshold überschreiten dann wird das Duplikat entfernt. Die Grafik \ref{NMS} zeigt wie zu viele überlappende Boxen mit einer NMS mit einer ersetzt werden kann.\\
+	Der Output kann überschneidende Boundingboxen besitzen die eigentlich zur selben Klasse gehören. Diese Duplikate können mittels der Non-Maxima-Suppression (NMS) entfernt werden. Hierfür wird die IoU der Boxen berechnet. Sollte die IoU einen Threshold überschreiten dann wird das Duplikat entfernt. Die Grafik \ref{NMS} zeigt wie zu viele überlappende Boxen mit einer NMS mit einer ersetzt werden kann.\\
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=6cm]{Media/NMS.png}
@@ -356,7 +351,7 @@
 	Das Ergebnis einer Prädiktion ist eine Liste von Objekten welches aus den x,y Koordinate des Mittelpunktes der Boundingbox, der Breite w, der Höhe h, der Klasse und des Konfidenzwerts besteht.
 	
 	\subsection{Fehler in der Erkennung}
-	YoloV4 ist nicht perfekt. So gibt es gelegentlich Falschklassifizierungen, fehlende Detektionen oder unpassende Boundingboxen. Dieser Abschnitt zeigt Beispiele für diese Art von Fehler auf.\\
+	YoloV4 ist nicht perfekt. So gibt es gelegentlich Falschklassifizierungen, fehlende Detektionen oder unpassende Boundingboxen.  Fehlerursachen sind aber sehr schwer zu erklären da das Netz eine Blackbox ist. Dieser Abschnitt zeigt Beispiele für diese Art von Fehler auf.\\
 	\textbf{Falschklassifizierung:}\\
 	Selten Klassifiziert das Netz falsch. So wie in der Abbildung \ref{FaK} zu sehen ist wurde ein Bus als Pkw klassifiziert. Das Modell ist sich in diesem Beispiel auch nur unsicher mit $31\%$. Der Fehler lässt sich vermutlich erklären da die Frontpartie des Bus einem Pkw sehr ähnelt und der Rest des Fahrzeuges wegen einem Baum und einer Laterne verdeckt wird. Auch ist zu vermuten, dass das Netz falsche Merkmale gelernt hat. Dies könnte mit Sicherheit verbessert werden wenn das Modell nur auf die für uns relevanten Klassen trainiert worden wäre. Die folgenden Abbildungen \ref{FaK}, \ref{FaK2}, \ref{FaK3} und \ref{FaK4} sind Beispiele für falsche Klassifikationen. Speziell ist vorallem der Fehler in Bild \ref{FaK4}. Hier wurde ein Anhänger als Fahrzeug klassifiziert. Der Ursprung dieses Fehlers kann unterschiedliche Gründe haben. Dies liegt wahrscheinlich auch am Datensatz selbst.
 	\begin{figure}[!h]
@@ -365,21 +360,21 @@
 			\caption{Falschklassifizierung eines Bus wegen Verdeckung}
 			\label{FaK}
 		\end{center}
-	\end{figure}\\
+	\end{figure}
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=7cm]{Media/Output_847 - Kopie.jpg}
 			\caption{Falschklassifizierung des Dachs als Pkw}
 			\label{FaK2}
 		\end{center}
-	\end{figure}\\
+	\end{figure}
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=7cm]{Media/Output_108 - Kopie (2).jpg}
 			\caption{Falschklassifizierung eines Hausdachs}
 			\label{FaK3}
 		\end{center}
-	\end{figure}\\
+	\end{figure}
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=7cm]{Media/Output_829 - Kopie.jpg}
@@ -389,7 +384,7 @@
 	\end{figure}\\
 	
 	\textbf{Fehlende Detektion:}\\
-	Ein etwas häufigerer Fehler ist das Detektionen komplett fehlen. Dies kann mehrere Gründe haben. So zeigt die Abbildung \ref{FeK} zwei Typische Gründe. Hauptgrund ist es das Objekte teilweise verdeckt sind. In Kombination wenn Objekte sehr klein sind ist es nahezu nicht mehr möglich zuverlässig Detektion zu bekommen. Auch wenn Objekte das Bild verlassen oder gerade betreten kann es noch kurz zu fehlenden Detektionen führen.
+	Ein etwas häufigerer Fehler ist das Detektionen komplett fehlen. Dies kann mehrere Gründe haben. So zeigt die Abbildung \ref{FeK} und \ref{FeK2} zwei Typische Gründe. Hauptgrund ist es das Objekte teilweise verdeckt sind. In Kombination wenn Objekte sehr klein sind ist es nahezu nicht mehr möglich zuverlässig Detektion zu bekommen. Auch wenn Objekte das Bild verlassen oder gerade betreten kann es noch kurz zu fehlenden Detektionen führen.
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=7cm]{Media/Output_680 - Kopie.jpg}
@@ -405,35 +400,36 @@
 		\end{center}
 	\end{figure}\\
 	\textbf{Unpassende Boundingboxen:}\\
-	Yolo hat durch seine Eigenschaft nur rechteckige Boundingboxen vorhersagen zu können eine große Schwäche. Das resultiert in manchen Szenarien zu sehr unpassenden Boundingboxen. Beispielsweise kann man in der Abbildung \ref{UB} gut erkennen das wegen dem Busses welcher Diagonal steht die Boxen zu groß werden. Der Effekt tritt noch verstärkter auf bei noch längere Objekten wie Zügen wie zum Beispiel in Bild \ref{UB4} zusehen. Der Fehler der in Abbildung \ref{UB3} zu sehen ist hängt womöglich von Fehlern im Training zusammen. Züge wurden vielleicht an Bahnsteigen schlecht gelabelt was dem Netz dann beigebracht hat Bahnsteige als Züge zu klassifizieren. Auch kann die Box für das Objekt etwas falsch anliegen wenn Bäume oder Laternen ein Teil verdecken wie in Abbildung \ref{UB2} zu sehen ist. Diese unpassenden Boxen erschweren das Tracking ungemein. Dazu später aber noch mehr. 
+	Yolo hat durch seine Eigenschaft nur rechteckige Boundingboxen vorhersagen zu können eine große Schwäche. Das resultiert in manchen Szenarien zu sehr unpassenden Boundingboxen. Beispielsweise kann man in der Abbildung \ref{UB} gut erkennen das wegen dem Busses welcher Diagonal steht die Boxen sehr groß werden können. Der Effekt tritt noch verstärkter auf bei noch längere Objekten wie Zügen wie zum Beispiel in Bild \ref{UB4} zusehen. Der Fehler der in Abbildung \ref{UB3} zu sehen ist hängt womöglich von Fehlern im Training zusammen. Züge wurden vielleicht an Bahnsteigen schlecht gelabelt was dem Netz dann beigebracht hat Bahnsteige als Züge zu klassifizieren. Auch kann die Box für das Objekt etwas falsch anliegen wenn Bäume oder Laternen ein Teil verdecken wie in Abbildung \ref{UB2} zu sehen ist. Diese unpassenden Boxen erschweren das Tracking ungemein. Dazu später aber noch mehr. 
 	\begin{figure}[!h]
 		\begin{center}
-			\includegraphics[width=7cm]{Media/Output_777 - Kopie.jpg}
+			\includegraphics[width=8cm]{Media/Output_777 - Kopie.jpg}
 			\caption{Unpassende Boundingbox}
 			\label{UB}
 		\end{center}
 	\end{figure}\\
 	\begin{figure}[!h]
 		\begin{center}
-			\includegraphics[width=7cm]{Media/Output_276 - Kopie.jpg}
+			\includegraphics[width=8cm]{Media/Output_2126.jpg}
+			\caption{Unpassende Boundingbox}
+			\label{UB4}
+		\end{center}
+	\end{figure}\\
+	\begin{figure}[!h]
+		\begin{center}
+			\includegraphics[width=8cm]{Media/Output_276 - Kopie.jpg}
 			\caption{Unpassende Boundingbox}
 			\label{UB2}
 		\end{center}
 	\end{figure}\\
 	\begin{figure}[!h]
 		\begin{center}
-			\includegraphics[width=7cm]{Media/Output_564.jpg}
+			\includegraphics[width=8cm]{Media/Output_564.jpg}
 			\caption{Unpassende Boundingbox}
 			\label{UB3}
 		\end{center}
 	\end{figure}\\
-	\begin{figure}[!h]
-		\begin{center}
-			\includegraphics[width=7cm]{Media/Output_2126.jpg}
-			\caption{Unpassende Boundingbox}
-			\label{UB4}
-		\end{center}
-	\end{figure}\\
+
 	
 	
 	\section{Tracking: Sort}
@@ -596,15 +592,13 @@
 	Durch die Anpassung der maximalen IoU-Distanz
 	kann ein häufiger Wechsel der ID mit direkt benachbarten Fahrzeugen vermieden werden.
 	
-	
-	
-	
-	
 	\section{Zählen von Objekten}
 	Wir testeten verschiedene Verfahren zu Zählen der gefundenen Objekte die das Video passieren.\\
-	\textbf{Zählen der vergebenen TrackingID's.} Unser erster Plan war das Zählen aller vergebenen Tracking ID's. Dies hätte den Vorteil das sobald ein Objekt gefunden wird auch gezählt wird. Wir stellten aber schnell fest das Aufgrund von Fehlern in der Pipeline Objekten mehrfach neue IDs zugewiesen wurde. Diese Probleme entstehen in Kombination aus Fehlern in der Objekterkennung und dem Tracker. Je zuverlässiger das Tracking funktioniert desto geringer ist der Fehler im Zählen. Da aber ein perfekter Tracker nicht immer realistisch ist müssen bessere Lösungen gefunden werden.\\
+	\textbf{Zählen der vergebenen TrackingID's.}\\
+	 Unser erster Plan war das Zählen aller vergebenen Tracking ID's. Dies hätte den Vorteil das sobald ein Objekt gefunden wird auch gezählt wird. Wir stellten aber schnell fest das Aufgrund von Fehlern in der Pipeline Objekten mehrfach neue IDs zugewiesen wurde. Diese Probleme entstehen in Kombination aus Fehlern in der Objekterkennung und dem Tracker. Je zuverlässiger das Tracking funktioniert desto geringer ist der Fehler im Zählen. Da aber ein perfekter Tracker nicht immer realistisch ist müssen bessere Lösungen gefunden werden.\\
 	\textbf{Zähllinie.} Um Trackingfehler zu umgehen bauten wir eine Zähllinie ein die sobald der Mittelpunkt der Boundingbox diese schneidet einmal hochzählt. Dies hatte noch immer Probleme wie zum Beispiel das manche Boxen doppelt gezählt wurden ohne manche die Linie direkt übersprungen haben. WAS WAR DA NOCHMAL FALSCH Thomas?\\
-	\textbf{Zählung der Tracking IDs in einer Zählbox.} Um die beiden Techniken zu vereinen wurde eine Zählbox entwickelt. So kann für jedes Szenario per Parameter die Position und Größe der Zählbox definiert werden. Sobald der Mittelpunkt einer Boundingbox in den die Zählbereich eindringt wird überprüft ob diese Tracking ID schon in einem Set enthalten ist. Ist sie es noch nicht wird hochgezählt. Es ist sinnvoll die Zählbox in Bereiche zu setzten in denen das Tracking zuverlässig funktioniert. 
+	\textbf{Zählung der Tracking IDs in einer Zählbox.}\\
+	 Um die beiden Techniken zu vereinen wurde eine Zählbox entwickelt. So kann für jedes Szenario per Parameter die Position und Größe der Zählbox definiert werden. Sobald der Mittelpunkt einer Boundingbox in den die Zählbereich eindringt wird überprüft ob diese Tracking ID schon in einem Set enthalten ist. Ist sie es noch nicht wird hochgezählt. Es ist sinnvoll die Zählbox in Bereiche zu setzten in denen das Tracking zuverlässig funktioniert. 
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=7cm]{Media/BrudermuhlCounter.png}

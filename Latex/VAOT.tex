@@ -472,7 +472,7 @@
 	
 	Kann DeepSORT erfolgreich ein bereits verfolgtes Objekt zu einer Detektion assoziieren, wird anschließend eine TrackingID erstellt. Hierbei muss beachtet werden, dass im Zuge der Verbesserung von SORT weitere Sicherheiten eingebaut wurden. Ein neu getracktes Objekt erhält nicht sofort eine endgültige Identifikationsnummer. Erst nachdem das Objekt in drei hintereinander liegenden Frames erfolgreich getrackt werden konnte erhält es eine Nummer. Das Objekt erhält des weiteren einen Zähler $a$, der die Anzahl an Frames zählt, seitdem das Objekt nicht mehr erfolgreich assoziiert werden konnte. Ist eine maximale Anzahl $Age_{max}$ erreicht gilt das Objekt als verloren oder außer Reichweite der Kamera und wird aus der Objektliste entfernt. Dieser Zähler wird jedoch zurückgesetzt, sollte zuvor das Objekt erneut erfolgreich assoziiert werden.
 	
-	\subsubsection{Ergebnisse des Tracking}
+	\subsubsection{Ergebnisse des Tracking mit DeepSORT}
 	Das Tracking basiert auf YOLO, daher wird es beeinträchtigt wenn YOLO Objekte nicht erkennt. Der Kalman-Filter kann zwar in Fällen von fehlenden Detektionen weiterhin eine Vorhersage liefern, allerdings nur bei gleichbleibender Bewegung in eine Richtung. 
 	
 	Geprüft wurde wie lange der Tracker erfolgreich stehende und fahrende Autos verfolgen kann. In den meisten Fällen ist dabei kein Problem festzustellen. Problematisch ist, wenn der Objekt-Detektor über mehrere Frames ein Objekt nicht erkennt.
@@ -527,7 +527,7 @@
 	
 	Die Verfolgung der nahen stehenden Fahrzeuge funktioniert gut, allerdings kommt es zu
 	häufigen Änderungen der ID bei den weiter entfernten stehenden Fahrzeugen.
-	Nahe sich bewegende Fahrzeuge können zuverlässig verfolgt werden, ebenfalls die sich gleichmäßig weiter entfernten.
+	Nahe sich bewegende Fahrzeuge können zuverlässig verfolgt werden, ebenfalls die sich gleichmäßig weiter entfernten. Im Bild groß erscheinende und sich bewegende Objekte können zuverlässig verfolgt werden.
 	
 	Stehende Fahrzeuge mit fehlenden Detektionen erhalten neue IDs nach mehreren
 	Frames. Die vorherigen IDs werden zu schnell verworfen, wodurch neue IDs erstellt werden.
@@ -590,6 +590,20 @@
 	Kalman-Filter bestimmten Position. Zusätzlich kann der Wert der IoU-Distanz angegeben werden.
 	Durch die Anpassung der maximalen IoU-Distanz
 	kann ein häufiger Wechsel der ID mit direkt benachbarten Fahrzeugen vermieden werden.
+	
+	\subsubsection{Ergebnisse des Tracking mit SORT}
+	Erneut basiert der Tracking-Algorithmus auf den Erkennungen des Objekt-Detektors. In Falle von SORT handelt es sich dabei um Gaussmixture. Dieser liefert teilweise für ein Objekt mehrere Erkennung. Dies liegt daran, dass Gaussmixture nicht das gesamte Objekt erkennt und die definierten Boundingboxen nicht das gesamte Objekt umschließen. SORT verarbeitet nur die erhaltenen Boundingboxen und kann daher nicht erkennen ob mehrere Boundingboxen zu einem Objekt gehören. Zu sehen ist die Problematik in Abbildung \ref{sortdouble}. Hierbei wurden zwei Boundingboxen für den Bus definiert. Ebenfalls zu erkennen ist, dass weder das gezeigte Auto, noch der Bus von einer Boundingbox einheitlich umschlossen sind. SORT kann allerdings die definierten Boxen korrekt verfolgen bis der Bus beziehungsweise das Auto den durch Gaussmixture abgedeckten Bereich verlässt. 
+	
+	\begin{figure}[!h]
+		\begin{center}
+			\includegraphics[width=7cm]{Media/sortdouble.jpg}
+			\caption{Doppelte Erkennung eines Objekts. SORT unterscheidet nicht, daher zwei Tracking-IDs für den Bus}
+			\label{sortdouble}
+		\end{center}
+	\end{figure}
+
+	Da dieser Bereich sehr klein ist, ist auch die zurückgelegte Strecke der Fahrzeuge nicht ausreichend, um eine Aussage über das Tracking mit SORT über längere Distanz zu treffen. 
+	
 	
 	\section{Zählen von Objekten}
 	Wir testeten verschiedene Verfahren zu Zählen der gefundenen Objekte die das Video passieren.\\

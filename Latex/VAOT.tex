@@ -47,7 +47,7 @@
 		\IEEEauthorblockN{2\textsuperscript{nd} Thomas Willeit}
 		\IEEEauthorblockA{\textit{Hochschule München} \\
 			München, Deutschland \\
-			+++++++++++@hm.edu}
+			twilleit@hm.edu@hm.edu}
 		\and
 		\IEEEauthorblockN{3\textsuperscript{rd} Schäfer Julia}
 		\IEEEauthorblockA{\textit{Hochschule München} \\
@@ -69,7 +69,7 @@
 	Dieser Teil des Mittleren Rings ist sehr verkehrsreich und Autobahnähnlich ausgebaut. Es gibt mehrere Fahrspuren. Alle Fahrzeuge fahren im Sichtfeld in eine Richtung. Es sind ein paar Laternen und Bäume in der Aufnahme die die Sicht etwas beeinträchtigen. Es sind nur Pkw im Datensatz enthalten. Teilweise missachten Fahrzeuge den Sicherheitsabstand und fahren sehr nah aufeinander auf. Dies erschwert die Detektion. Das Video wurde in 60 Bilder pro Sekunde aufgezeichnet und hat eine Bildauflösung $3840$ × $2160$. Es wurde kein Stativ verwendet, sondern nur die interne Stabilisierung des Smartphones genutzt.
 	\begin{figure}[!h]
 		\begin{center}
-			\includegraphics[width=6cm]{Media/BrudermuhlRaw.png}
+			\includegraphics[width=8cm]{Media/BrudermuhlRaw.png}
 			\caption{Verkehrsaufnahmen am Brudermühltunnel}
 			\label{BrudermuhlRaw}
 		\end{center}
@@ -78,7 +78,7 @@
 	Eine stark befahrene Straße mit einer Vielzahl von Verkehrsteilnehmern. Es herrscht Zweirichtungsverkehr mit insgesamt sechs Fahrspuren. In eine Richtung stehen die Fahrzeuge in einem Stau. Durch Regen spiegeln viele Oberflächen. Die Bäume bewegen sich aufgrund von stärkeren Wind und verdecken einen Teil der Fahrbahn. Diese Aufnahme ist die Anspruchsvollste. In diesem Video sind neben Pkw auch Busse enthalten. Das Video hat 60 Bilder pro Sekunde und eine Bildauflösung von $3840$ × $2160$. Es wurde kein Stativ verwendet sondern nur die interne Stabilisierung des Smartphones genutzt.
 	\begin{figure}[!h]
 		\begin{center}
-			\includegraphics[width=6cm]{Media/CandidRaw.png}
+			\includegraphics[width=8cm]{Media/CandidRaw.png}
 			\caption{Verkehrsaufnahmen am Candidtunnel}
 			\label{CandidtunnelRaw}
 		\end{center}
@@ -87,7 +87,7 @@
 	Eine Aufnahme einer der am stärksten befahren Bahnstrecken Europas\cite{z1}. Hier existiert viel Zugverkehr auf mehreren Gleisen mit unterschiedlichen Zugtypen. Beobachtet werden die vier Gleise der zwei Bahnsteige des S-Bahnhalts Donnersbergerbrücke. Ein Hindernis sind die Masten, Signale, Bäume und das Bahnsteigdach welche einen guten Blick auf die Züge erschweren. In dieser Aufnahme sind Züge und Fußgänger enthalten. Der Fokus liegt aber auf den Zügen. Das Video hat 30 Bilder pro Sekunde und hat eine Bildauflösung $1920$ × $1080$. Es wurde ein Stativ verwendet.\\
 	\begin{figure}[!h]
 		\begin{center}
-			\includegraphics[width=6cm]{Media/DonnersbergerRaw.png}
+			\includegraphics[width=8cm]{Media/DonnersbergerRaw.png}
 			\caption{Zugaufnahmen an der Donnersbergerbrücke}
 			\label{DonnersbergerRaw}
 		\end{center}
@@ -116,20 +116,11 @@
 	\textbf{Mechanische Videostabilisierung:}\\
 	Im ersten Ansatz versucht man unerwünschte Bewegungen im Video, die durch das Wackeln der Hand entstehen, durch ein Kamerastativ oder ein Gimbal, welches mit Hilfe von Sensoren Bewegungen ausgleicht, zu vermeiden. Diese Art der Stabilisierung findet vor bzw. während der Aufnahme statt.
 	In unserer Aufnahme der Donnersbergerbrücke wurde ein Stativ verwendet.\\
-	%\begin{figure}[!h]
-	%	\begin{center}
-	%		\includegraphics[width=6cm]{Media/GimbalStativ.png}
-	%		\caption{Ein Stativ und ein Gimbal \cite{g1}\cite{g2}}
-	%		\label{GS}
-	%	\end{center}
-	%\end{figure}\\
 	\textbf{Optische Videostabilisierung:}\\
 	Die zweite Vorgehensweise bewegt anders als im vorherigen Absatz genannt nicht die gesamte Kamera, sondern nur Teile im Objektiv oder beim Bildsensor. Es wird also entweder der Bildkreis über dem Bildsensor oder der Bildsensor unter dem Bildkreis verschoben. Beschleunigungssensoren erkennen hier die Bewegung der Kamera und passen dementsprechend die optischen Elemente an, damit das Bild stabilisiert wird. Das Ganze findet während der Aufnahme statt.\\
-	%\textbf{Optische Videostabilisierung:}\\
-	%Die zweite Vorgehensweise bewegt anders als oben nicht die gesamte Kamera, sondern nur Teile im Objektiv oder beim Bildsensor. Es wird also entweder der Bildkreis über dem Bildsensor oder der Bildsensor unter dem Bildkreis verschoben. Beschleunigungssensoren erkennen hier die Bewegung der Kamera und passen dementsprechend die optischen Elemente an, damit das Bild stabilisiert wird. Das Ganze findet während der Aufnahme statt. Diese Technik wird in dem genutzten Smartphone verwendet.\\
 	\textbf{Digitale Videostabilisierung:}\\
 	Der letzte Ansatz erfolgt nach der Aufnahme über Software und es ist keine zusätzliche Hardware nötig. Mit Hilfe von Algorithmen werden die Unterschiede zwischen zwei hintereinander folgenden Frames herausgefunden, unerwünschte Bewegungen entfernt und Anschluss zu einem stabilisierten Video zusammengefügt. Im Folgenden soll diese Art der Stabilisierung vorgestellt werden.
-	Dabei wird nicht genauer auf die mathematischen Hintergründe eingegangen, sondern nur die Vorgehensweise beschrieben und auf die Algorithmen dahinter verwiesen.\\
+	Dabei wird nicht genauer auf die mathematischen Hintergründe eingegangen, sondern nur die Vorgehensweise beschrieben und auf die Algorithmen dahinter verwiesen \cite{stab}.\\
 	\textbf{Videostabilisierung - Implementierung:}
 	\begin{enumerate}
 		\item Im ersten Schritt werden die Frames eingelesen und in ein Grauwertbild umgewandelt.
@@ -140,7 +131,7 @@
 		\begin{figure}[!h]
 			\begin{center}
 				\includegraphics[width=8cm]{Media/VideoStab.png}
-				\caption{+++++++++++CAPTION++++++++++}
+				\caption{Shi-Tomasi Corner Detector: Good Features to Track}
 				\label{VS1}
 			\end{center}
 		\end{figure}
@@ -150,7 +141,7 @@
 		\begin{figure}[!h]
 			\begin{center}
 				\includegraphics[width=8cm]{Media/VideoStab2.png}
-				\caption{+++++++++++CAPTION++++++++++}
+				\caption{Lucas-Kanade Optical Flow: Bewegungen im Bild}
 				\label{VS2}
 			\end{center}
 		\end{figure}
@@ -163,7 +154,7 @@
 		Eine Kurve ist in einem Array c gespeichert und die Filtergröße ist 5. Möchten wir nun das k-te Element glätten ergibt sich die folgende Berechnung:
 		\[ f[k] = \frac{c[k-2]+c[k-1]+c[k]+c[k+1]+c[k+2]}{5} \]
 		
-		\item Im letzten Schritt wird der Unterschied zwischen der originalen und der geglätteten Trajektorie berechnet und auf die ursprüngliche Transformation addiert, wodurch man eine geglättete Transformation erhält. Diese wird nun auf die Frames angewandt. Um Artefakte zu vermeiden, werden die Bilder um den Bildmittelpunkt minimal skaliert, dadurch können schwarze „Flecken“ an den Bildrändern vermieden werden, solange die Kamerabewegungen nicht zu extrem sind.
+		\item Im letzten Schritt wird der Unterschied zwischen der originalen und der geglätteten Trajektorie berechnet und auf die ursprüngliche Transformation addiert, wodurch man eine geglättete Transformation erhält. Diese wird nun auf die Frames angewandt. Um Artefakte zu vermeiden, werden die Bilder um den Bildmittelpunkt minimal skaliert, dadurch können schwarze „Flecken“ an den Bildrändern vermieden werden, solange die Kamerabewegungen nicht zu extrem sind \cite{s1}\cite{s2}\cite{s3}\cite{s4}.
 		
 	\end{enumerate}
 	\textbf{Videostabilisierung – Ergebnis:}\\
@@ -171,29 +162,34 @@
 	\begin{figure*}[!h]
 		\begin{center}
 			\includegraphics[width=16cm]{Media/VideoStab3E.png}
-			\caption{Ergebnis der Videostabilisierung in einer ++++++++++++++ Darstellung}
+			\caption{Links: ohne Videostabilisierung; Rechts: mit Videostabilisierung}
 			\label{VS3}
 		\end{center}
 	\end{figure*}\\
 	\textbf{Videostabilisierung – Alternativer Ansatz:}\\
 	Die restlichen weißen Bildpunkt werden durch Anwendung einer Erosion entfernt und die übrig gebliebenen Fahrzeuge wieder mit einer Dilatation deutlich gemacht.
-	Wie in der folgenden Bilderfolge zu sehen ist, verschwinden durch die Erosion die unerwünschten Bewegungen, die nicht durch die Videostabilisierung entfernt werden konnten. Die nun kaum sichtbaren Flächen der Fahrzeuge werden mit der Dilatation so weit vergrößert, dass diese wieder gut zu detektieren sind. Die Schritte werden in der Grafik 9 gezeigt.\\
+	Wie in der folgenden Bilderfolge zu sehen ist, verschwinden durch die Erosion die unerwünschten Bewegungen, die nicht durch die Videostabilisierung entfernt werden konnten. Die nun kaum sichtbaren Flächen der Fahrzeuge werden mit der Dilatation so weit vergrößert, dass diese wieder gut zu detektieren sind \cite{ed}. Die Schritte werden in den Grafiken \ref{MOGPart1} bis \ref{MOGPart4} gezeigt.\\
 	\begin{figure}
 		\begin{subfigure}{}
 			\centering\includegraphics[width=7cm]{Media/MOG1.png}
+			\caption{Mixture of Gaussian}
+			\label{MOGPart1}
 		\end{subfigure}
 		\vspace{5pt}
 		\begin{subfigure}{}
 			\centering\includegraphics[width=7cm]{Media/MOG2.png}
+			\caption{Ergebnis der Erosion auf Mixture of Gaussian}
 		\end{subfigure}
 		\vspace{5pt}
 		\begin{subfigure}{}
 			\centering\includegraphics[width=7cm]{Media/MOG3.png}
+			\caption{Ergebnis der Dilatation auf Erosion}
 		\end{subfigure}
 		\vspace{5pt}
 		\begin{subfigure}{}
 			\centering\includegraphics[width=7cm]{Media/MOG4.png}
-			\caption{++++++++++++++++++++++}
+			\caption{Objekterkennung}
+			\label{MOGPart4}
 		\end{subfigure}	
 	\end{figure}
 	
@@ -202,28 +198,28 @@
 	Ziel des Mixture of Gaussian Algorithmus ist, den unbewegten Hintergrund zu erkennen und diesen vom Bild zu subtrahieren. Das heißt alle Pixel, die zum Hintergrund gehören, werden schwarz und alle anderen weiß dargestellt. Anschließend können mit cv2.findContours() zusammenhängende weiße Pixel zu Objekten hinzugefügt werden. Wenn die Fläche der Pixel einen definierten Threshold überschreitet, wird um diese eine Bounding Box eingezeichnet.\\
 	\textbf{Funktionsweise MOG}\\
 	Im ersten Schritt wird der Funktion eine Anzahl an Frames zum „Lernen“ zugeteilt. Aus diesen wird der unbewegte Hintergrund bestimmt, welcher später subtrahiert wird, sodass nur die bewegten Objekte übrigbleiben.
-	Der Algorithmus modelliert für jeden Pixel den Hintergrund mit unterschiedlich gewichteten Gauss-Funktionen.  Diese K-Funktionen enthalten eine Gewichtung $(\omega_i,t)$, den durchschnittlichen Intensitätswert $(\mu_i,t)$ und die Standardabweichung $(\sigma_i,t)$ für den i-ten Gaussian zum Zeitpunkt t.
+	Der Algorithmus modelliert für jeden Pixel den Hintergrund mit unterschiedlich gewichteten Gauss-Funktionen $\eta$.  Diese K-Funktionen enthalten eine Gewichtung $(\omega_i,t)$, den durchschnittlichen Intensitätswert $(\mu_i,t)$ und die Standardabweichung $(\sigma_i,t)$ für den i-ten Gaussian zum Zeitpunkt t.
 	\[ \sum_{i-1}^{K} \omega_i,t * \eta(u; \mu_i,\sigma_i)  \]
-	WAS MACHT ETA??????+++++++++????\\
-	Mit jedem neuen Pixel (z.B. Kamerabewegung oder Fahrzeugbewegung) werden die Gauss-Funktionen frameweise geupdatet. Dabei wird die Pixelhistorie und der neue Pixelwert berücksichtigt. Falls nun zu einem neuen Pixel keiner der Gauss-Funktionen innerhalb eines Thresholds passt, wird der Pixel als Vordergrund deklariert, ansonsten als Hintergrund. Die Abbildung \ref{mogKonzept} zeigt ++++++++++++++\\
+	Mit jedem neuen Pixel (z.B. Kamerabewegung oder Fahrzeugbewegung) werden die Gauss-Funktionen frameweise geupdatet. Dabei wird die Pixelhistorie und der neue Pixelwert berücksichtigt. Falls nun zu einem neuen Pixel keiner der Gauss-Funktionen innerhalb eines Thresholds passt, wird der Pixel als Vordergrund deklariert, ansonsten als Hintergrund. Diese adaptive Hintergrundsubtraktion mit MOG wird in Abbildung \ref{mogKonzept} gezeigt.\\
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=7cm]{Media/MOGKONZEPt.png}
-			\caption{Konzept des MOG Verfahrens+++++++++???????????\cite{mog1}}
+			\caption{Adaptive Hintergrundsubtraktion mit MOG \cite{mog1}}
 			\label{mogKonzept}
 		\end{center}
 	\end{figure}
-	Vereinfacht beschrieben misst der Algorithmus in den Lernbildern die Zeit, in welcher ein Pixel den gleichen Intensitätswert hat und bestimmt so den Hintergrund. Ändert sich nun dieser Wert, wird an dem Pixel eine Bewegung erkannt, dieser als Vordergrund bestimmt und die Parameter geupdatet.\\
+	Vereinfacht beschrieben misst der Algorithmus in den Lernbildern die Zeit, in welcher ein Pixel den gleichen Intensitätswert hat und bestimmt so den Hintergrund. Ändert sich nun dieser Wert, wird an dem Pixel eine Bewegung erkannt, dieser als Vordergrund bestimmt und die Parameter geupdatet \cite{m1}\cite{m2}\cite{m3}\cite{m4}.\\
 	\\
 	\textbf{Probleme MOG}\\
-	Eine Schwierigkeit bei der Objekterkennung ist, dass die Bewegungen hauptsächlich bei großen Intensitätsunterschieden wie der Wechsel von Straße zu Fahrzeuganfang und von Fahrzeugende zur Straße, erkannt werden. Große Flächen wie die Motorhaube, Windschutzscheibe und die Dachfläche werden nicht erkannt, da diese so lange einen Pixel mit einem sehr ähnlichen Intensitätswert „bedecken“, dass dieser zwischendurch als Hintergrund festgelegt wird. Dabei kann es passieren, dass je nach Thresholdgröße mehrere Objekte in einem Fahrzeug erkannt werden. ++++Bezug auf Grafik \ref{mogFehler}+++++
+	Eine Schwierigkeit bei der Objekterkennung ist, dass die Bewegungen hauptsächlich bei großen Intensitätsunterschieden wie der Wechsel von Straße zu Fahrzeuganfang und von Fahrzeugende zur Straße, erkannt werden. Große Flächen wie die Motorhaube, Windschutzscheibe und die Dachfläche werden nicht erkannt, da diese so lange einen Pixel mit einem sehr ähnlichen Intensitätswert „bedecken“, dass dieser zwischendurch als Hintergrund festgelegt wird. Dabei kann es passieren, dass je nach Thresholdgröße mehrere Objekte in einem Fahrzeug erkannt werden. Dieses Verhalten zeigt sich in Abbildung \ref{mogFehler}.
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=8cm]{Media/MOGVergleich.png}
-			\caption{+++++++++++++++++++++++++++++++++++}
+			\caption{Schwierigkeiten bei der Objekterkennung}
 			\label{mogFehler}
 		\end{center}
 	\end{figure}
+	+++++++++++++++++Streifenproblem...++++++++
 	
 	\section{Objekterkennung: YoloV4}
 	YOLO ist ein Neuronal Netz für die Echtzeit-Objekterkennung. In diesem Projekt wurde die vierte und damit aktuellste Version von Yolo\cite{b2} verwendet. So bietet jede Version inkrementelle Verbesserung zum jeweiligen Vorgänger. In dem folgenden Abschnitt werden die wichtigsten Punkte aller Versionen erläutert.\\
@@ -443,7 +439,9 @@
 	Die Hungarian Methode wird verwendet, um die Detektion einem existierenden getrackten Objekt zuzuordnen. Hierfür wird die Intersection-over-Union Distance zwischen jeder Detektion und allen bereits erkannten Objekten verglichen und als Gewichtung verwendet.
 	
 	Die Zuweisung der ID erfolgt anschließend über die optimale Lösung der Hungarian Methode, auch Kuhn-Munkres-Algorithmus genannt. Diese wird für das Lösen von Zuordnungsproblemen in einem gewichteten kompletten bipartiten Graph genutzt. Hierbei wird die Zuordnung anhand der minimalen Gewichtung, zwischen den Elementen gelöst. Gegeben ist ein Graph $G = (A \cup B, E) $. Zwischen $A$ und $B$ wird nun die Verbindung mit der kleinsten Gewichtung gesucht. Hierfür wird eine Kostenmatrix $C$ erstellt mit $c_{ij}$ als Kosten um $a_i \in A$, $b_j \in B$ zuzuordnen. Die Matrix $C$ wird anschließend reduziert. In diesem Beispiel werden Objekte den Detektionen zugeordnet. Als Gewichtung dienen die Distanzen der IoU, welche minimal sein soll.
-	
+	 
+	 ++++++++Fehler SORT++++++++++++
+	 
 	\section{Tracking: DeepSort}
 	
 	SORT an sich ist bereits ein Tracker, das Problem ist jedoch, dass die ID-Änderungen zu oft auftreten. Das heißt die Objekt-ID wechselt während der Verfolgung. Ausgelöst wird dies zum Beispiel durch die teilweise Verdeckung des Objekts. Deshalb wurde SORT um ein CNN erweitert, welches sowohl einerseits die Mahalanobis-Distanzmetrik für die Assoziation nutzt, als auch die Form des Objekts in Form eines durch das hinzugefügte CNN berechneten Feature-Vektor verfolgt. Durch Verwendung einer geeigneteren Distanzmetrik und Beschreibung des Objekts kann dieses nun besser verfolgt werden.
@@ -597,7 +595,8 @@
 	Wir testeten verschiedene Verfahren zu Zählen der gefundenen Objekte die das Video passieren.\\
 	\textbf{Zählen der vergebenen TrackingID's.}\\
 	 Unser erster Plan war das Zählen aller vergebenen Tracking ID's. Dies hätte den Vorteil, dass sobald ein Objekt gefunden wird auch gezählt wird. Wir stellten aber schnell fest, dass aufgrund von Fehlern in der Pipeline Objekten mehrfach neue IDs zugewiesen wurde. Diese Probleme entstehen in Kombination aus Fehlern in der Objekterkennung und dem Tracker. Je zuverlässiger das Tracking funktioniert desto geringer ist der Fehler im Zählen. Da aber ein perfekter Tracker nicht immer realistisch ist müssen bessere Lösungen gefunden werden.\\
-	\textbf{Zähllinie.} Um Trackingfehler zu umgehen wurde eine Zähllinie eingebaut, die sobald der Mittelpunkt der Boundingbox diese schneidet einmal hochzählt. Dies hatte noch immer Probleme wie zum Beispiel das manche Boxen doppelt gezählt wurden ohne manche die Linie direkt übersprungen haben. WAS WAR DA NOCHMAL FALSCH Thomas?\\ %TODO
+	\textbf{Zähllinie.}\\
+	 Um Trackingfehler zu umgehen wurde eine Zähllinie eingebaut, die sobald der Mittelpunkt der Boundingbox diese schneidet einmal hochzählt. Dies hatte noch immer Probleme wie zum Beispiel das manche Boxen doppelt gezählt wurden weil der Mittelpunkt kurz wieder nach oben rutschte. Manchmal wurde die Linie auch direkt übersprungen.\\
 	\textbf{Zählung der Tracking IDs in einer Zählbox.}\\
 	 Um die beiden Techniken zu vereinen wurde eine Zählbox entwickelt. So kann für jedes Szenario per Parameter die Position und Größe der Zählbox definiert werden. Sobald der Mittelpunkt einer Boundingbox in den die Zählbereich eindringt wird überprüft ob diese Tracking ID schon in einem Set enthalten ist. Ist sie es noch nicht wird hochgezählt. Es ist sinnvoll die Zählbox in Bereiche zu setzten in denen das Tracking zuverlässig funktioniert. 
 	\begin{figure}[!h]
@@ -618,7 +617,7 @@
 	Beide Verfahren haben ihre Stärken und Schwächen. Im Trackingteil sind beide Verfahren sich relativ ähnlich. Vor allem unterscheiden sich unsere Pipelines in der Objekterkennung welches dann aber auch maßgeblich die Trackingergebnisse beeinflusst. In der folgenden Liste werden die Vor- und Nachteile beider Verfahren nach unserer Erkenntnissen aufgeschlüsselt.
 	\begin{enumerate}
 		\item \textbf{Genauigkeit:} Die Deep-Learning Verfahren verzeichnen vor allem gute Out-Of-The-Box Leistung. Ohne große Hyperparameteroptimierung erreicht man schnell eine ausgezeichnete Performance. Klassische Verfahren können dabei auch sehr gute Leistung erzielen wenn genug Optimierung stattfindet. Der Aufwand der Optimierung ist aber stark von der Situation abhängig.\\
-		So stellten wir fest das die klassischen Verfahren deutlich fehleranfälliger bei schlechten Videoaufnahmen waren. Verwackelte Aufnahmen stellten eine große Herausforderung dar. Gegenmaßnahmen dafür sind ein Stativ oder andere auf Software basierende Verfahren. Die Objekterkennung basierend auf YoloV4 hat überhaupt kein Problem mit verwackelten Bildern da es jeden Frame unabhängig von einander betrachtet. Die Tracking-Algorithmen sind bezüglich starker Bewegung jedoch anfällig, da die Vorhersage der nächsten Position und der Assoziation der Detektion erschwert wird. DeepSort nutzt für die Assoziation bei starker Bewegung daher hauptsächlich den Feature-Vektor um die Objekte zuzuordnen. 
+		So stellten wir fest das die klassischen Verfahren deutlich fehleranfälliger bei schlechten Videoaufnahmen waren. Verwackelte Aufnahmen stellten eine große Herausforderung dar. Gegenmaßnahmen dafür sind ein Stativ oder andere auf Software basierende Verfahren. Die Objekterkennung basierend auf YoloV4 hat überhaupt kein Problem mit verwackelten Bildern da es jeden Frame unabhängig von einander betrachtet. Die Tracking-Algorithmen sind bezüglich starker Bewegung jedoch anfällig, da die Vorhersage der nächsten Position und der Assoziation der Detektion erschwert wird. DeepSort nutzt für die Assoziation bei starker Bewegung daher hauptsächlich den Feature-Vektor um die Objekte zuzuordnen. Es lässt sich sagen das die meisten Fehler der Tracker auf schlechter Objekterkennung basieren. DeepSORT ist dabei etwas weniger fehleranfällig als SORT.
 		
 		\item \textbf{Laufzeit:} Bei der Laufzeit haben die klassischen Verfahren einen klaren Vorteil. Hier erzielten wir etwa doppelt so viele Bilder pro Sekunde als bei den DeepLearning Methoden. Außerdem dürfte es schwieriger sein Deep-Learning Verfahren auf Embedded Geräten lauffähig zu bekommen. Prinzipiell sollten beide Methoden auf Grafikkarten beschleunigt werden können.
 		
@@ -629,24 +628,20 @@
 	\end{enumerate}
 	Zusammenfassend lässt sich sagen das beide Verfahren ihre Stärken haben. Die Entscheidung welche Methode verwendet werden sollte hängt stark von der Situation und den verfügbaren Ressourcen ab.
 	
-	[https://learnopencv.com/video-stabilization-using-point-feature-matching-in-opencv/]
-	[https://de.wikipedia.org/wiki/Bildstabilisierung]	
-	[https://docs.opencv.org/3.4/d4/dee/tutorial\_optical\_flow.html]
-	[https://docs.opencv.org/3.4/d4/d8c/tutorial\_py\_shi\_tomasi.html]	
-	[https://docs.opencv.org/3.4/dc/d6b/group\_\_video\_\_track.html]
-	https://www.cs.hs-rm.de/~ulges/teaching/15MLSEM/files/folien/suhr.pdf
-	https://opencv24-python-tutorials.readthedocs.io/en/latest/py\_tutorials/py\_video/py\_bg\_subtraction/py\_bg\_subtraction.html
-	http://www1.ece.neu.edu/~schirner/cv/AsilomarSCC13\_MoG.pdf
-	https://link.springer.com/article/10.1007/s10462-017-9542-x
-	https://docs.opencv.org/3.4.12/db/df6/tutorial\_erosion\_dilatation.html
-	https://docs.opencv.org/3.4/d1/dc5/tutorial\_background\_subtraction.html
-	
-	
 	\begin{thebibliography}{00}
 		\bibitem{z1}https://www.zeit.de/news/2020-10/18/s-bahn-stammstrecke-in-muenchen-fuer-arbeiten-gesperrt
-		%\bibitem{g1}https://www.marcotec-shop.de/de/ikan-ms-pro-beholder-gimbal-fur-spiegellose-kameras-ms-pro-demo.html
-		%\bibitem{g2}https://www.amazon.de/Kamerastativ-Spiegelreflexkameras-Handy-Halterung-GoPro-Adapter-Schnellwechselplatten/dp/B07CTHS6W8
 		\bibitem{mog1}http://www1.ece.neu.edu/~schirner/cv/AsilomarSCC13\_MoG.pdf
+		\bibitem{stab}https://de.wikipedia.org/wiki/Bildstabilisierung
+		\bibitem{s1}https://learnopencv.com/video-stabilization-using-point-feature-matching-in-opencv/
+		\bibitem{s2}https://docs.opencv.org/3.4/d4/dee/tutorial\_optical\_flow.html
+		\bibitem{s3}https://docs.opencv.org/3.4/d4/d8c/tutorial\_py\_shi\_tomasi.html
+		\bibitem{s4}https://docs.opencv.org/3.4/dc/d6b/group\_\_video\_\_track.html
+		\bibitem{ed}https://docs.opencv.org/3.4.12/db/df6/tutorial\_erosion\_dilatation.html
+		\bibitem{m1}https://www.cs.hs-rm.de/~ulges/teaching/15MLSEM/files/folien/suhr.pdf
+		\bibitem{m2}https://opencv24-python-tutorials.readthedocs.io/en/latest/py\_tutorials/py\_video/py\_bg\_subtraction/py\_bg\_subtraction.html
+		\bibitem{m3}https://link.springer.com/article/10.1007/s10462-017-9542-x
+		\bibitem{m4}https://docs.opencv.org/3.4/d1/dc5/tutorial\_background\_subtraction.html
+		
 		\bibitem{b0}https://medium.com/@sarangzambare/object-detection-using-non-max-supression-over-yolov2-382a90212b51
 		\bibitem{b1}https://arxiv.org/pdf/1506.02640v5.pdf
 		\bibitem{b2}https://arxiv.org/pdf/2004.10934.pdf %V4

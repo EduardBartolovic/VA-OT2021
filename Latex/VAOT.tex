@@ -375,7 +375,7 @@
 	Dennoch kann man je nach Szenario per Parameter die relevanten Klassen auswählen. Das Modell prädiktiert trotzdem noch alle Klassen. Die nicht relevanten werden im Postprocessing herausgefiltert.\\
 	Ein weitere Postprocessingschritt ist es die Detektion die eine zu geringe Sicherheit besitzen zu entfernen.\\
 	Die übrigen Boxen durchlaufen eine Non-Maximum-Suppression (NMS)\cite{nms}.
-	Der Output kann überschneidende Bounding Boxen besitzen die eigentlich zur selben Klasse gehören. Diese Duplikate können mittels der Non-Maximum-Suppression (NMS) entfernt werden. Hierfür wird die IoU der Boxen berechnet. Sollte die IoU einen Threshold überschreiten dann wird das Duplikat entfernt. Die Grafik \ref{NMS} zeigt wie zu viele überlappende Boxen mit einer NMS mit einer ersetzt werden kann.\\
+	Der Output kann überschneidende Bounding Boxen besitzen die eigentlich zur selben Klasse gehören. Diese Duplikate können mittels der Non-Maximum-Suppression (NMS) entfernt werden. Hierfür wird die IoU der Boxen berechnet. Sollte die IoU einen Threshold überschreiten dann wird das Duplikat entfernt. Die Grafik \ref{NMS} zeigt wie zu viele überlappende Boxen mit einer NMS mit einer ersetzt werden kann.
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=6cm]{Media/NMS.png}
@@ -387,6 +387,7 @@
 	
 	\subsection{Fehler in der Erkennung}
 	YOLOv4 ist nicht perfekt. So gibt es gelegentlich Falschklassifizierungen, fehlende Detektionen oder unpassende Bounding Boxen.  Fehlerursachen sind aber sehr schwer zu erklären, da das Netz eine Blackbox ist. Dieser Abschnitt zeigt Beispiele für diese Art von Fehler auf.\\
+	\\
 	\textbf{Falschklassifizierung:}\\
 	Selten Klassifiziert das Netz falsch. So wie in der Abbildung \ref{FaK} zu sehen ist wurde ein Bus als Pkw klassifiziert. Das Modell ist sich in diesem Beispiel auch nur unsicher mit $31\%$. Der Fehler lässt sich vermutlich damit das die Frontpartie des Busses einem Pkw sehr ähnelt und der Rest des Fahrzeuges wegen eines Baum und einer Laterne verdeckt wird. Auch ist zu vermuten, dass das Netz falsche Merkmale gelernt hat. Dies könnte mit Sicherheit verbessert werden wenn das Modell nur auf die für das Projekt relevanten Klassen trainiert worden wäre. Die folgenden Abbildungen \ref{FaK}, \ref{FaK2}, \ref{FaK3} und \ref{FaK4} sind Beispiele für falsche Klassifikationen. Speziell ist vor allem der Fehler in Bild \ref{FaK4}. Hier wurde ein Anhänger als Fahrzeug klassifiziert. Der Ursprung dieses Fehlers kann unterschiedliche Gründe haben. Dies liegt wahrscheinlich auch am Datensatz selbst.
 	\begin{figure}[!h]
@@ -417,16 +418,16 @@
 			\label{FaK4}
 		\end{center}
 	\end{figure}\\
-	
+	\\
 	\textbf{Fehlende Detektion:}\\
-	Ein etwas häufigerer Fehler ist das Detektionen komplett fehlen. So zeigt die Abbildung \ref{FeK} und \ref{FeK2} zwei Typische Gründe. Hauptgrund ist es das Objekte teilweise verdeckt sind. In Kombination, wenn Objekte sehr klein sind, ist es nahezu nicht mehr möglich zuverlässig Detektion zu bekommen. Auch wenn Objekte das Bild verlassen oder gerade betreten, kann es noch kurz zu fehlenden Detektionen führen.
+	Ein etwas häufigerer Fehler ist das Detektionen komplett fehlen. So zeigt die Abbildung \ref{FeK} und \ref{FeK2} zwei Typische Gründe. Hauptgrund ist es das Objekte teilweise verdeckt sind. In Kombination, wenn Objekte sehr klein sind, ist es nahezu nicht mehr möglich zuverlässig Detektion zu bekommen. Auch wenn Objekte das Bild verlassen oder gerade betreten, kann es noch kurz zu fehlenden Detektionen führen.\\
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=7cm]{Media/Output_680 - Kopie.jpg}
 			\caption{Fehlende Klassifikationen}
 			\label{FeK}
 		\end{center}
-	\end{figure}\\
+	\end{figure}
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=7cm]{Media/Output_108 - Kopie.jpg}
@@ -435,36 +436,36 @@
 		\end{center}
 	\end{figure}\\
 	\textbf{Unpassende Bounding Boxen:}\\
-	YOLO hat durch seine Eigenschaft nur rechteckige Bounding Boxen vorhersagen zu können eine große Schwäche. Das resultiert in manchen Szenarien zu sehr unpassenden Bounding Boxen. Beispielsweise kann man in der Abbildung \ref{UB} gut erkennen das wegen dem Busses welcher diagonal steht die Boxen sehr groß werden können. Der Effekt tritt noch verstärkter auf bei noch längere Objekten wie Zügen wie in Bild \ref{UB4} zusehen. Der Fehler der in Abbildung \ref{UB3} zu sehen ist hängt womöglich von Fehlern im Training zusammen. Züge wurden vielleicht an Bahnsteigen schlecht gelabelt was dem Netz dann beigebracht hat Bahnsteige als Züge zu klassifizieren. Auch kann die Box für das Objekt etwas falsch anliegen wenn Bäume oder Laternen ein Teil verdecken wie in Abbildung \ref{UB2} zu sehen ist. Diese unpassenden Boxen erschweren das Tracking ungemein. Dazu später aber noch mehr. 
+	YOLO hat durch seine Eigenschaft nur rechteckige Bounding Boxen vorhersagen zu können eine große Schwäche. Das resultiert in manchen Szenarien zu sehr unpassenden Bounding Boxen. Beispielsweise kann man in der Abbildung \ref{UB} gut erkennen das wegen dem Busses welcher diagonal steht die Boxen sehr groß werden können. Der Effekt tritt noch verstärkter auf bei noch längere Objekten wie Zügen wie in Bild \ref{UB4} zusehen. Der Fehler der in Abbildung \ref{UB3} zu sehen ist hängt womöglich von Fehlern im Training zusammen. Züge wurden vielleicht an Bahnsteigen schlecht gelabelt was dem Netz dann beigebracht hat Bahnsteige als Züge zu klassifizieren. Auch kann die Box für das Objekt etwas falsch anliegen wenn Bäume oder Laternen ein Teil verdecken wie in Abbildung \ref{UB2} zu sehen ist. Diese unpassenden Boxen erschweren das Tracking ungemein. Dazu später aber noch mehr.\\
 	\begin{figure}[!h]
 		\begin{center}
-			\includegraphics[width=8cm]{Media/Output_777 - Kopie.jpg}
+			\includegraphics[width=6cm]{Media/Output_777 - Kopie.jpg}
 			\caption{Unpassende Bounding Box}
 			\label{UB}
 		\end{center}
-	\end{figure}\\
+	\end{figure}
 	\begin{figure}[!h]
 		\begin{center}
-			\includegraphics[width=8cm]{Media/Output_2126.jpg}
+			\includegraphics[width=7cm]{Media/Output_2126.jpg}
 			\caption{Unpassende Bounding Box}
 			\label{UB4}
 		\end{center}
-	\end{figure}\\
+	\end{figure}
 	\begin{figure}[!h]
 		\begin{center}
-			\includegraphics[width=8cm]{Media/Output_276 - Kopie.jpg}
+			\includegraphics[width=7cm]{Media/Output_276 - Kopie.jpg}
 			\caption{Unpassende Bounding Box}
 			\label{UB2}
 		\end{center}
-	\end{figure}\\
+	\end{figure}
 	\begin{figure}[!h]
 		\begin{center}
-			\includegraphics[width=8cm]{Media/Output_564.jpg}
+			\includegraphics[width=7cm]{Media/Output_564.jpg}
 			\caption{Unpassende Bounding Box}
 			\label{UB3}
 		\end{center}
-	\end{figure}\\
-
+	\end{figure}
+	\vspace{2cm}
 	
 	
 	\section{Tracking: Sort}

@@ -85,7 +85,7 @@
 		\end{center}
 	\end{figure}\\
 	\textbf{Zugaufnahmen an der Donnersbergerbrücke:}
-	Eine Aufnahme einer der am stärksten befahren Bahnstrecken Europas\cite{z1}. Hier existiert viel Zugverkehr auf mehreren Gleisen mit unterschiedlichen Zugtypen. Beobachtet werden die vier Gleise der zwei Bahnsteige des S-Bahnhalts Donnersbergerbrücke. Ein Hindernis sind die Masten, Signale, Bäume und das Bahnsteigdach welche einen guten Blick auf die Züge erschweren. In dieser Aufnahme sind Züge und Fußgänger enthalten. Der Fokus liegt aber auf den Zügen. Das Video hat 30 Bilder pro Sekunde und eine Bildauflösung $1920$ × $1080$. Es wurde ein Stativ verwendet.\\
+	Eine Aufnahme einer der am stärksten befahren Bahnstrecken Europas \cite{z1}. Hier existiert viel Zugverkehr auf mehreren Gleisen mit unterschiedlichen Zugtypen. Beobachtet werden die vier Gleise der zwei Bahnsteige des S-Bahnhalts Donnersbergerbrücke. Ein Hindernis sind die Masten, Signale, Bäume und das Bahnsteigdach welche einen guten Blick auf die Züge erschweren. In dieser Aufnahme sind Züge und Fußgänger enthalten. Der Fokus liegt aber auf den Zügen. Das Video hat 30 Bilder pro Sekunde und eine Bildauflösung $1920$ × $1080$. Es wurde ein Stativ verwendet.\\
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=6.8cm]{Media/DonnersbergerRaw.png}
@@ -242,8 +242,8 @@
 \end{figure}
 	
 	\section{Objekterkennung: YOLOv4}
-	YOLO\cite{b1} ist ein Neuronal Netz für die Echtzeit-Objekterkennung. In diesem Projekt wurde die vierte und damit aktuellste Version von YOLO\cite{b2} verwendet. So bietet jede Version inkrementelle Verbesserung zum jeweiligen Vorgänger. In dem folgenden Abschnitt werden die wichtigsten Punkte aller Versionen erläutert.\\
-	YOLO ist die Abkürzung für 'You Only Look Once' was übersetzt 'Man sieht nur einmal hin' heißt. Die Aufgabe der Objekterkennung besteht darin, den Ort und die Größe der Bounding Box im Bild zu bestimmen, sowie die Objekte zu klassifizieren. Frühere Methoden, wie R-CNN\cite{rcnn} und seine Variationen, verwendeten eine Pipeline, um diese Aufgabe in mehreren Schritten durchzuführen. Dies ist in der Ausführung langsam und aufwendiger zu trainieren, da jede einzelne Komponente separat trainiert werden muss. YOLO, erledigt beide Aufgaben mit einem einzigen Convolutional Neural Network. Es betrachtet dabei die Objekterkennung als ein Regressionsproblem auf räumlich getrennte Bounding Boxen und zugehörige Klassenwahrscheinlichkeiten.\\
+	YOLO \cite{b1} ist ein Neuronal Netz für die Echtzeit-Objekterkennung. In diesem Projekt wurde die vierte und damit aktuellste Version von YOLO \cite{b2} verwendet. So bietet jede Version inkrementelle Verbesserung zum jeweiligen Vorgänger. In dem folgenden Abschnitt werden die wichtigsten Punkte aller Versionen erläutert.\\
+	YOLO ist die Abkürzung für 'You Only Look Once' was übersetzt 'Man sieht nur einmal hin' heißt. Die Aufgabe der Objekterkennung besteht darin, den Ort und die Größe der Bounding Box im Bild zu bestimmen, sowie die Objekte zu klassifizieren. Frühere Methoden, wie R-CNN \cite{rcnn} und seine Variationen, verwendeten eine Pipeline, um diese Aufgabe in mehreren Schritten durchzuführen. Dies ist in der Ausführung langsam und aufwendiger zu trainieren, da jede einzelne Komponente separat trainiert werden muss. YOLO, erledigt beide Aufgaben mit einem einzigen Convolutional Neural Network. Es betrachtet dabei die Objekterkennung als ein Regressionsproblem auf räumlich getrennte Bounding Boxen und zugehörige Klassenwahrscheinlichkeiten.\\
 	Für die Regression verwendete Loss-Funktion betrachtet drei Komponenten:
 	\begin{enumerate}
 		\item \textbf{Localization loss:} Differenz zwischen vorhergesagten Bounding-Box-Werten (x,y,w und h) und tatsächlichen Bounding-Box-Werten.
@@ -289,16 +289,16 @@
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=6cm]{Media/Ankerboxen.png}
-			\caption{Passende Ankerboxen werden ausgewählt\cite{b0}}
+			\caption{Passende Ankerboxen werden ausgewählt \cite{b0}}
 			\label{Anker}
 		\end{center}
 	\end{figure}
-	Diese Ankerboxen kann man mittels Clusteralgorithmen wie K-Means\cite{kmeans} und den Bounding Boxen aus dem Datensatz berechnen. Dies hat vor allem den Vorteil, dass die Bounding Boxen besser zu den Objekten des jeweiligen Datensatzes passen.\\
+	Diese Ankerboxen kann man mittels Clusteralgorithmen wie K-Means \cite{kmeans} und den Bounding Boxen aus dem Datensatz berechnen. Dies hat vor allem den Vorteil, dass die Bounding Boxen besser zu den Objekten des jeweiligen Datensatzes passen.\\
 	Jede Vorhersagen für eine Bounding Box enthält die 4 Koordinaten: $t_x, t_y, t_w, t_h$. $t_x$ und $ t_y$ sind die x an y Koordinaten, relative Zellen Mittelpunkt. $t_w$ und $ t_h$ sind die Skalierungsfaktoren relativ zu Ankerboxdimensionen. $p_w$ und $p_h$ sind die Breite und Höhe der Ankerbox. Dabei gibt es noch einen Gitterzellenoffset $c_x$ und $c_y$.
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=6cm]{Media/YoloV3PredictionBox.png}
-			\caption{Zusammensetzung einer Bounding Box\cite{b3}}
+			\caption{Zusammensetzung einer Bounding Box \cite{b3}}
 			\label{PredictionBox}
 		\end{center}
 	\end{figure}\\
@@ -324,10 +324,10 @@
 	Die letzte dieser Schichten der jeweiligen Skalierungen sagt einen 3-D-Tensor voraus, der Bounding Box, Objekthaftigkeit und Klassenvorhersagen enthält. Es werden aber für jede der drei Skalierung drei Boxen vorausgesagt. Der Tensor enthält dann die vier Bounding-Box-Offsets, eine Objektvorhersage und 80 Klassenvorhersagen $N*N*[3*(4 + 1 + 80)]$ \cite{b4}.\\
 	\\
 	YOLOv4 hat die Geschwindigkeit und Genauigkeit verbessert. So nennt das Paper \cite{b2} zum Beispiel \textit{Bag of Freebies}. Damit sind Verbesserungen gemeint, die die Genauigkeit des Modells zur Trainingszeit verbessern, aber die Inferenzzeit nicht beeinflussen. So wurde stark das Training optimiert. Bei dem Training werden Bilder zusätzlich aus dem Datensatz generiert. Existierende Bilder werden dupliziert und dann rotiert, zugeschnitten, verzerrt, verdunkelt, etc. und dann auch durch das Netz geschickt. 
-	Auch Techniken wie \textit{Cut Mix}\cite{cutmix} und \textit{Mosaic Data Augmentation} werden angewendet. Bei älteren Verfahren werden Bildteile gelöscht. Bei den beiden verwendeten Verfahren werden stattdessen Bildteile aus den Trainingsdaten ausgeschnitten und kombiniert, wobei die Ground-Truth-Labels ebenfalls angepasst werden müssen. Die Data Augmentation sorgt für eine verbesserte Generalisierungfähigkeit des Modells.\\
-	Regularisierungsmethoden wie \textit{DropOut} \cite{dropout} und \textit{DropBlock}\cite{dropblock} wurden gegen Overfitting eingesetzt.\\
-	Auch wird die Lossfunktion aus YOLOv1 angepasst. Bei den bisherigen Versionen wurde die mittlere quadratische Abweichung (MSE) für das Regressionsproblem verwendet. Die Regression wird dann unabhängig für alle Vorhersagen von $t_x, t_y, t_w, t_h$ verwendet. Sinnvoller ist es die Koordinaten zusammen als die IoU der Bounding Boxen in Betracht zu ziehen. Deshalb verwendet YOLOv4 \textit{CIoU}\cite{diou} als Lossfunktion, um die Integrität der Objekte mit einzubeziehen.\\
-	Weitere Verbesserungen die auf Kosten der Laufzeit gehen werden \textit{Bag of Specials} genannt. Dazu gehören zum Beispiel \textit{Squeeze-and-Excitation}, \textit{Spatial Attention Module}\cite{cbam}, Vergrößerung des Rezeptionsfeldes des Modells und Stärkung der Fähigkeit zur Merkmalsintegration.\\
+	Auch Techniken wie \textit{Cut Mix} \cite{cutmix} und \textit{Mosaic Data Augmentation} werden angewendet. Bei älteren Verfahren werden Bildteile gelöscht. Bei den beiden verwendeten Verfahren werden stattdessen Bildteile aus den Trainingsdaten ausgeschnitten und kombiniert, wobei die Ground-Truth-Labels ebenfalls angepasst werden müssen. Die Data Augmentation sorgt für eine verbesserte Generalisierungfähigkeit des Modells.\\
+	Regularisierungsmethoden wie \textit{DropOut} \cite{dropout} und \textit{DropBlock} \cite{dropblock} wurden gegen Overfitting eingesetzt.\\
+	Auch wird die Lossfunktion aus YOLOv1 angepasst. Bei den bisherigen Versionen wurde die mittlere quadratische Abweichung (MSE) für das Regressionsproblem verwendet. Die Regression wird dann unabhängig für alle Vorhersagen von $t_x, t_y, t_w, t_h$ verwendet. Sinnvoller ist es die Koordinaten zusammen als die IoU der Bounding Boxen in Betracht zu ziehen. Deshalb verwendet YOLOv4 \textit{CIoU} \cite{diou} als Lossfunktion, um die Integrität der Objekte mit einzubeziehen.\\
+	Weitere Verbesserungen die auf Kosten der Laufzeit gehen werden \textit{Bag of Specials} genannt. Dazu gehören zum Beispiel \textit{Squeeze-and-Excitation}, \textit{Spatial Attention Module} \cite{cbam}, Vergrößerung des Rezeptionsfeldes des Modells und Stärkung der Fähigkeit zur Merkmalsintegration.\\
 	Im Backbone wird eine \textit{MISH}-Aktivierungsfunktion \cite{b7} verwendet. Diese ist eine glatte und nicht-monotone neuronale Aktivierungsfunktion, die wie folgt definiert werden kann:
 	\[ f(x) = x* \tanh (\ln (1+e^x)) \]
 	Sie arbeitet besser als zum Beispiel \textit{ReLU} oder Swish \cite{b7}.\\
@@ -449,7 +449,7 @@
 	
 	
 	\section{Tracking: Sort}
-	SORT \cite{sort} berechnet auf Basis des Kalman Filters\cite{kalman} und der Ungarische Methode\cite{hungarian} die Bewegung des Objekts und weist je nach Status eine eindeutige Identifikationsnummer zu. 
+	SORT \cite{sort} berechnet auf Basis des Kalman Filters \cite{kalman} und der Ungarische Methode \cite{hungarian} die Bewegung des Objekts und weist je nach Status eine eindeutige Identifikationsnummer zu. 
 	
 	Der Kalman-Filter funktioniert für die Problemstellung sehr gut, da dieser ein lineares System mit gaußisches Rauschen voraussetzt. Dies ist gegeben durch die gleichmäßige Bewegung der Züge/ Autos in eine Richtung.
 	Der Kalmanfilter kann aus verrauschten, teils redundanten Messungen die Zustände und Parameter des aktuellen Systems schätzen. 

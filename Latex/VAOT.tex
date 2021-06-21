@@ -66,29 +66,29 @@
 	
 	\section{Videomaterial}
 	Für dieses Projekt wurden mehrere Aufnahmen aufgenommen. Ziel war es keine zu chaotischen, aber auch nicht zu einfache Aufnahmen zu erstellen. Auch sollten verschiedene Szenarien abgebildet werden. Es wurden drei Aufnahmen angefertigt.\\
-	\textbf{Verkehrsaufnahmen am Brudermühltunnel am Mittleren Ring:}\\
+	\textbf{Verkehrsaufnahmen am Brudermühltunnel am Mittleren Ring:}
 	Dieser Teil des Mittleren Rings ist sehr verkehrsreich und Autobahnähnlich ausgebaut. Es gibt mehrere Fahrspuren. Alle Fahrzeuge fahren im Sichtfeld in eine Richtung. Es sind ein paar Laternen und Bäume in der Aufnahme die die Sicht etwas beeinträchtigen. Es sind nur Pkw im Datensatz enthalten. Teilweise missachten Fahrzeuge den Sicherheitsabstand und fahren sehr nah aufeinander auf. Dies erschwert die Detektion. Das Video wurde in 60 Bilder pro Sekunde aufgezeichnet und hat eine Bildauflösung $3840$ × $2160$. Es wurde kein Stativ verwendet, sondern nur die interne Stabilisierung des Smartphones genutzt.
 	\begin{figure}[!h]
 		\begin{center}
-			\includegraphics[width=8cm]{Media/BrudermuhlRaw.png}
+			\includegraphics[width=6.8cm]{Media/BrudermuhlRaw.png}
 			\caption{Verkehrsaufnahmen am Brudermühltunnel}
 			\label{BrudermuhlRaw}
 		\end{center}
 	\end{figure}\\
-	\textbf{Verkehrsaufnahmen am Candidtunnel:}\\
+	\textbf{Verkehrsaufnahmen am Candidtunnel:}
 	Eine stark befahrene Straße mit einer Vielzahl von Verkehrsteilnehmern. Es herrscht Zweirichtungsverkehr mit insgesamt sechs Fahrspuren. In eine Richtung stehen die Fahrzeuge in einem Stau. Durch Regen spiegeln viele Oberflächen. Die Bäume bewegen sich aufgrund von stärkeren Wind und verdecken einen Teil der Fahrbahn. Diese Aufnahme ist die Anspruchsvollste. In diesem Video sind neben Pkw auch Busse enthalten. Das Video hat 60 Bilder pro Sekunde und eine Bildauflösung von $3840$ × $2160$. Es wurde kein Stativ verwendet sondern nur die interne Stabilisierung des Smartphones genutzt.
 	\begin{figure}[!h]
 		\begin{center}
-			\includegraphics[width=8cm]{Media/CandidRaw.png}
+			\includegraphics[width=6.8cm]{Media/CandidRaw.png}
 			\caption{Verkehrsaufnahmen am Candidtunnel}
 			\label{CandidtunnelRaw}
 		\end{center}
 	\end{figure}\\
-	\textbf{Zugaufnahmen an der Donnersbergerbrücke:}\\
+	\textbf{Zugaufnahmen an der Donnersbergerbrücke:}
 	Eine Aufnahme einer der am stärksten befahren Bahnstrecken Europas\cite{z1}. Hier existiert viel Zugverkehr auf mehreren Gleisen mit unterschiedlichen Zugtypen. Beobachtet werden die vier Gleise der zwei Bahnsteige des S-Bahnhalts Donnersbergerbrücke. Ein Hindernis sind die Masten, Signale, Bäume und das Bahnsteigdach welche einen guten Blick auf die Züge erschweren. In dieser Aufnahme sind Züge und Fußgänger enthalten. Der Fokus liegt aber auf den Zügen. Das Video hat 30 Bilder pro Sekunde und hat eine Bildauflösung $1920$ × $1080$. Es wurde ein Stativ verwendet.\\
 	\begin{figure}[!h]
 		\begin{center}
-			\includegraphics[width=8cm]{Media/DonnersbergerRaw.png}
+			\includegraphics[width=6.8cm]{Media/DonnersbergerRaw.png}
 			\caption{Zugaufnahmen an der Donnersbergerbrücke}
 			\label{DonnersbergerRaw}
 		\end{center}
@@ -138,7 +138,6 @@
 		\end{figure}
 		
 		\item Danach kann mit der Lucas-Kanade Methode der Optical Flow bestimmt werden. Wie in der Abbildung \ref{VS2} zu sehen ist werden sowohl die Bewegungen der Fahrzeuge als auch Bewegungen in den Bäumen oder den Straßenlaternen im Hintergrund eingezeichnet. Diese sind geringer als die Bewegung der Fahrzeuge und entstehen durch das Wackeln der Hand beim Filmen. Sie könnten allerdings auch durch Wind verursacht werden, wodurch es zu einem Fehler bei der Stabilisierung kommen könnte.
-		
 		\begin{figure}[!h]
 			\begin{center}
 				\includegraphics[width=8cm]{Media/VideoStab2.png}
@@ -204,23 +203,43 @@
 	Mit jedem neuen Pixel (z.B. Kamerabewegung oder Fahrzeugbewegung) werden die Gauss-Funktionen frameweise geupdatet. Dabei wird die Pixelhistorie und der neue Pixelwert berücksichtigt. Falls nun zu einem neuen Pixel keiner der Gauss-Funktionen innerhalb eines Thresholds passt, wird der Pixel als Vordergrund deklariert, ansonsten als Hintergrund. Diese adaptive Hintergrundsubtraktion mit MOG wird in Abbildung \ref{mogKonzept} gezeigt.\\
 	\begin{figure}[!h]
 		\begin{center}
-			\includegraphics[width=7cm]{Media/MOGKONZEPt.png}
+			\includegraphics[width=8cm]{Media/MOGKONZEPt.png}
 			\caption{Adaptive Hintergrundsubtraktion mit MOG \cite{mog1}}
 			\label{mogKonzept}
 		\end{center}
 	\end{figure}
 	Vereinfacht beschrieben misst der Algorithmus in den Lernbildern die Zeit, in welcher ein Pixel den gleichen Intensitätswert hat und bestimmt so den Hintergrund. Ändert sich nun dieser Wert, wird an dem Pixel eine Bewegung erkannt, dieser als Vordergrund bestimmt und die Parameter geupdatet \cite{m1}\cite{m2}\cite{m3}\cite{m4}.\\
 	\\
-	\textbf{Probleme MOG}\\
-	Eine Schwierigkeit bei der Objekterkennung ist, dass die Bewegungen hauptsächlich bei großen Intensitätsunterschieden wie der Wechsel von Straße zu Fahrzeuganfang und von Fahrzeugende zur Straße, erkannt werden. Große Flächen wie die Motorhaube, Windschutzscheibe und die Dachfläche werden nicht erkannt, da diese so lange einen Pixel mit einem sehr ähnlichen Intensitätswert „bedecken“, dass dieser zwischendurch als Hintergrund festgelegt wird. Dabei kann es passieren, dass je nach Thresholdgröße mehrere Objekte in einem Fahrzeug erkannt werden. Dieses Verhalten zeigt sich in Abbildung \ref{mogFehler}.
+	\subsection{Fehler in der Erkennung}
+	Eine Schwierigkeit bei der Objekterkennung ist, dass die Bewegungen hauptsächlich bei großen Intensitätsunterschieden wie der Wechsel von Straße zu Fahrzeuganfang und von Fahrzeugende zur Straße, erkannt werden. Große Flächen wie die Motorhaube, Windschutzscheibe und die Dachfläche werden nicht erkannt, da diese so lange einen Pixel mit einem sehr ähnlichen Intensitätswert „bedecken“, dass dieser zwischendurch als Hintergrund festgelegt wird. Dabei kann es passieren, dass je nach Thresholdgröße mehrere Objekte in einem Fahrzeug erkannt werden. Dieses Verhalten zeigt sich in Abbildung \ref{mogFehler1}, \ref{mogFehler2} und \ref{mogFehler3}. Ein weiteres Problem ist es wenn auf der neben den Objekten Kanten liegen. Diese Kanten sorgen zum Beispiel dafür, das der Bus in der Grafik \ref{mogFehler2} und \ref{mogFehler4} wird zweigeteilt. Der Grund hierfür dürfte die Bordsteinkante und der Asphaltflick auf dem Radweg sein. All diese Probleme führen dazu das der Bus der in den Abbildungen \ref{mogFehler2} und \ref{mogFehler3} insgesamt dreimal erkannt wird.
 	\begin{figure}[!h]
 		\begin{center}
-			\includegraphics[width=8cm]{Media/MOGVergleich.png}
+			\includegraphics[width=9cm]{Media/MOGVergleich.png}
 			\caption{Schwierigkeiten bei der Objekterkennung}
-			\label{mogFehler}
+			\label{mogFehler1}
 		\end{center}
 	\end{figure}
-	+++++++++++++++++Streifenproblem...++++++++
+	\begin{figure}[!h]
+		\begin{center}
+			\includegraphics[width=8cm]{Media/Output_733.jpg}
+			\caption{Schwierigkeiten bei der Objekterkennung}
+			\label{mogFehler2}
+		\end{center}
+	\end{figure}
+	\begin{figure}[!h]
+		\begin{center}
+			\includegraphics[width=8cm]{Media/Output_847MOG1.jpg}
+			\caption{Schwierigkeiten bei der Objekterkennung}
+			\label{mogFehler3}
+		\end{center}
+	\end{figure}
+	\begin{figure}[!h]
+	\begin{center}
+		\includegraphics[width=8cm]{Media/Output_847MOG2.jpg}
+		\caption{Schwierigkeiten bei der Objekterkennung}
+		\label{mogFehler4}
+	\end{center}
+\end{figure}
 	
 	\section{Objekterkennung: YoloV4}
 	YOLO\cite{b1} ist ein Neuronal Netz für die Echtzeit-Objekterkennung. In diesem Projekt wurde die vierte und damit aktuellste Version von Yolo\cite{b2} verwendet. So bietet jede Version inkrementelle Verbesserung zum jeweiligen Vorgänger. In dem folgenden Abschnitt werden die wichtigsten Punkte aller Versionen erläutert.\\
@@ -441,8 +460,6 @@
 	
 	Die Zuweisung der ID erfolgt anschließend über die optimale Lösung der Ungarische Methode, auch Kuhn-Munkres-Algorithmus genannt. Diese wird für das Lösen von Zuordnungsproblemen in einem gewichteten kompletten bipartiten Graph genutzt. Hierbei wird die Zuordnung anhand der minimalen Gewichtung, zwischen den Elementen gelöst. Gegeben ist ein Graph $G = (A \cup B, E) $. Zwischen $A$ und $B$ wird nun die Verbindung mit der kleinsten Gewichtung gesucht. Hierfür wird eine Kostenmatrix $C$ erstellt mit $c_{ij}$ als Kosten um $a_i \in A$, $b_j \in B$ zuzuordnen. Die Matrix $C$ wird anschließend reduziert. In diesem Beispiel werden Objekte den Detektionen zugeordnet. Als Gewichtung dienen die Distanzen der IoU, welche minimal sein soll \cite{hungarian}.
 	 
-	 ++++++++Fehler SORT++++++++++++
-	 
 	\section{Tracking: DeepSort}
 	
 	SORT an sich ist bereits ein Tracker, das Problem ist jedoch, dass die ID-Änderungen zu oft auftreten. Das heißt die Objekt-ID wechselt während der Verfolgung. Ausgelöst wird dies zum Beispiel durch die teilweise Verdeckung des Objekts. Deshalb wurde SORT erweitert in Form von DeepSort \cite{deepSort}, welches sowohl einerseits die Mahalanobis-Distanzmetrik für die Assoziation nutzt, als auch die Form des Objekts in Form eines durch das hinzugefügte CNN berechneten Feature-Vektor verfolgt. Durch Verwendung einer geeigneteren Distanzmetrik und Beschreibung des Objekts kann dieses nun besser verfolgt werden.
@@ -609,11 +626,11 @@
 	
 	\section{Zählen von Objekten}
 	Wir testeten verschiedene Verfahren zu Zählen der gefundenen Objekte die das Video passieren.\\
-	\textbf{Zählen der vergebenen TrackingID's.}\\
+	\textbf{Zählen der vergebenen TrackingID's:}\\
 	 Unser erster Plan war das Zählen aller vergebenen Tracking ID's. Dies hätte den Vorteil, dass sobald ein Objekt gefunden wird auch gezählt wird. Wir stellten aber schnell fest, dass aufgrund von Fehlern in der Pipeline Objekten mehrfach neue IDs zugewiesen wurde. Diese Probleme entstehen in Kombination aus Fehlern in der Objekterkennung und dem Tracker. Je zuverlässiger das Tracking funktioniert desto geringer ist der Fehler im Zählen. Da aber ein perfekter Tracker nicht immer realistisch ist müssen bessere Lösungen gefunden werden.\\
-	\textbf{Zähllinie.}\\
+	\textbf{Zähllinie:}\\
 	 Um Trackingfehler zu umgehen wurde eine Zähllinie eingebaut, die sobald der Mittelpunkt der Boundingbox diese schneidet einmal hochzählt. Dies hatte noch immer Probleme wie zum Beispiel das manche Boxen doppelt gezählt wurden weil der Mittelpunkt kurz wieder nach oben rutschte. Manchmal wurde die Linie auch direkt übersprungen.\\
-	\textbf{Zählung der Tracking IDs in einer Zählbox.}\\
+	\textbf{Zählung der Tracking IDs in einer Zählbox:}\\
 	 Um die beiden Techniken zu vereinen wurde eine Zählbox entwickelt. So kann für jedes Szenario per Parameter die Position und Größe der Zählbox definiert werden. Sobald der Mittelpunkt einer Boundingbox in den die Zählbereich eindringt wird überprüft ob diese Tracking ID schon in einem Set enthalten ist. Ist sie es noch nicht wird hochgezählt. Es ist sinnvoll die Zählbox in Bereiche zu setzten in denen das Tracking zuverlässig funktioniert. 
 	\begin{figure}[!h]
 		\begin{center}
@@ -629,7 +646,7 @@
 	
 	%TODO hier vielleicht Bild?
 	
-	\section{Vergleich klassischen Methoden mit Deep-Learning}
+	\section{Vergleich zwischen klassischen Methoden mit Deep-Learning Verfahren}
 	Beide Verfahren haben ihre Stärken und Schwächen. Im Trackingteil sind beide Verfahren sich relativ ähnlich. Vor allem unterscheiden sich unsere Pipelines in der Objekterkennung welches dann aber auch maßgeblich die Trackingergebnisse beeinflusst. In der folgenden Liste werden die Vor- und Nachteile beider Verfahren nach unserer Erkenntnissen aufgeschlüsselt.
 	\begin{enumerate}
 		\item \textbf{Genauigkeit:} Die Deep-Learning Verfahren verzeichnen vor allem gute Out-Of-The-Box Leistung. Ohne große Hyperparameteroptimierung erreicht man schnell eine ausgezeichnete Performance. Klassische Verfahren können dabei auch sehr gute Leistung erzielen wenn genug Optimierung stattfindet. Der Aufwand der Optimierung ist aber stark von der Situation abhängig.\\
@@ -642,37 +659,9 @@
 		\item \textbf{Implementierungsaufwand:} Es kann gesagt werden das die Implementierung der klassischen Verfahren deutlich einfacher ist wie die der DeepLearning Methoden. Außerdem muss beachtet werden das ein trainiertes Netz vorhanden sein muss. Ist dieses nicht vorhanden muss erst ein Datensatz aufwendig erstellt werden mit welchen dann ein Netz trainiert werden muss.
 		
 	\end{enumerate}
-	Zusammenfassend lässt sich sagen das beide Verfahren ihre Stärken haben. Die Entscheidung welche Methode verwendet werden sollte hängt stark von der Situation und den verfügbaren Ressourcen ab.
+	Zusammenfassend lässt sich sagen das beide Verfahren ihre Stärken haben. Die Entscheidung welche Methode verwendet werden sollte hängt stark von der Situation und den verfügbaren Ressourcen ab. So kann das MOG-Verfahren keine still stehenden Objekte erkennen, was zu großen Problemen führen kann. Wenn die Klasse des zu erkennenden Objekts wichtig ist, ist Deep-Learning fast alternativ los.
 	
 	\printbibliography
-%	\begin{thebibliography}{00}
-%		\bibitem{z1}https://www.zeit.de/news/2020-10/18/s-bahn-stammstrecke-in-muenchen-fuer-arbeiten-gesperrt
-%		\bibitem{mog1}http://www1.ece.neu.edu/~schirner/cv/AsilomarSCC13\_MoG.pdf
-%		\bibitem{stab}https://de.wikipedia.org/wiki/Bildstabilisierung
-%		\bibitem{s1}https://learnopencv.com/video-stabilization-using-point-feature-matching-in-opencv/
-%		\bibitem{s2}https://docs.opencv.org/3.4/d4/dee/tutorial\_optical\_flow.html
-%		\bibitem{s3}https://docs.opencv.org/3.4/d4/d8c/tutorial\_py\_shi\_tomasi.html
-%		\bibitem{s4}https://docs.opencv.org/3.4/dc/d6b/group\_\_video\_\_track.html
-%		\bibitem{ed}https://docs.opencv.org/3.4.12/db/df6/tutorial\_erosion\_dilatation.html
-%		\bibitem{m1}https://www.cs.hs-rm.de/~ulges/teaching/15MLSEM/files/folien/suhr.pdf
-%		\bibitem{m2}https://opencv24-python-tutorials.readthedocs.io/en/latest/py\_tutorials/py\_video/py\_bg\_subtraction/py\_bg\_subtraction.html
-%		\bibitem{m3}https://link.springer.com/article/10.1007/s10462-017-9542-x
-%		\bibitem{m4}https://docs.opencv.org/3.4/d1/dc5/tutorial\_background\_subtraction.html
-%		
-%		\bibitem{b0}https://medium.com/@sarangzambare/object-detection-using-non-max-supression-over-yolov2-382a90212b51
-%		\bibitem{b1}https://arxiv.org/pdf/1506.02640v5.pdf
-%		\bibitem{b2}https://arxiv.org/pdf/2004.10934.pdf %V4
-%		\bibitem{b3}https://arxiv.org/pdf/1612.08242.pdf %V2
-%		\bibitem{b4}https://pjreddie.com/media/files/papers/YOLOv3.pdf %V3
-%		\bibitem{b5}https://jonathan-hui.medium.com/real-time-object-detection-with-yolo-yolov2-28b1b93e2088 % V1 Loss
-%		\bibitem{b6}https://openaccess.thecvf.com/content\_cvpr\_2017/papers/Lin\_Feature\_Pyramid\_Networks\_CVPR\_2017\_paper.pdf % FPN
-%		\bibitem{b7}https://arxiv.org/vc/arxiv/papers/1908/1908.08681v1.pdf%MISH
-%		\bibitem{b8}https://jonathan-hui.medium.com/yolov4-c9901eaa8e61 %Yolov4 Hui
-%		\bibitem{b9}https://arxiv.org/pdf/1406.4729.pdf %SPP
-%		\bibitem{b10}https://arxiv.org/pdf/1803.01534.pdf %PAN
-%	\end{thebibliography}
-	
-	\section{Anhang}
 	
 	
 \end{document}

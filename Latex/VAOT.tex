@@ -103,9 +103,9 @@
 	\end{figure*}
 	
 	\section{Konzept}
-	Ziel des Projektes ist es klassische Verfahren mit neueren DeepLearning Methoden zu vergleichen.
+	Ziel des Projektes ist es klassische Verfahren mit neueren Deep Learning Methoden zu vergleichen.
 	Dafür ist für beide Arten eine Pipeline geschaffen worden.\\
-	Für die klassischen Methoden wurde für die Objekterkennung das Gausmixture Verfahren verwendet und für das Tracking der SORT Algorithmus. Für die DeepLearning Verfahren wurde für die Objekterkennung ein Neuronales Netz und für das Tracking wurde DeepSort verwendet.\\
+	Für die klassischen Methoden wurde für die Objekterkennung das Gausmixture Verfahren verwendet und für das Tracking der SORT Algorithmus. Für die Deep Learning Verfahren wurde für die Objekterkennung ein Neuronales Netz und für das Tracking wurde DeepSort verwendet.\\
 	Mit einem Objektzähler können am Ende der beiden Pipelines die Objekte gezählt oder mit einer Zustandserkennung die Bewegungen und Stillstand erfasst werden. Die Abbildung \ref{Konzept} visualisiert das Konzept.\\
 	Bilder werden mittels der OpenCV Bibliotheksmethoden Frame für Frame aus einem Video ausgelesen.
 	Bevor mit der Erkennung von Objekten begonnen werden kann, werden die Videoaufnahmen so erstellt, angepasst und eingeschränkt, dass bessere Ergebnisse bei der Erkennung erzielt werden können.
@@ -121,14 +121,14 @@
 	Die zweite Vorgehensweise bewegt, anders als im vorherigen Absatz genannt, nicht die gesamte Kamera, sondern nur Teile im Objektiv oder beim Bildsensor. Es wird also entweder der Bildkreis über dem Bildsensor oder der Bildsensor unter dem Bildkreis verschoben. Beschleunigungssensoren erkennen hier die Bewegung der Kamera und passen dementsprechend die optischen Elemente an, damit das Bild stabilisiert wird. Das Ganze findet während der Aufnahme statt.\\
 	\textbf{Digitale Videostabilisierung:}\\
 	Der letzte Ansatz erfolgt nach der Aufnahme über Software und es ist keine zusätzliche Hardware nötig. Mit Hilfe von Algorithmen werden die Unterschiede zwischen zwei hintereinander folgenden Frames herausgefunden, unerwünschte Bewegungen entfernt und Anschluss zu einem stabilisierten Video zusammengefügt. Im Folgenden soll diese Art der Stabilisierung vorgestellt werden.
-	Dabei wird nicht genauer auf die mathematischen Hintergründe eingegangen, sondern nur die Vorgehensweise beschrieben und auf die Algorithmen dahinter verwiesen \cite{stab}.\\
+	Dabei wird nicht genauer auf die mathematischen Hintergründe eingegangen, sondern nur die Vorgehensweise beschrieben und auf die Algorithmen dahinter verwiesen \cite{s1}\cite{stab}.\\
 	\textbf{Videostabilisierung - Implementierung:}
 	\begin{enumerate}
 		\item Im ersten Schritt werden die Frames eingelesen und in ein Grauwertbild umgewandelt.
 		
 		\item Anschließend wird die Bewegung zwischen dem aktuellen und dem vorherigen Frame bestimmt. Theoretisch würden 2 Punkte zur Bestimmung reichen, allerdings sollten für eine stabile Schätzung deutlich mehr Punkte verwendet werden.
 		Bildregionen mit besonders vielen Ecken eignen sich hier äußerst gut, weshalb mithilfe von goodFeaturesToTrack() von OpenCV die gewünschten Features detektiert werden.
-		Diese Funktion besteht aus einer Modifikation des Harris-Corner-Detectors durch Shi-Tomasi.
+		Diese Funktion besteht aus einer Modifikation des Harris-Corner-Detectors durch Shi-Tomasi \cite{s3}.
 		\begin{figure}[!h]
 			\begin{center}
 				\includegraphics[width=8cm]{Media/VideoStab.png}
@@ -137,7 +137,7 @@
 			\end{center}
 		\end{figure}
 		
-		\item Danach kann mit der Lucas-Kanade Methode der Optical Flow bestimmt werden. Wie in der Abbildung \ref{VS2} zu sehen ist werden sowohl die Bewegungen der Fahrzeuge als auch Bewegungen in den Bäumen oder den Straßenlaternen im Hintergrund eingezeichnet. Diese sind geringer als die Bewegung der Fahrzeuge und entstehen durch das Wackeln der Hand beim Filmen. Sie könnten allerdings auch durch Wind verursacht werden, wodurch es zu einem Fehler bei der Stabilisierung kommen könnte.
+		\item Danach kann mit der Lucas-Kanade Methode der Optical Flow \cite{s2} bestimmt werden. Wie in der Abbildung \ref{VS2} zu sehen ist werden sowohl die Bewegungen der Fahrzeuge als auch Bewegungen in den Bäumen oder den Straßenlaternen im Hintergrund eingezeichnet. Diese sind geringer als die Bewegung der Fahrzeuge und entstehen durch das Wackeln der Hand beim Filmen. Sie könnten allerdings auch durch Wind verursacht werden, wodurch es zu einem Fehler bei der Stabilisierung kommen könnte.
 		\begin{figure}[!h]
 			\begin{center}
 				\includegraphics[width=8cm]{Media/VideoStab2.png}
@@ -154,7 +154,7 @@
 		Eine Kurve ist in einem Array c gespeichert und die Filtergröße ist 5. Möchten wir nun das k-te Element glätten ergibt sich die folgende Berechnung:
 		\[ f[k] = \frac{c[k-2]+c[k-1]+c[k]+c[k+1]+c[k+2]}{5} \]
 		
-		\item Im letzten Schritt wird der Unterschied zwischen der originalen und der geglätteten Trajektorie berechnet und auf die ursprüngliche Transformation addiert, wodurch man eine geglättete Transformation erhält. Diese wird nun auf die Frames angewandt. Um Artefakte zu vermeiden, werden die Bilder um den Bildmittelpunkt minimal skaliert, dadurch können schwarze „Flecken“ an den Bildrändern vermieden werden, solange die Kamerabewegungen nicht zu extrem sind \cite{s1}\cite{s2}\cite{s3}\cite{s4}.
+		\item Im letzten Schritt wird der Unterschied zwischen der originalen und der geglätteten Trajektorie berechnet und auf die ursprüngliche Transformation addiert, wodurch man eine geglättete Transformation erhält. Diese wird nun auf die Frames angewandt. Um Artefakte zu vermeiden, werden die Bilder um den Bildmittelpunkt minimal skaliert, dadurch können schwarze „Flecken“ an den Bildrändern vermieden werden, solange die Kamerabewegungen nicht zu extrem sind \cite{s4}.
 		
 	\end{enumerate}
 	\textbf{Videostabilisierung – Ergebnis:}\\
@@ -198,9 +198,9 @@
 	Ziel des Mixture of Gaussian Algorithmus \cite{mog1} ist, den unbewegten Hintergrund zu erkennen und diesen vom Bild zu subtrahieren. Das heißt alle Pixel, die zum Hintergrund gehören, werden schwarz und alle anderen weiß dargestellt. Anschließend können mit cv2.findContours() zusammenhängende weiße Pixel zu Objekten hinzugefügt werden. Wenn die Fläche der Pixel einen definierten Threshold überschreitet, wird um diese eine Bounding Box eingezeichnet.\\
 	\textbf{Funktionsweise MOG}\\
 	Im ersten Schritt wird der Funktion eine Anzahl an Frames zum „Lernen“ zugeteilt. Aus diesen wird der unbewegte Hintergrund bestimmt, welcher später subtrahiert wird, sodass nur die bewegten Objekte übrigbleiben.
-	Der Algorithmus modelliert für jeden Pixel den Hintergrund mit unterschiedlich gewichteten Gauss-Funktionen $\eta$.  Diese K-Funktionen enthalten eine Gewichtung $(\omega_i,t)$, den durchschnittlichen Intensitätswert $(\mu_i,t)$ und die Standardabweichung $(\sigma_i,t)$ für den i-ten Gaussian zum Zeitpunkt t.
+	Der Algorithmus modelliert für jeden Pixel den Hintergrund mit unterschiedlich gewichteten Gauss-Funktionen $\eta$.  Diese K-Funktionen enthalten eine Gewichtung $(\omega_i,t)$, den durchschnittlichen Intensitätswert $(\mu_i,t)$ und die Standardabweichung $(\sigma_i,t)$ für den i-ten Gaussian zum Zeitpunkt $t$.
 	\[ \sum_{i-1}^{K} \omega_i,t * \eta(u; \mu_i,\sigma_i)  \]
-	Mit jedem neuen Pixel (z.B. Kamerabewegung oder Fahrzeugbewegung) werden die Gauss-Funktionen frameweise geupdatet. Dabei wird die Pixelhistorie und der neue Pixelwert berücksichtigt. Falls nun zu einem neuen Pixel keiner der Gauss-Funktionen innerhalb eines Thresholds passt, wird der Pixel als Vordergrund deklariert, ansonsten als Hintergrund. Diese adaptive Hintergrundsubtraktion mit MOG wird in Abbildung \ref{mogKonzept} gezeigt.\\
+	Mit jedem neuen Pixel (z.B. Kamerabewegung oder Fahrzeugbewegung) werden die Gauss-Funktionen frameweise aktualisiert. Dabei wird die Pixelhistorie und der neue Pixelwert berücksichtigt. Falls nun zu einem neuen Pixel keiner der Gauss-Funktionen innerhalb eines Thresholds passt, wird der Pixel als Vordergrund deklariert, ansonsten als Hintergrund. Diese adaptive Hintergrundsubtraktion \cite{m2}\cite{m3}\cite{m4} mit MOG wird in Abbildung \ref{mogKonzept} gezeigt.\\
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=8cm]{Media/MOGKONZEPt.png}
@@ -208,7 +208,7 @@
 			\label{mogKonzept}
 		\end{center}
 	\end{figure}
-	Vereinfacht beschrieben misst der Algorithmus in den Lernbildern die Zeit, in welcher ein Pixel den gleichen Intensitätswert hat und bestimmt so den Hintergrund. Ändert sich nun dieser Wert, wird an dem Pixel eine Bewegung erkannt, dieser als Vordergrund bestimmt und die Parameter geupdatet \cite{m1}\cite{m2}\cite{m3}\cite{m4}.\\
+	Vereinfacht beschrieben misst der Algorithmus in den Lernbildern die Zeit, in welcher ein Pixel den gleichen Intensitätswert hat und bestimmt so den Hintergrund. Ändert sich der Wert, wird an dem Pixel eine Bewegung erkannt. Dieser wird als Vordergrund bestimmt und die Parameter aktualisiert.\\
 	\\
 	\subsection{Fehler in der Erkennung}
 	Eine Schwierigkeit bei der Objekterkennung ist, dass die Bewegungen hauptsächlich bei großen Intensitätsunterschieden wie der Wechsel von Straße zu Fahrzeuganfang und von Fahrzeugende zur Straße, erkannt werden. Große Flächen wie die Motorhaube, Windschutzscheibe und die Dachfläche werden nicht erkannt, da diese so lange einen Pixel mit einem sehr ähnlichen Intensitätswert „bedecken“, dass dieser zwischendurch als Hintergrund festgelegt wird. Dabei kann es passieren, dass je nach Thresholdgröße mehrere Objekte in einem Fahrzeug erkannt werden. Dieses Verhalten zeigt sich in Abbildung \ref{mogFehler1}, \ref{mogFehler2} und \ref{mogFehler3}. Ein weiteres Problem ist es, wenn neben den Objekten markante Kanten liegen. Diese Kanten sorgen zum Beispiel dafür, dass der Bus in der Grafik \ref{mogFehler2} und \ref{mogFehler3} zweigeteilt wird. Der Grund hierfür dürfte die Bordsteinkante und der Asphaltflick auf dem Radweg sein. All diese Probleme führen dazu, dass der Bus, der in den Abbildungen \ref{mogFehler2} und \ref{mogFehler4} zu sehen ist, insgesamt dreimal erkannt wird. %TODO
@@ -650,11 +650,11 @@
 		\item \textbf{Genauigkeit:} Die Deep-Learning Verfahren verzeichnen vor allem gute Out-Of-The-Box Leistung. Ohne große Hyperparameteroptimierung erreicht man schnell eine ausgezeichnete Performance. Klassische Verfahren können dabei auch sehr gute Leistung erzielen wenn genug Optimierung stattfindet. Der Aufwand der Optimierung ist aber stark von der Situation abhängig.\\
 		So stellten wir fest das die klassischen Verfahren deutlich fehleranfälliger bei schlechten Videoaufnahmen waren. Verwackelte Aufnahmen stellten eine große Herausforderung dar. Gegenmaßnahmen dafür sind ein Stativ oder andere auf Software basierende Verfahren. Die Objekterkennung basierend auf YOLOv4 hat überhaupt kein Problem mit verwackelten Bildern da es jeden Frame unabhängig von einander betrachtet. Die Tracking-Algorithmen sind bezüglich starker Bewegung jedoch anfällig, da die Vorhersage der nächsten Position und der Assoziation der Detektion erschwert wird. DeepSort nutzt für die Assoziation bei starker Bewegung daher hauptsächlich den Feature-Vektor um die Objekte zuzuordnen. Es lässt sich sagen das die meisten Fehler der Tracker auf schlechter Objekterkennung basieren. DeepSORT ist dabei etwas weniger fehleranfällig als SORT.
 		
-		\item \textbf{Laufzeit:} Bei der Laufzeit haben die klassischen Verfahren einen klaren Vorteil. Hier erzielten wir etwa doppelt so viele Bilder pro Sekunde als bei den DeepLearning Methoden. Außerdem dürfte es schwieriger sein Deep-Learning Verfahren auf Embedded Geräten lauffähig zu bekommen. Prinzipiell sollten beide Methoden auf Grafikkarten beschleunigt werden können.
+		\item \textbf{Laufzeit:} Bei der Laufzeit haben die klassischen Verfahren einen klaren Vorteil. Hier erzielten wir etwa doppelt so viele Bilder pro Sekunde als bei den Deep Learning Methoden. Außerdem dürfte es schwieriger sein Deep-Learning Verfahren auf Embedded Geräten lauffähig zu bekommen. Prinzipiell sollten beide Methoden auf Grafikkarten beschleunigt werden können.
 		
 		\item \textbf{Nachvollziehbarkeit:} Bei Fehlern in der Objekterkennung bei YOLO ist es häufig schwierig nachzuvollziehen wie diese entstanden. Auch ist das behandeln dieser Fehler schwieriger. Bei MOG ist dies deutlich einfacher, da man nur das Graubild untersuchen muss und dann die Hyperparameter anpassen muss.
 		
-		\item \textbf{Implementierungsaufwand:} Es kann gesagt werden das die Implementierung der klassischen Verfahren deutlich einfacher ist wie die der DeepLearning Methoden. Außerdem muss beachtet werden das ein trainiertes Netz vorhanden sein muss. Ist dieses nicht vorhanden muss erst ein Datensatz aufwendig erstellt werden mit welchen dann ein Netz trainiert werden muss.
+		\item \textbf{Implementierungsaufwand:} Es kann gesagt werden das die Implementierung der klassischen Verfahren deutlich einfacher ist wie die der Deep Learning Methoden. Außerdem muss beachtet werden das ein trainiertes Netz vorhanden sein muss. Ist dieses nicht vorhanden muss erst ein Datensatz aufwendig erstellt werden mit welchen dann ein Netz trainiert werden muss.
 		
 	\end{enumerate}
 	Zusammenfassend lässt sich sagen das beide Verfahren ihre Stärken haben. Die Entscheidung welche Methode verwendet werden sollte hängt stark von der Situation und den verfügbaren Ressourcen ab. So kann das MOG-Verfahren keine still stehenden Objekte erkennen, was zu großen Problemen führen kann. Wenn die Klasse des zu erkennenden Objekts wichtig ist, ist Deep-Learning fast alternativ los.

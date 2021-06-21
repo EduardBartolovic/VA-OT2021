@@ -196,7 +196,7 @@
 	
 	
 	\section{Objekterkennung: MOG-Mixture of Gaussian}
-	Ziel des Mixture of Gaussian Algorithmus ist, den unbewegten Hintergrund zu erkennen und diesen vom Bild zu subtrahieren. Das heißt alle Pixel, die zum Hintergrund gehören, werden schwarz und alle anderen weiß dargestellt. Anschließend können mit cv2.findContours() zusammenhängende weiße Pixel zu Objekten hinzugefügt werden. Wenn die Fläche der Pixel einen definierten Threshold überschreitet, wird um diese eine Bounding Box eingezeichnet.\\
+	Ziel des Mixture of Gaussian Algorithmus \cite{mog1} ist, den unbewegten Hintergrund zu erkennen und diesen vom Bild zu subtrahieren. Das heißt alle Pixel, die zum Hintergrund gehören, werden schwarz und alle anderen weiß dargestellt. Anschließend können mit cv2.findContours() zusammenhängende weiße Pixel zu Objekten hinzugefügt werden. Wenn die Fläche der Pixel einen definierten Threshold überschreitet, wird um diese eine Bounding Box eingezeichnet.\\
 	\textbf{Funktionsweise MOG}\\
 	Im ersten Schritt wird der Funktion eine Anzahl an Frames zum „Lernen“ zugeteilt. Aus diesen wird der unbewegte Hintergrund bestimmt, welcher später subtrahiert wird, sodass nur die bewegten Objekte übrigbleiben.
 	Der Algorithmus modelliert für jeden Pixel den Hintergrund mit unterschiedlich gewichteten Gauss-Funktionen $\eta$.  Diese K-Funktionen enthalten eine Gewichtung $(\omega_i,t)$, den durchschnittlichen Intensitätswert $(\mu_i,t)$ und die Standardabweichung $(\sigma_i,t)$ für den i-ten Gaussian zum Zeitpunkt t.
@@ -223,8 +223,8 @@
 	+++++++++++++++++Streifenproblem...++++++++
 	
 	\section{Objekterkennung: YoloV4}
-	YOLO ist ein Neuronal Netz für die Echtzeit-Objekterkennung. In diesem Projekt wurde die vierte und damit aktuellste Version von Yolo\cite{b2} verwendet. So bietet jede Version inkrementelle Verbesserung zum jeweiligen Vorgänger. In dem folgenden Abschnitt werden die wichtigsten Punkte aller Versionen erläutert.\\
-	YOLO ist die Abkürzung für 'You Only Look Once' was übersetzt 'Man sieht nur einmal hin' heißt. Die Aufgabe der Objekterkennung besteht darin, den Ort und die Größe der Bounding Box im Bild zu bestimmen, sowie die Objekte zu klassifizieren. Frühere Methoden, wie R-CNN und seine Variationen, verwendeten eine Pipeline, um diese Aufgabe in mehreren Schritten durchzuführen. Dies ist in der Ausführung langsam und aufwendiger zu trainieren, da jede einzelne Komponente separat trainiert werden muss. YOLO, erledigt beide Aufgaben mit einem einzigen Convolutional Neural Network. Es betrachtet dabei die Objekterkennung als ein Regressionsproblem auf räumlich getrennte Bounding Boxes und zugehörige Klassenwahrscheinlichkeiten.\\
+	YOLO\cite{b1} ist ein Neuronal Netz für die Echtzeit-Objekterkennung. In diesem Projekt wurde die vierte und damit aktuellste Version von Yolo\cite{b2} verwendet. So bietet jede Version inkrementelle Verbesserung zum jeweiligen Vorgänger. In dem folgenden Abschnitt werden die wichtigsten Punkte aller Versionen erläutert.\\
+	YOLO ist die Abkürzung für 'You Only Look Once' was übersetzt 'Man sieht nur einmal hin' heißt. Die Aufgabe der Objekterkennung besteht darin, den Ort und die Größe der Bounding Box im Bild zu bestimmen, sowie die Objekte zu klassifizieren. Frühere Methoden, wie R-CNN\cite{rcnn} und seine Variationen, verwendeten eine Pipeline, um diese Aufgabe in mehreren Schritten durchzuführen. Dies ist in der Ausführung langsam und aufwendiger zu trainieren, da jede einzelne Komponente separat trainiert werden muss. YOLO, erledigt beide Aufgaben mit einem einzigen Convolutional Neural Network. Es betrachtet dabei die Objekterkennung als ein Regressionsproblem auf räumlich getrennte Bounding Boxes und zugehörige Klassenwahrscheinlichkeiten.\\
 	Für die Regression verwendete Loss-Funktion betrachtet drei Komponenten:
 	\begin{enumerate}
 		\item \textbf{Localization loss:} Differenz zwischen vorhergesagten Bounding-Box-Werten (x,y,w und h) und tatsächlichen Bounding-Box-Werten.
@@ -264,7 +264,7 @@
 	\end{figure}\\
 	In Abbildung \ref{IoU} ist die Berechnung der Intersection-Over-Union dargestellt. Sie beschreibt das Verhältnis der Schnittfläche einer Bounding Box mit der Grundwahrheit bezüglich der Gesamtfläche von Bounding Box und Grundwahrheit. Je genauer die beiden Flächen übereinander liegen desto höher der Wert, desto besser ist die Vorhersage der Bounding Box.\\
 	\\
-	In der zweiten Version von Yolo wurde an mehreren Stellen Verbesserungen erreicht. So wurde beispielsweise Batch-Normalization in Convolutional-Layers eingefügt.\\
+	In der zweiten Version von Yolo \cite{b3} wurde an mehreren Stellen Verbesserungen erreicht. So wurde beispielsweise Batch-Normalization in Convolutional-Layers eingefügt.\\
 	Die Inputgröße des Netzes wurde von $224*224$ auf $448*448$ erhöht.\\
 	Eine weitere wichtige Änderung sind Ankerboxen. Da Objekte meist immer ähnliche Formen haben kann eine gewisse Menge an sogenannten Ankerboxen definiert werden, welche als Basis Boundingboxen fingieren. So wird anstatt die absolute Größen von Boxen in Bezug auf das gesamte Bild vorherzusagen, eine Ankerbox ausgewählt die am besten zu dem gewünschten Objekten passende verwendet. Die Abbildung \ref{Anker} zeigt dieses Konzept.
 	\begin{figure}[!h]
@@ -274,7 +274,7 @@
 			\label{Anker}
 		\end{center}
 	\end{figure}
-	Diese Ankerboxen kann man mittels Clusteralgorithmen wie K-Means und den Boundingboxen aus dem Datensatz berechnen. Dies hat vor allem den Vorteil, dass die Boundingboxen besser zu den Objekten des jeweiligen Datensatzes passen.\\
+	Diese Ankerboxen kann man mittels Clusteralgorithmen wie K-Means\cite{kmeans} und den Boundingboxen aus dem Datensatz berechnen. Dies hat vor allem den Vorteil, dass die Boundingboxen besser zu den Objekten des jeweiligen Datensatzes passen.\\
 	Jede Vorhersagen für eine Boundingbox enthält die 4 Koordinaten: $t_x, t_y, t_w, t_h$. $t_x$ und $ t_y$ sind die x an y Koordinaten, relative Zellen Mittelpunkt. $t_w$ und $ t_h$ sind die Skalierungsfaktoren relativ zu Ankerboxdimensionen. $p_w$ und $p_h$ sind die Breite und Höhe der Ankerbox. Dabei gibt es noch einen Gitterzellenoffset $c_x$ und $c_y$.
 	\begin{figure}[!h]
 		\begin{center}
@@ -286,7 +286,7 @@
 	Außerdem wir der \textit{objectness score} $t_o$ vorhergesagt.
 	\[ P_r(Object)*IoU_{b}^{object} = \sigma(t_o) \]
 	$\sigma(t_o)$ entspricht dem Box Konfidenz Score.
-	Der Output des Modells enthält für jede Gitterzelle n Boxen, wobei n der Anzahl der Ankerboxen entspricht. Jede Box ist ein Vektor aus vier Koordinaten, dem \textit{Objectnessscore} und der Klassenwahrscheinlichkeiten C. Der Vektor enthält: $[b_x,b_y,b_w,b_h, b_o, C]$\cite{b3}.
+	Der Output des Modells enthält für jede Gitterzelle n Boxen, wobei n der Anzahl der Ankerboxen entspricht. Jede Box ist ein Vektor aus vier Koordinaten, dem \textit{Objectnessscore} und der Klassenwahrscheinlichkeiten C \cite{b3}. Der Vektor enthält: $[b_x,b_y,b_w,b_h, b_o, C]$.
 	\[ C = [c_1, c_2,..., c_{80}]^T\]
 	\[ P = [P_r * c_1, P_r * c_2, ..., P_r * c_{80}] \]
 	\[ class = argmax_i(C)\]
@@ -294,7 +294,7 @@
 	In der dritten Version wurde vor allem die Genauigkeit weiter verbessert. So wurden Restblöcke, Skip-Verbindungen und Upsampling Techniken hinzugefügt. Das Netzwerk wuchs damit drastisch auf insgesamt 106 Convolutional-Layer.
 	Der Featureextraktor Darknet19 aus YoloV2 wurde durch Darknet-53 ersetzt. Darknet-53 besitzt 53 Convolutional-Layer und beinhaltet zusätzlich vereinzelte Abkürzungen im Netz.\\
 	Eine weitere Änderung betrifft den Softmax-Layer für die Bestimmung der Zielklasse. Früher wurde nur die Klasse ausgewählt, die den höchsten Score erzielte. Dies hat sich geändert. Dadurch, dass die Klassenvorhersage mit Hilfe einer Logistische Regression stattfindet, kann ein Objekt mehrere Label gleichzeitig haben wie zum Beispiel Person und Frau. Diese Multilabelklassifikation wird für unser Projekt aber nicht benötigt.\\
-	Ein weitere Neuerung ist das Vorhersagen über drei verschiedener Skalierungen. Das System extrahiert Merkmale mit einem ähnlichen Konzept wie bei Merkmalspyramidennetzen (FPN). Diese Technik verbessert die Genauigkeit vor allem bei kleineren Objekten. So werden Feature-Map aus einer früheren Schicht aus dem Netzwerk extrahiert und mit höher gesampelten Features durch Verkettung zusammen gefügt. Mit weiteren Faltungsschichten werden diese kombinierte Feature-Map verarbeitet. So wird von Vorhersagen für alle der drei Skalierungen profitiert und damit von allen vorherigen Berechnungen, sowie von den feinkörnigen Merkmalen aus der frühen Phase des Netzwerks. Die Abbildung \ref{FPN} zeigt das Konzept eines Merkmalspyramidennetzwerks.
+	Ein weitere Neuerung ist das Vorhersagen über drei verschiedener Skalierungen. Das System extrahiert Merkmale mit einem ähnlichen Konzept wie bei Merkmalspyramidennetzen (FPN)\cite{b6}. Diese Technik verbessert die Genauigkeit vor allem bei kleineren Objekten. So werden Feature-Map aus einer früheren Schicht aus dem Netzwerk extrahiert und mit höher gesampelten Features durch Verkettung zusammen gefügt. Mit weiteren Faltungsschichten werden diese kombinierte Feature-Map verarbeitet. So wird von Vorhersagen für alle der drei Skalierungen profitiert und damit von allen vorherigen Berechnungen, sowie von den feinkörnigen Merkmalen aus der frühen Phase des Netzwerks. Die Abbildung \ref{FPN} zeigt das Konzept eines Merkmalspyramidennetzwerks.
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=6cm]{Media/FPN.png}
@@ -305,16 +305,16 @@
 	Die letzte dieser Schichten der jeweiligen Skalierungen sagt einen 3-D-Tensor voraus, der Bounding Box, Objekthaftigkeit und Klassenvorhersagen enthält. Es werden aber für jede der drei Skalierung drei Boxen vorausgesagt. Der Tensor enthält dann die vier Bounding-Box-Offsets, eine Objektvorhersage und 80 Klassenvorhersagen $N*N*[3*(4 + 1 + 80)]$ \cite{b4}.\\
 	\\
 	YoloV4 hat die Geschwindigkeit und Genauigkeit verbessert. So nennt das Paper \cite{b2} zum Beispiel \textit{Bag of Freebies}. Damit sind Verbesserungen gemeint die die Genauigkeit des Modells zur Trainingszeit verbessern, aber die Inferenzzeit nicht beeinflussen. So wurde stark das Training optimiert. Bei dem Training werden Bilder zusätzlich aus dem Datensatz generiert. Existierende Bilder werden dupliziert und dann rotiert, zugeschnitten, verzerrt, verdunkelt, etc. und dann auch durch das Netz geschickt. 
-	Auch Techniken wie \textit{Cut Mix} und \textit{Mosaic Dataaugmentation} werden angewendet. Bei älteren Verfahren werden Bildteile gelöscht. Bei den beiden verwendeten Verfahren werden stattdessen Bildteile aus den Trainingsdaten ausgeschnitten und kombiniert, wobei die Ground-Truth-Labels ebenfalls angepasst werden müssen. Die Data Augmentation sorgt für eine verbesserte Generalisierungfähigkeit des Modells.\\
-	Regularisierungsmethoden wie \textit{DropOut} und \textit{DropBlock} wurden gegen Overfitting eingesetzt.\\
-	Auch wird die Lossfunktion aus YoloV1 angepasst. Bei den bisherigen Versionen wurde die mittlere quadratische Abweichung (MSE) für das Regressionsproblem verwendet. Die Regression wird dann unabhängig für alle Vorhersagen von $t_x, t_y, t_w, t_h$ verwendet. Sinnvoller ist es die Koordinaten zusammen als die IoU der Boundingboxen in Betracht zu ziehen. Deshalb verwendet YoloV4 \textit{CIoU} als Lossfunktion, um die Integrität der Objekte mit einzubeziehen.\\
-	Weitere Verbesserungen die auf Kosten der Laufzeit gehen werden \textit{Bag of Specials} genannt. Dazu gehören zum Beispiel \textit{Squeeze-and-Excitation}, \textit{Spatial Attention Module}, Vergrößerung des Rezeptionsfeldes des Modells und Stärkung der Fähigkeit zur Merkmalsintegration.\\
-	Im Backbone wird eine \textit{MISH}-Aktivierungsfunktion verwendet. Diese ist eine glatte und nicht-monotone neuronale Aktivierungsfunktion, die wie folgt definiert werden kann:
+	Auch Techniken wie \textit{Cut Mix}\cite{cutmix} und \textit{Mosaic Data Augmentation} werden angewendet. Bei älteren Verfahren werden Bildteile gelöscht. Bei den beiden verwendeten Verfahren werden stattdessen Bildteile aus den Trainingsdaten ausgeschnitten und kombiniert, wobei die Ground-Truth-Labels ebenfalls angepasst werden müssen. Die Data Augmentation sorgt für eine verbesserte Generalisierungfähigkeit des Modells.\\
+	Regularisierungsmethoden wie \textit{DropOut} \cite{dropout} und \textit{DropBlock}\cite{dropblock} wurden gegen Overfitting eingesetzt.\\
+	Auch wird die Lossfunktion aus YoloV1 angepasst. Bei den bisherigen Versionen wurde die mittlere quadratische Abweichung (MSE) für das Regressionsproblem verwendet. Die Regression wird dann unabhängig für alle Vorhersagen von $t_x, t_y, t_w, t_h$ verwendet. Sinnvoller ist es die Koordinaten zusammen als die IoU der Boundingboxen in Betracht zu ziehen. Deshalb verwendet YoloV4 \textit{CIoU}\cite{diou} als Lossfunktion, um die Integrität der Objekte mit einzubeziehen.\\
+	Weitere Verbesserungen die auf Kosten der Laufzeit gehen werden \textit{Bag of Specials} genannt. Dazu gehören zum Beispiel \textit{Squeeze-and-Excitation}, \textit{Spatial Attention Module}\cite{cbam}, Vergrößerung des Rezeptionsfeldes des Modells und Stärkung der Fähigkeit zur Merkmalsintegration.\\
+	Im Backbone wird eine \textit{MISH}-Aktivierungsfunktion \cite{b7} verwendet. Diese ist eine glatte und nicht-monotone neuronale Aktivierungsfunktion, die wie folgt definiert werden kann:
 	\[ f(x) = x* \tanh (\ln (1+e^x)) \]
 	Sie arbeitet besser als zum Beispiel \textit{ReLU} oder Swish \cite{b7}.\\
-	Die Komponenten in der Architektur wurde auch ersetzt. Im \textit{Backbone} läuft nun \textit{CSPDarknet53}. Dies basiert auf dem Darknet53 aus YoloV3 und wird mit Cross-Stage-Partial-Networks erweitert. Im Hals des Netzes wird \textit{Spatial pyramid pooling} (SPP) verwendet. \textit{Path Aggregation Network} (PANet) und \textit{Spatial Attention Module} (SAM) ersetzen die Merkmalspyramidennetze (FPN) die YoloV3 verwendet.\\
+	Die Komponenten in der Architektur wurde auch ersetzt. Im \textit{Backbone} läuft nun \textit{CSPDarknet53}. Dies basiert auf dem Darknet53 aus YoloV3 und wird mit Cross-Stage-Partial-Networks (CSP)\cite{csp} erweitert. Im Hals des Netzes wird \textit{Spatial pyramid pooling} (SPP)\cite{b9} verwendet. \textit{Path Aggregation Network} (PANet)\cite{b10} und \textit{Spatial Attention Module} (SAM)\cite{cbam} ersetzen die Merkmalspyramidennetze (FPN) die YoloV3 verwendet.\\
 	\textit{Convolutional-Layer} brauchen keine feste Bildgröße und erzeugen deshalb  Feature-Maps beliebiger Größe. \textit{Fullyconnected-Layer} benötigen stattdessen per Definition eine Eingabe mit fester Länge. SPP entfernt genau diese Restriktion. SPP wendet verschiedene Strategien bei unterschiedlichen Skalierungen an. Die Feature-Maps werden räumlich in $m$ × $m$ Bins unterteilt. Dann wird ein Maximumpool auf jeden Bin für jeden Kanal angewendet. In YoloV4 wird eine modifiziert Version von SPP verwendet die die räumliche Dimension der Ausgabe beibehaltet \cite{b9}.\\
-	In den FPN aus YoloV3 werden die Objekte separat und unabhängig voneinander auf verschiedenen Skalenebenen erkannt. Dies kann zu doppelten Vorhersagen führen. PAN erweitert FPN mit einem Bottom-up-Pfad der die Weitergabe von Informationen aus den unteren Ebenen erleichtern. Durch adaptives Featurepooling kann auf jede Vorhersagen aus allen Ebenen zugriffen werden.\cite{b10}\\
+	In den FPN aus YoloV3 werden die Objekte separat und unabhängig voneinander auf verschiedenen Skalenebenen erkannt. Dies kann zu doppelten Vorhersagen führen. PAN erweitert FPN mit einem Bottom-up-Pfad der die Weitergabe von Informationen aus den unteren Ebenen erleichtern. Durch adaptives Featurepooling kann auf jede Vorhersagen aus allen Ebenen zugriffen werden \cite{b10}.\\
 	SAM verbessert die räumliche Aufmerksamkeit.\\
 	Am \textit{Head} der für Prädiktion verantwortlich ist wurde nichts geändert und  ist damit identisch zu YoloV3 \cite{b2}\cite{b8}. Diese Architektur mit der Vielzahl an Komponenten wird in er Abbildung \ref{V4Arch} dargestellt.
 	\begin{figure}[!h]
@@ -336,7 +336,7 @@
 	Das Modell könnte noch besser arbeiten, wenn es nur auf die Klassen trainiert würde die für unser Projekt relevant sind. Dies hätte aber den Rahmen des Projektes gesprengt. Das Modell ist mit ein paar Ausnahmen für das Projekt ausreichend gut genug.\\
 	Dennoch kann man je nach Szenario per Parameter die relevanten Klassen auswählen. Das Modell prädiktiert trotzdem noch alle Klassen. Die nicht relevanten werden im Postprocessing herausgefiltert.\\
 	Ein weitere Postprocessingschritt ist es die Detektion die eine zu geringe Sicherheit besitzen zu entfernen.\\
-	Die übrigen Boxen durchlaufen eine Non-Maximum-Suppression.
+	Die übrigen Boxen durchlaufen eine Non-Maximum-Suppression (NMS)\cite{nms}.
 	Der Output kann überschneidende Boundingboxen besitzen die eigentlich zur selben Klasse gehören. Diese Duplikate können mittels der Non-Maximum-Suppression (NMS) entfernt werden. Hierfür wird die IoU der Boxen berechnet. Sollte die IoU einen Threshold überschreiten dann wird das Duplikat entfernt. Die Grafik \ref{NMS} zeigt wie zu viele überlappende Boxen mit einer NMS mit einer ersetzt werden kann.\\
 	\begin{figure}[!h]
 		\begin{center}
@@ -430,7 +430,7 @@
 	
 	
 	\section{Tracking: Sort}
-	SORT berechnet auf Basis des Kalman Filters und der Hungarian Methode die Bewegung des Objekts und weist je nach Status eine eindeutige Identifikationsnummer zu. 
+	SORT \cite{sort} berechnet auf Basis des Kalman Filters\cite{kalman} und der Ungarische Methode\cite{hungarian} die Bewegung des Objekts und weist je nach Status eine eindeutige Identifikationsnummer zu. 
 	
 	Der Kalman-Filter funktioniert für die Problemstellung sehr gut, da dieser ein lineares System mit gaußisches Rauschen voraussetzt. Dies ist gegeben durch die gleichmäßige Bewegung der Züge/ Autos in eine Richtung.
 	Der Kalmanfilter kann aus verrauschten, teils redundanten Messungen die Zustände und Parameter des aktuellen Systems schätzen. 
@@ -439,13 +439,13 @@
 	
 	Die ungarische Methode wird verwendet, um die Detektion einem existierenden getrackten Objekt zuzuordnen. Hierfür wird die Intersection-over-Union Distance zwischen jeder Detektion und allen bereits erkannten Objekten verglichen und als Gewichtung verwendet.
 	
-	Die Zuweisung der ID erfolgt anschließend über die optimale Lösung der Hungarian Methode, auch Kuhn-Munkres-Algorithmus genannt. Diese wird für das Lösen von Zuordnungsproblemen in einem gewichteten kompletten bipartiten Graph genutzt. Hierbei wird die Zuordnung anhand der minimalen Gewichtung, zwischen den Elementen gelöst. Gegeben ist ein Graph $G = (A \cup B, E) $. Zwischen $A$ und $B$ wird nun die Verbindung mit der kleinsten Gewichtung gesucht. Hierfür wird eine Kostenmatrix $C$ erstellt mit $c_{ij}$ als Kosten um $a_i \in A$, $b_j \in B$ zuzuordnen. Die Matrix $C$ wird anschließend reduziert. In diesem Beispiel werden Objekte den Detektionen zugeordnet. Als Gewichtung dienen die Distanzen der IoU, welche minimal sein soll \cite{hungarian}.
+	Die Zuweisung der ID erfolgt anschließend über die optimale Lösung der Ungarische Methode, auch Kuhn-Munkres-Algorithmus genannt. Diese wird für das Lösen von Zuordnungsproblemen in einem gewichteten kompletten bipartiten Graph genutzt. Hierbei wird die Zuordnung anhand der minimalen Gewichtung, zwischen den Elementen gelöst. Gegeben ist ein Graph $G = (A \cup B, E) $. Zwischen $A$ und $B$ wird nun die Verbindung mit der kleinsten Gewichtung gesucht. Hierfür wird eine Kostenmatrix $C$ erstellt mit $c_{ij}$ als Kosten um $a_i \in A$, $b_j \in B$ zuzuordnen. Die Matrix $C$ wird anschließend reduziert. In diesem Beispiel werden Objekte den Detektionen zugeordnet. Als Gewichtung dienen die Distanzen der IoU, welche minimal sein soll \cite{hungarian}.
 	 
 	 ++++++++Fehler SORT++++++++++++
 	 
 	\section{Tracking: DeepSort}
 	
-	SORT an sich ist bereits ein Tracker, das Problem ist jedoch, dass die ID-Änderungen zu oft auftreten. Das heißt die Objekt-ID wechselt während der Verfolgung. Ausgelöst wird dies zum Beispiel durch die teilweise Verdeckung des Objekts. Deshalb wurde SORT um ein CNN erweitert, welches sowohl einerseits die Mahalanobis-Distanzmetrik für die Assoziation nutzt, als auch die Form des Objekts in Form eines durch das hinzugefügte CNN berechneten Feature-Vektor verfolgt. Durch Verwendung einer geeigneteren Distanzmetrik und Beschreibung des Objekts kann dieses nun besser verfolgt werden.
+	SORT an sich ist bereits ein Tracker, das Problem ist jedoch, dass die ID-Änderungen zu oft auftreten. Das heißt die Objekt-ID wechselt während der Verfolgung. Ausgelöst wird dies zum Beispiel durch die teilweise Verdeckung des Objekts. Deshalb wurde SORT erweitert in Form von DeepSort \cite{deepSort}, welches sowohl einerseits die Mahalanobis-Distanzmetrik für die Assoziation nutzt, als auch die Form des Objekts in Form eines durch das hinzugefügte CNN berechneten Feature-Vektor verfolgt. Durch Verwendung einer geeigneteren Distanzmetrik und Beschreibung des Objekts kann dieses nun besser verfolgt werden.
 	Das CNN erstellt einen Vektor, der alle Features eines gegebenen Bilds enthält. Ursprünglich wird das Neuronale Netz als Klassifikator trainiert. Indem die Klassifikations Layer weggelassen werden, können die resultierenden Feature-Vektoren als Wiedererkennungsform verwendet werden.
 	
 	Anstatt bei der Ungarischen Methode wie bei SORT die IoU-Distanz zu verwenden, wird diese durch die (quadrierte) Mahalanobis Distanz ersetzt. Die Mahalanobis Distanz berechnet den Abstand von einem Punkt zu einer Verteilung. Der Abstand ist dabei wie viele Standardabweichungen der Verteilung dieser Punkt vom Mittelwert der Verteilung entfernt ist. Er wird somit durch die Standardabweichung der Verteilung normiert. Die Detektion stellt hierbei den Punkt da und die Unsicherheit der Zustandsvorhersage, beziehungsweise die Unsicherheit der Position des getrackten Objekts, die Verteilung. Dadurch wird bei der Berechnung der Distanz die Unsicherheit der Position miteinbezogen. 
@@ -471,7 +471,7 @@
 	Für die Distanzmetrik ergibt sich dann folgende Gleichung
 	$D = \lambda * D_k + (1-\lambda) * D_a$. Hierbei ist $D_k$ die Mahalanobis Distanz und $D_a$ die kleinste Kosinus-Distanz zwischen den Feature-Vektoren. $\lambda$ dient als ein Gewichtungsfaktor.
 	
-	Kann DeepSORT erfolgreich ein bereits verfolgtes Objekt zu einer Detektion assoziieren, wird anschließend eine TrackingID erstellt. Hierbei muss beachtet werden, dass im Zuge der Verbesserung von SORT weitere Sicherheiten eingebaut wurden. Ein neu getracktes Objekt erhält nicht sofort eine endgültige Identifikationsnummer. Erst nachdem das Objekt in drei hintereinander liegenden Frames erfolgreich getrackt werden konnte erhält es eine Nummer. Das Objekt erhält des weiteren einen Zähler $a$, der die Anzahl an Frames zählt, seitdem das Objekt nicht mehr erfolgreich assoziiert werden konnte. Ist eine maximale Anzahl $Age_{max}$ erreicht gilt das Objekt als verloren oder außer Reichweite der Kamera und wird aus der Objektliste entfernt. Dieser Zähler wird jedoch zurückgesetzt, sollte zuvor das Objekt erneut erfolgreich assoziiert werden.
+	Kann DeepSORT erfolgreich ein bereits verfolgtes Objekt zu einer Detektion assoziieren, wird anschließend eine TrackingID erstellt. Hierbei muss beachtet werden, dass im Zuge der Verbesserung von SORT weitere Sicherheiten eingebaut wurden. Ein neu getracktes Objekt erhält nicht sofort eine endgültige Identifikationsnummer. Erst nachdem das Objekt in drei hintereinander liegenden Frames erfolgreich getrackt werden konnte erhält es eine Nummer. Das Objekt erhält des weiteren einen Zähler $a$, der die Anzahl an Frames zählt, seitdem das Objekt nicht mehr erfolgreich assoziiert werden konnte. Ist eine maximale Anzahl $Age_{max}$ erreicht gilt das Objekt als verloren oder außer Reichweite der Kamera und wird aus der Objektliste entfernt. Dieser Zähler wird jedoch zurückgesetzt, sollte zuvor das Objekt erneut erfolgreich assoziiert werden \cite{deepSort}.
 	
 	\subsubsection{Ergebnisse des Trackings mit DeepSORT}
 	Das Tracking basiert auf YOLO, daher wird es beeinträchtigt wenn YOLO Objekte nicht erkennt. Der Kalman-Filter kann zwar in Fällen von fehlenden Detektionen weiterhin eine Vorhersage liefern, allerdings nur bei gleichbleibender Bewegung in eine Richtung. 

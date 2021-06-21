@@ -60,14 +60,14 @@
 	\maketitle
 	
 	\begin{abstract}
-		In Zeiten, in denen Neuronale Netze immer mehr Bedeutung erlangen ist es wichtig weiterhin die klassischen Algorithmen zu berücksichtigen, da diese oftmals ähnlich gute Ergebnisse erzielen. Im Rahmen der Veranstaltung Videoanalyse und Objekttracking wurden daher zwei mögliche Umsetzung für Objekt-Detektion und zwei für Objekt-Tracking näher betrachtet und implementiert. Jeweils eine der Umsetzung je Themenbereich arbeitet auf Basis von Neuronalen Netzen. Anschließend wurden für beide Varianten ein Objektzähler implementiert der die erkannten Objekte zählt. Ein wichtiger Bereich sind ebenfalls Fehler und Probleme der Algorithmen, welche anhand von aufgezeichneten Daten erläutert werden. Zuletzt wird ein Vergleich von klassischen Algorithmen mit Algorithmen auf Basis von Neuronalen Netzen gegeben.
+		In Zeiten, in denen Neuronale Netze immer mehr Bedeutung erlangen ist es wichtig weiterhin die klassischen Algorithmen zu berücksichtigen, da diese oftmals ähnlich gute Ergebnisse erzielen. Im Rahmen der Veranstaltung Videoanalyse und Objekttracking wurden daher zwei mögliche Umsetzungen für Objekt-Detektion und zwei für Objekt-Tracking näher betrachtet und implementiert. Jeweils eine der Umsetzungen je Themenbereich arbeitet auf Basis von Neuronalen Netzen. Anschließend wurden für beide Varianten ein Objektzähler implementiert der die erkannten Objekte zählt. Ein wichtiger Bereich sind ebenfalls Fehler und Probleme der Algorithmen, welche anhand von aufgezeichneten Daten erläutert werden. Zuletzt wird ein Vergleich von klassischen Algorithmen mit Algorithmen auf Basis von Neuronalen Netzen gegeben.
 	\end{abstract}
 	
 	
 	\section{Videomaterial}
 	Für dieses Projekt wurden mehrere Aufnahmen aufgenommen. Ziel war es keine zu chaotischen, aber auch nicht zu einfache Aufnahmen zu erstellen. Auch sollten verschiedene Szenarien abgebildet werden. Es wurden drei Aufnahmen angefertigt.\\
 	\textbf{Verkehrsaufnahmen am Brudermühltunnel am Mittleren Ring:}
-	Dieser Teil des Mittleren Rings ist sehr verkehrsreich und Autobahnähnlich ausgebaut. Es gibt mehrere Fahrspuren. Alle Fahrzeuge fahren im Sichtfeld in eine Richtung. Es sind ein paar Laternen und Bäume in der Aufnahme die die Sicht etwas beeinträchtigen. Es sind nur Pkw im Datensatz enthalten. Teilweise missachten Fahrzeuge den Sicherheitsabstand und fahren sehr nah aufeinander auf. Dies erschwert die Detektion. Das Video wurde in 60 Bilder pro Sekunde aufgezeichnet und hat eine Bildauflösung $3840$ × $2160$. Es wurde kein Stativ verwendet, sondern nur die interne Stabilisierung des Smartphones genutzt.
+	Dieser Teil des Mittleren Rings ist sehr verkehrsreich und autobahnähnlich ausgebaut. Es gibt mehrere Fahrspuren. Alle Fahrzeuge fahren im Sichtfeld in eine Richtung. Es sind ein paar Laternen und Bäume in der Aufnahme, die die Sicht etwas beeinträchtigen. Es sind nur Pkw im Datensatz enthalten. Teilweise missachten Fahrzeuge den Sicherheitsabstand und fahren sehr nah einander auf. Dies erschwert die Detektion. Das Video wurde in 60 Bilder pro Sekunde aufgezeichnet und hat eine Bildauflösung $3840$ × $2160$. Es wurde kein Stativ verwendet, sondern nur die interne Stabilisierung des Smartphones genutzt.
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=6.8cm]{Media/BrudermuhlRaw.png}
@@ -76,7 +76,7 @@
 		\end{center}
 	\end{figure}\\
 	\textbf{Verkehrsaufnahmen am Candidtunnel:}
-	Eine stark befahrene Straße mit einer Vielzahl von Verkehrsteilnehmern. Es herrscht Zweirichtungsverkehr mit insgesamt sechs Fahrspuren. In eine Richtung stehen die Fahrzeuge in einem Stau. Durch Regen spiegeln viele Oberflächen. Die Bäume bewegen sich aufgrund von stärkeren Wind und verdecken einen Teil der Fahrbahn. Diese Aufnahme ist die Anspruchsvollste. In diesem Video sind neben Pkw auch Busse enthalten. Das Video hat 60 Bilder pro Sekunde und eine Bildauflösung von $3840$ × $2160$. Es wurde kein Stativ verwendet sondern nur die interne Stabilisierung des Smartphones genutzt.
+	Eine stark befahrene Straße mit einer Vielzahl von Verkehrsteilnehmern. Es herrscht Zweirichtungsverkehr mit insgesamt sechs Fahrspuren. In eine Richtung stehen die Fahrzeuge in einem Stau. Durch Regen spiegeln viele Oberflächen. Die Bäume bewegen sich aufgrund von stärkeren Wind und verdecken einen Teil der Fahrbahn. Diese Aufnahme ist die anspruchsvollste. In diesem Video sind neben Pkw auch Busse enthalten. Das Video hat 60 Bilder pro Sekunde und eine Bildauflösung von $3840$ × $2160$. Es wurde kein Stativ verwendet sondern nur die interne Stabilisierung des Smartphones genutzt.
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=6.8cm]{Media/CandidRaw.png}
@@ -85,7 +85,7 @@
 		\end{center}
 	\end{figure}\\
 	\textbf{Zugaufnahmen an der Donnersbergerbrücke:}
-	Eine Aufnahme einer der am stärksten befahren Bahnstrecken Europas\cite{z1}. Hier existiert viel Zugverkehr auf mehreren Gleisen mit unterschiedlichen Zugtypen. Beobachtet werden die vier Gleise der zwei Bahnsteige des S-Bahnhalts Donnersbergerbrücke. Ein Hindernis sind die Masten, Signale, Bäume und das Bahnsteigdach welche einen guten Blick auf die Züge erschweren. In dieser Aufnahme sind Züge und Fußgänger enthalten. Der Fokus liegt aber auf den Zügen. Das Video hat 30 Bilder pro Sekunde und hat eine Bildauflösung $1920$ × $1080$. Es wurde ein Stativ verwendet.\\
+	Eine Aufnahme einer der am stärksten befahren Bahnstrecken Europas\cite{z1}. Hier existiert viel Zugverkehr auf mehreren Gleisen mit unterschiedlichen Zugtypen. Beobachtet werden die vier Gleise der zwei Bahnsteige des S-Bahnhalts Donnersbergerbrücke. Ein Hindernis sind die Masten, Signale, Bäume und das Bahnsteigdach welche einen guten Blick auf die Züge erschweren. In dieser Aufnahme sind Züge und Fußgänger enthalten. Der Fokus liegt aber auf den Zügen. Das Video hat 30 Bilder pro Sekunde und eine Bildauflösung $1920$ × $1080$. Es wurde ein Stativ verwendet.\\
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=6.8cm]{Media/DonnersbergerRaw.png}
@@ -118,7 +118,7 @@
 	Im ersten Ansatz versucht man unerwünschte Bewegungen im Video, die durch das Wackeln der Hand entstehen, durch ein Kamerastativ oder ein Gimbal, welches mit Hilfe von Sensoren Bewegungen ausgleicht, zu vermeiden. Diese Art der Stabilisierung findet vor bzw. während der Aufnahme statt.
 	In unserer Aufnahme der Donnersbergerbrücke wurde ein Stativ verwendet.\\
 	\textbf{Optische Videostabilisierung:}\\
-	Die zweite Vorgehensweise bewegt anders als im vorherigen Absatz genannt nicht die gesamte Kamera, sondern nur Teile im Objektiv oder beim Bildsensor. Es wird also entweder der Bildkreis über dem Bildsensor oder der Bildsensor unter dem Bildkreis verschoben. Beschleunigungssensoren erkennen hier die Bewegung der Kamera und passen dementsprechend die optischen Elemente an, damit das Bild stabilisiert wird. Das Ganze findet während der Aufnahme statt.\\
+	Die zweite Vorgehensweise bewegt, anders als im vorherigen Absatz genannt, nicht die gesamte Kamera, sondern nur Teile im Objektiv oder beim Bildsensor. Es wird also entweder der Bildkreis über dem Bildsensor oder der Bildsensor unter dem Bildkreis verschoben. Beschleunigungssensoren erkennen hier die Bewegung der Kamera und passen dementsprechend die optischen Elemente an, damit das Bild stabilisiert wird. Das Ganze findet während der Aufnahme statt.\\
 	\textbf{Digitale Videostabilisierung:}\\
 	Der letzte Ansatz erfolgt nach der Aufnahme über Software und es ist keine zusätzliche Hardware nötig. Mit Hilfe von Algorithmen werden die Unterschiede zwischen zwei hintereinander folgenden Frames herausgefunden, unerwünschte Bewegungen entfernt und Anschluss zu einem stabilisierten Video zusammengefügt. Im Folgenden soll diese Art der Stabilisierung vorgestellt werden.
 	Dabei wird nicht genauer auf die mathematischen Hintergründe eingegangen, sondern nur die Vorgehensweise beschrieben und auf die Algorithmen dahinter verwiesen \cite{stab}.\\
@@ -211,7 +211,7 @@
 	Vereinfacht beschrieben misst der Algorithmus in den Lernbildern die Zeit, in welcher ein Pixel den gleichen Intensitätswert hat und bestimmt so den Hintergrund. Ändert sich nun dieser Wert, wird an dem Pixel eine Bewegung erkannt, dieser als Vordergrund bestimmt und die Parameter geupdatet \cite{m1}\cite{m2}\cite{m3}\cite{m4}.\\
 	\\
 	\subsection{Fehler in der Erkennung}
-	Eine Schwierigkeit bei der Objekterkennung ist, dass die Bewegungen hauptsächlich bei großen Intensitätsunterschieden wie der Wechsel von Straße zu Fahrzeuganfang und von Fahrzeugende zur Straße, erkannt werden. Große Flächen wie die Motorhaube, Windschutzscheibe und die Dachfläche werden nicht erkannt, da diese so lange einen Pixel mit einem sehr ähnlichen Intensitätswert „bedecken“, dass dieser zwischendurch als Hintergrund festgelegt wird. Dabei kann es passieren, dass je nach Thresholdgröße mehrere Objekte in einem Fahrzeug erkannt werden. Dieses Verhalten zeigt sich in Abbildung \ref{mogFehler1}, \ref{mogFehler2} und \ref{mogFehler3}. Ein weiteres Problem ist es wenn neben den Objekten markante Kanten liegen. Diese Kanten sorgen zum Beispiel dafür, dass der Bus in der Grafik \ref{mogFehler2} und \ref{mogFehler3} zweigeteilt wird. Der Grund hierfür dürfte die Bordsteinkante und der Asphaltflick auf dem Radweg sein. All diese Probleme führen dazu, dass der Bus, der in den Abbildungen \ref{mogFehler2} und \ref{mogFehler4} zu sehen ist, insgesamt dreimal erkannt wird. %TODO
+	Eine Schwierigkeit bei der Objekterkennung ist, dass die Bewegungen hauptsächlich bei großen Intensitätsunterschieden wie der Wechsel von Straße zu Fahrzeuganfang und von Fahrzeugende zur Straße, erkannt werden. Große Flächen wie die Motorhaube, Windschutzscheibe und die Dachfläche werden nicht erkannt, da diese so lange einen Pixel mit einem sehr ähnlichen Intensitätswert „bedecken“, dass dieser zwischendurch als Hintergrund festgelegt wird. Dabei kann es passieren, dass je nach Thresholdgröße mehrere Objekte in einem Fahrzeug erkannt werden. Dieses Verhalten zeigt sich in Abbildung \ref{mogFehler1}, \ref{mogFehler2} und \ref{mogFehler3}. Ein weiteres Problem ist es, wenn neben den Objekten markante Kanten liegen. Diese Kanten sorgen zum Beispiel dafür, dass der Bus in der Grafik \ref{mogFehler2} und \ref{mogFehler3} zweigeteilt wird. Der Grund hierfür dürfte die Bordsteinkante und der Asphaltflick auf dem Radweg sein. All diese Probleme führen dazu, dass der Bus, der in den Abbildungen \ref{mogFehler2} und \ref{mogFehler4} zu sehen ist, insgesamt dreimal erkannt wird. %TODO
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=9cm]{Media/MOGVergleich.png}
@@ -323,7 +323,7 @@
 	\end{figure}\\
 	Die letzte dieser Schichten der jeweiligen Skalierungen sagt einen 3-D-Tensor voraus, der Bounding Box, Objekthaftigkeit und Klassenvorhersagen enthält. Es werden aber für jede der drei Skalierung drei Boxen vorausgesagt. Der Tensor enthält dann die vier Bounding-Box-Offsets, eine Objektvorhersage und 80 Klassenvorhersagen $N*N*[3*(4 + 1 + 80)]$ \cite{b4}.\\
 	\\
-	YoloV4 hat die Geschwindigkeit und Genauigkeit verbessert. So nennt das Paper \cite{b2} zum Beispiel \textit{Bag of Freebies}. Damit sind Verbesserungen gemeint die die Genauigkeit des Modells zur Trainingszeit verbessern, aber die Inferenzzeit nicht beeinflussen. So wurde stark das Training optimiert. Bei dem Training werden Bilder zusätzlich aus dem Datensatz generiert. Existierende Bilder werden dupliziert und dann rotiert, zugeschnitten, verzerrt, verdunkelt, etc. und dann auch durch das Netz geschickt. 
+	YoloV4 hat die Geschwindigkeit und Genauigkeit verbessert. So nennt das Paper \cite{b2} zum Beispiel \textit{Bag of Freebies}. Damit sind Verbesserungen gemeint, die die Genauigkeit des Modells zur Trainingszeit verbessern, aber die Inferenzzeit nicht beeinflussen. So wurde stark das Training optimiert. Bei dem Training werden Bilder zusätzlich aus dem Datensatz generiert. Existierende Bilder werden dupliziert und dann rotiert, zugeschnitten, verzerrt, verdunkelt, etc. und dann auch durch das Netz geschickt. 
 	Auch Techniken wie \textit{Cut Mix}\cite{cutmix} und \textit{Mosaic Data Augmentation} werden angewendet. Bei älteren Verfahren werden Bildteile gelöscht. Bei den beiden verwendeten Verfahren werden stattdessen Bildteile aus den Trainingsdaten ausgeschnitten und kombiniert, wobei die Ground-Truth-Labels ebenfalls angepasst werden müssen. Die Data Augmentation sorgt für eine verbesserte Generalisierungfähigkeit des Modells.\\
 	Regularisierungsmethoden wie \textit{DropOut} \cite{dropout} und \textit{DropBlock}\cite{dropblock} wurden gegen Overfitting eingesetzt.\\
 	Auch wird die Lossfunktion aus YoloV1 angepasst. Bei den bisherigen Versionen wurde die mittlere quadratische Abweichung (MSE) für das Regressionsproblem verwendet. Die Regression wird dann unabhängig für alle Vorhersagen von $t_x, t_y, t_w, t_h$ verwendet. Sinnvoller ist es die Koordinaten zusammen als die IoU der Boundingboxen in Betracht zu ziehen. Deshalb verwendet YoloV4 \textit{CIoU}\cite{diou} als Lossfunktion, um die Integrität der Objekte mit einzubeziehen.\\
@@ -343,7 +343,7 @@
 			\label{V4Arch}
 		\end{center}
 	\end{figure}\\
-	Wir mussten unser Modell nicht mehr trainieren da es bereits mit dem Microsoft COCO Datensatz trainiert wurde. Es sind 80 verschiedene Klassen erkennbar. Wir interessieren uns aber nur für einen kleineren Teil wie:
+	Wir mussten unser Modell nicht mehr trainieren, da es bereits mit dem Microsoft COCO Datensatz trainiert wurde. Es sind 80 verschiedene Klassen erkennbar. Wir interessieren uns aber nur für einen kleineren Teil wie:
 	\begin{enumerate}
 		\item Personen
 		\item Pkw
@@ -369,7 +369,7 @@
 	\subsection{Fehler in der Erkennung}
 	YoloV4 ist nicht perfekt. So gibt es gelegentlich Falschklassifizierungen, fehlende Detektionen oder unpassende Boundingboxen.  Fehlerursachen sind aber sehr schwer zu erklären, da das Netz eine Blackbox ist. Dieser Abschnitt zeigt Beispiele für diese Art von Fehler auf.\\
 	\textbf{Falschklassifizierung:}\\
-	Selten Klassifiziert das Netz falsch. So wie in der Abbildung \ref{FaK} zu sehen ist wurde ein Bus als Pkw klassifiziert. Das Modell ist sich in diesem Beispiel auch nur unsicher mit $31\%$. Der Fehler lässt sich vermutlich erklären da die Frontpartie des Bus einem Pkw sehr ähnelt und der Rest des Fahrzeuges wegen eines Baum und einer Laterne verdeckt wird. Auch ist zu vermuten, dass das Netz falsche Merkmale gelernt hat. Dies könnte mit Sicherheit verbessert werden wenn das Modell nur auf die für das Projekt relevanten Klassen trainiert worden wäre. Die folgenden Abbildungen \ref{FaK}, \ref{FaK2}, \ref{FaK3} und \ref{FaK4} sind Beispiele für falsche Klassifikationen. Speziell ist vor allem der Fehler in Bild \ref{FaK4}. Hier wurde ein Anhänger als Fahrzeug klassifiziert. Der Ursprung dieses Fehlers kann unterschiedliche Gründe haben. Dies liegt wahrscheinlich auch am Datensatz selbst.
+	Selten Klassifiziert das Netz falsch. So wie in der Abbildung \ref{FaK} zu sehen ist wurde ein Bus als Pkw klassifiziert. Das Modell ist sich in diesem Beispiel auch nur unsicher mit $31\%$. Der Fehler lässt sich vermutlich damit das die Frontpartie des Busses einem Pkw sehr ähnelt und der Rest des Fahrzeuges wegen eines Baum und einer Laterne verdeckt wird. Auch ist zu vermuten, dass das Netz falsche Merkmale gelernt hat. Dies könnte mit Sicherheit verbessert werden wenn das Modell nur auf die für das Projekt relevanten Klassen trainiert worden wäre. Die folgenden Abbildungen \ref{FaK}, \ref{FaK2}, \ref{FaK3} und \ref{FaK4} sind Beispiele für falsche Klassifikationen. Speziell ist vor allem der Fehler in Bild \ref{FaK4}. Hier wurde ein Anhänger als Fahrzeug klassifiziert. Der Ursprung dieses Fehlers kann unterschiedliche Gründe haben. Dies liegt wahrscheinlich auch am Datensatz selbst.
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=7cm]{Media/Output_480 - Kopie.jpg}
@@ -400,7 +400,7 @@
 	\end{figure}\\
 	
 	\textbf{Fehlende Detektion:}\\
-	Ein etwas häufigerer Fehler ist das Detektionen komplett fehlen. So zeigt die Abbildung \ref{FeK} und \ref{FeK2} zwei Typische Gründe. Hauptgrund ist es das Objekte teilweise verdeckt sind. In Kombination, wenn Objekte sehr klein sind, ist es nahezu nicht mehr möglich zuverlässig Detektion zu bekommen. Auch wenn Objekte das Bild verlassen oder gerade betreten kann es noch kurz zu fehlenden Detektionen führen.
+	Ein etwas häufigerer Fehler ist das Detektionen komplett fehlen. So zeigt die Abbildung \ref{FeK} und \ref{FeK2} zwei Typische Gründe. Hauptgrund ist es das Objekte teilweise verdeckt sind. In Kombination, wenn Objekte sehr klein sind, ist es nahezu nicht mehr möglich zuverlässig Detektion zu bekommen. Auch wenn Objekte das Bild verlassen oder gerade betreten, kann es noch kurz zu fehlenden Detektionen führen.
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=7cm]{Media/Output_680 - Kopie.jpg}
@@ -416,7 +416,7 @@
 		\end{center}
 	\end{figure}\\
 	\textbf{Unpassende Boundingboxen:}\\
-	Yolo hat durch seine Eigenschaft nur rechteckige Boundingboxen vorhersagen zu können eine große Schwäche. Das resultiert in manchen Szenarien zu sehr unpassenden Boundingboxen. Beispielsweise kann man in der Abbildung \ref{UB} gut erkennen das wegen dem Busses welcher Diagonal steht die Boxen sehr groß werden können. Der Effekt tritt noch verstärkter auf bei noch längere Objekten wie Zügen wie zum Beispiel in Bild \ref{UB4} zusehen. Der Fehler der in Abbildung \ref{UB3} zu sehen ist hängt womöglich von Fehlern im Training zusammen. Züge wurden vielleicht an Bahnsteigen schlecht gelabelt was dem Netz dann beigebracht hat Bahnsteige als Züge zu klassifizieren. Auch kann die Box für das Objekt etwas falsch anliegen wenn Bäume oder Laternen ein Teil verdecken wie in Abbildung \ref{UB2} zu sehen ist. Diese unpassenden Boxen erschweren das Tracking ungemein. Dazu später aber noch mehr. 
+	Yolo hat durch seine Eigenschaft nur rechteckige Boundingboxen vorhersagen zu können eine große Schwäche. Das resultiert in manchen Szenarien zu sehr unpassenden Boundingboxen. Beispielsweise kann man in der Abbildung \ref{UB} gut erkennen das wegen dem Busses welcher diagonal steht die Boxen sehr groß werden können. Der Effekt tritt noch verstärkter auf bei noch längere Objekten wie Zügen wie in Bild \ref{UB4} zusehen. Der Fehler der in Abbildung \ref{UB3} zu sehen ist hängt womöglich von Fehlern im Training zusammen. Züge wurden vielleicht an Bahnsteigen schlecht gelabelt was dem Netz dann beigebracht hat Bahnsteige als Züge zu klassifizieren. Auch kann die Box für das Objekt etwas falsch anliegen wenn Bäume oder Laternen ein Teil verdecken wie in Abbildung \ref{UB2} zu sehen ist. Diese unpassenden Boxen erschweren das Tracking ungemein. Dazu später aber noch mehr. 
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=8cm]{Media/Output_777 - Kopie.jpg}

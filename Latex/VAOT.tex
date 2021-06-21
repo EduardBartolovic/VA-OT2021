@@ -241,19 +241,19 @@
 	\end{center}
 \end{figure}
 	
-	\section{Objekterkennung: YoloV4}
-	YOLO\cite{b1} ist ein Neuronal Netz für die Echtzeit-Objekterkennung. In diesem Projekt wurde die vierte und damit aktuellste Version von Yolo\cite{b2} verwendet. So bietet jede Version inkrementelle Verbesserung zum jeweiligen Vorgänger. In dem folgenden Abschnitt werden die wichtigsten Punkte aller Versionen erläutert.\\
-	YOLO ist die Abkürzung für 'You Only Look Once' was übersetzt 'Man sieht nur einmal hin' heißt. Die Aufgabe der Objekterkennung besteht darin, den Ort und die Größe der Bounding Box im Bild zu bestimmen, sowie die Objekte zu klassifizieren. Frühere Methoden, wie R-CNN\cite{rcnn} und seine Variationen, verwendeten eine Pipeline, um diese Aufgabe in mehreren Schritten durchzuführen. Dies ist in der Ausführung langsam und aufwendiger zu trainieren, da jede einzelne Komponente separat trainiert werden muss. YOLO, erledigt beide Aufgaben mit einem einzigen Convolutional Neural Network. Es betrachtet dabei die Objekterkennung als ein Regressionsproblem auf räumlich getrennte Bounding Boxes und zugehörige Klassenwahrscheinlichkeiten.\\
+	\section{Objekterkennung: YOLOv4}
+	YOLO\cite{b1} ist ein Neuronal Netz für die Echtzeit-Objekterkennung. In diesem Projekt wurde die vierte und damit aktuellste Version von YOLO\cite{b2} verwendet. So bietet jede Version inkrementelle Verbesserung zum jeweiligen Vorgänger. In dem folgenden Abschnitt werden die wichtigsten Punkte aller Versionen erläutert.\\
+	YOLO ist die Abkürzung für 'You Only Look Once' was übersetzt 'Man sieht nur einmal hin' heißt. Die Aufgabe der Objekterkennung besteht darin, den Ort und die Größe der Bounding Box im Bild zu bestimmen, sowie die Objekte zu klassifizieren. Frühere Methoden, wie R-CNN\cite{rcnn} und seine Variationen, verwendeten eine Pipeline, um diese Aufgabe in mehreren Schritten durchzuführen. Dies ist in der Ausführung langsam und aufwendiger zu trainieren, da jede einzelne Komponente separat trainiert werden muss. YOLO, erledigt beide Aufgaben mit einem einzigen Convolutional Neural Network. Es betrachtet dabei die Objekterkennung als ein Regressionsproblem auf räumlich getrennte Bounding Boxen und zugehörige Klassenwahrscheinlichkeiten.\\
 	Für die Regression verwendete Loss-Funktion betrachtet drei Komponenten:
 	\begin{enumerate}
 		\item \textbf{Localization loss:} Differenz zwischen vorhergesagten Bounding-Box-Werten (x,y,w und h) und tatsächlichen Bounding-Box-Werten.
 		\[ \lambda_{coord} \sum_{i=0}^{S^2}\sum_{j=0}^{B} \mathbb{1}_{i j}^{obj} [(x_i - \hat{x}_i )^2 + (y_i - \hat{y}_i )^2] \]
 		\[ + \lambda_{coord} \sum_{i=0}^{S^2}\sum_{j=0}^{B} \mathbb{1}_{i j}^{obj} [(\sqrt{w_i} - \sqrt{\hat{w}_i} )^2 + (\sqrt{h_i} - \sqrt{\hat{h}_i} )^2] \]
-		Wenn $\mathbb{1}_{i}^{obj} = 1$ dann ist die Boundingbox $j$ in Zelle $i$ verantwortlich das Objekt zu erkennen. $\lambda_{coord}$ ist eine Gewichtung um den Localization loss wichtiger zu machen. Standardmäßig ist $\lambda_{coord} = 5$ \cite{b5}.
+		Wenn $\mathbb{1}_{i}^{obj} = 1$ dann ist die Bounding Box $j$ in Zelle $i$ verantwortlich das Objekt zu erkennen. $\lambda_{coord}$ ist eine Gewichtung um den Localization loss wichtiger zu machen. Standardmäßig ist $\lambda_{coord} = 5$ \cite{b5}.
 		
 		\item \textbf{Confidence loss:} Fehler im Konfidenzwert.
 		\[  \sum_{i=0}^{S^2}\sum_{j=0}^{B} \mathbb{1}_{i j}^{obj} (C_i - \hat{C}_i)^2 \]
-		$\hat{C}_i$ ist der Konfidenzwert der Boundingbox $j$ in Zelle $i$. Wenn $\mathbb{1}_{i}^{obj} = 1$ dann ist die Boundingbox $j$ in Zelle $i$ verantwortlich das Objekt zu erkennen.\\
+		$\hat{C}_i$ ist der Konfidenzwert der Bounding Box $j$ in Zelle $i$. Wenn $\mathbb{1}_{i}^{obj} = 1$ dann ist die Bounding Box $j$ in Zelle $i$ verantwortlich das Objekt zu erkennen.\\
 		Wenn das Objekt nicht erkannt wurde ist der Confidence loss:
 		\[  \lambda_{noobj} \sum_{i=0}^{S^2}\sum_{j=0}^{B} \mathbb{1}_{i j}^{noobj} (C_i - \hat{C}_i)^2 \]
 		$\lambda_{noobj}$ ist eine Gewichtung um den Confidence loss unwichtiger zu machen. Standardmäßig ist $\lambda_{noobj} = 0.5$ \cite{b5}.
@@ -269,8 +269,8 @@
 	\[ + \sum_{i=0}^{S^2}\sum_{j=0}^{B} \mathbb{1}_{i j}^{obj} (C_i - \hat{C}_i)^2 \]
 	\[ + \lambda_{noobj} \sum_{i=0}^{S^2}\sum_{j=0}^{B} \mathbb{1}_{i j}^{noobj} (C_i - \hat{C}_i)^2 \]
 	\[ + \sum_{i=0}^{S^2} \mathbb{1}_{i}^{obj} \sum_{c \in classes} (p_i(c) - \hat{p}_i(c))^2 \]
-	Das Bild ist in ein S × S-Gitter mit den Residualblöcken aufgeteilt. Wenn der Mittelpunkt eines Objekts in eine Gitterzelle fällt, ist diese Gitterzelle für die Erkennung dieses Objekts zuständig. Jede Gitterzelle sagt B Bounding Boxes und C Klassenkonfidenzwerte für diese Boxen voraus \cite{b1}\\
-	Diese Klassenkonfidenzwerte zeigen, wie sicher das Modell ist, dass die Boundingbox ein Objekt enthält und auch wie genau die Box das Objekt beschreibt. Die Konfidenz wird wie folgt definiert:
+	Das Bild ist in ein S × S-Gitter mit den Residualblöcken aufgeteilt. Wenn der Mittelpunkt eines Objekts in eine Gitterzelle fällt, ist diese Gitterzelle für die Erkennung dieses Objekts zuständig. Jede Gitterzelle sagt B Bounding Boxen und C Klassenkonfidenzwerte für diese Boxen voraus \cite{b1}\\
+	Diese Klassenkonfidenzwerte zeigen, wie sicher das Modell ist, dass die Bounding Box ein Objekt enthält und auch wie genau die Box das Objekt beschreibt. Die Konfidenz wird wie folgt definiert:
 	\[ c = Pr(Objekt) * IoU_{pred}^{truth} \]
 	Die IoU ist zwischen zwei Boxen A und B ist wie folgt definiert:
 	\[ IoU = \frac{A \cap B}{A \cup B} \]
@@ -283,9 +283,9 @@
 	\end{figure}\\
 	In Abbildung \ref{IoU} ist die Berechnung der Intersection-Over-Union dargestellt. Sie beschreibt das Verhältnis der Schnittfläche einer Bounding Box mit der Grundwahrheit bezüglich der Gesamtfläche von Bounding Box und Grundwahrheit. Je genauer die beiden Flächen übereinander liegen desto höher der Wert, desto besser ist die Vorhersage der Bounding Box.\\
 	\\
-	In der zweiten Version von Yolo \cite{b3} wurde an mehreren Stellen Verbesserungen erreicht. So wurde beispielsweise Batch-Normalization in Convolutional-Layers eingefügt.\\
+	In der zweiten Version von YOLO \cite{b3} wurde an mehreren Stellen Verbesserungen erreicht. So wurde beispielsweise Batch-Normalization in Convolutional-Layers eingefügt.\\
 	Die Inputgröße des Netzes wurde von $224*224$ auf $448*448$ erhöht.\\
-	Eine weitere wichtige Änderung sind Ankerboxen. Da Objekte meist immer ähnliche Formen haben kann eine gewisse Menge an sogenannten Ankerboxen definiert werden, welche als Basis Boundingboxen fingieren. So wird anstatt die absolute Größen von Boxen in Bezug auf das gesamte Bild vorherzusagen, eine Ankerbox ausgewählt die am besten zu dem gewünschten Objekten passende verwendet. Die Abbildung \ref{Anker} zeigt dieses Konzept.
+	Eine weitere wichtige Änderung sind Ankerboxen. Da Objekte meist immer ähnliche Formen haben kann eine gewisse Menge an sogenannten Ankerboxen definiert werden, welche als Basis Bounding Boxen fingieren. So wird anstatt die absolute Größen von Boxen in Bezug auf das gesamte Bild vorherzusagen, eine Ankerbox ausgewählt die am besten zu dem gewünschten Objekten passende verwendet. Die Abbildung \ref{Anker} zeigt dieses Konzept.
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=6cm]{Media/Ankerboxen.png}
@@ -293,12 +293,12 @@
 			\label{Anker}
 		\end{center}
 	\end{figure}
-	Diese Ankerboxen kann man mittels Clusteralgorithmen wie K-Means\cite{kmeans} und den Boundingboxen aus dem Datensatz berechnen. Dies hat vor allem den Vorteil, dass die Boundingboxen besser zu den Objekten des jeweiligen Datensatzes passen.\\
-	Jede Vorhersagen für eine Boundingbox enthält die 4 Koordinaten: $t_x, t_y, t_w, t_h$. $t_x$ und $ t_y$ sind die x an y Koordinaten, relative Zellen Mittelpunkt. $t_w$ und $ t_h$ sind die Skalierungsfaktoren relativ zu Ankerboxdimensionen. $p_w$ und $p_h$ sind die Breite und Höhe der Ankerbox. Dabei gibt es noch einen Gitterzellenoffset $c_x$ und $c_y$.
+	Diese Ankerboxen kann man mittels Clusteralgorithmen wie K-Means\cite{kmeans} und den Bounding Boxen aus dem Datensatz berechnen. Dies hat vor allem den Vorteil, dass die Bounding Boxen besser zu den Objekten des jeweiligen Datensatzes passen.\\
+	Jede Vorhersagen für eine Bounding Box enthält die 4 Koordinaten: $t_x, t_y, t_w, t_h$. $t_x$ und $ t_y$ sind die x an y Koordinaten, relative Zellen Mittelpunkt. $t_w$ und $ t_h$ sind die Skalierungsfaktoren relativ zu Ankerboxdimensionen. $p_w$ und $p_h$ sind die Breite und Höhe der Ankerbox. Dabei gibt es noch einen Gitterzellenoffset $c_x$ und $c_y$.
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=6cm]{Media/YoloV3PredictionBox.png}
-			\caption{Zusammensetzung einer Boundingbox\cite{b3}}
+			\caption{Zusammensetzung einer Bounding Box\cite{b3}}
 			\label{PredictionBox}
 		\end{center}
 	\end{figure}\\
@@ -311,7 +311,7 @@
 	\[ class = argmax_i(C)\]
 	\[ score = max(P)\]\\
 	In der dritten Version wurde vor allem die Genauigkeit weiter verbessert. So wurden Restblöcke, Skip-Verbindungen und Upsampling Techniken hinzugefügt. Das Netzwerk wuchs damit drastisch auf insgesamt 106 Convolutional-Layer.
-	Der Featureextraktor Darknet19 aus YoloV2 wurde durch Darknet-53 ersetzt. Darknet-53 besitzt 53 Convolutional-Layer und beinhaltet zusätzlich vereinzelte Abkürzungen im Netz.\\
+	Der Featureextraktor Darknet19 aus YOLOv2 wurde durch Darknet-53 ersetzt. Darknet-53 besitzt 53 Convolutional-Layer und beinhaltet zusätzlich vereinzelte Abkürzungen im Netz.\\
 	Eine weitere Änderung betrifft den Softmax-Layer für die Bestimmung der Zielklasse. Früher wurde nur die Klasse ausgewählt, die den höchsten Score erzielte. Dies hat sich geändert. Dadurch, dass die Klassenvorhersage mit Hilfe einer Logistische Regression stattfindet, kann ein Objekt mehrere Label gleichzeitig haben wie zum Beispiel Person und Frau. Diese Multilabelklassifikation wird für unser Projekt aber nicht benötigt.\\
 	Ein weitere Neuerung ist das Vorhersagen über drei verschiedener Skalierungen. Das System extrahiert Merkmale mit einem ähnlichen Konzept wie bei Merkmalspyramidennetzen (FPN)\cite{b6}. Diese Technik verbessert die Genauigkeit vor allem bei kleineren Objekten. So werden Feature-Map aus einer früheren Schicht aus dem Netzwerk extrahiert und mit höher gesampelten Features durch Verkettung zusammen gefügt. Mit weiteren Faltungsschichten werden diese kombinierte Feature-Map verarbeitet. So wird von Vorhersagen für alle der drei Skalierungen profitiert und damit von allen vorherigen Berechnungen, sowie von den feinkörnigen Merkmalen aus der frühen Phase des Netzwerks. Die Abbildung \ref{FPN} zeigt das Konzept eines Merkmalspyramidennetzwerks.
 	\begin{figure}[!h]
@@ -323,23 +323,23 @@
 	\end{figure}\\
 	Die letzte dieser Schichten der jeweiligen Skalierungen sagt einen 3-D-Tensor voraus, der Bounding Box, Objekthaftigkeit und Klassenvorhersagen enthält. Es werden aber für jede der drei Skalierung drei Boxen vorausgesagt. Der Tensor enthält dann die vier Bounding-Box-Offsets, eine Objektvorhersage und 80 Klassenvorhersagen $N*N*[3*(4 + 1 + 80)]$ \cite{b4}.\\
 	\\
-	YoloV4 hat die Geschwindigkeit und Genauigkeit verbessert. So nennt das Paper \cite{b2} zum Beispiel \textit{Bag of Freebies}. Damit sind Verbesserungen gemeint, die die Genauigkeit des Modells zur Trainingszeit verbessern, aber die Inferenzzeit nicht beeinflussen. So wurde stark das Training optimiert. Bei dem Training werden Bilder zusätzlich aus dem Datensatz generiert. Existierende Bilder werden dupliziert und dann rotiert, zugeschnitten, verzerrt, verdunkelt, etc. und dann auch durch das Netz geschickt. 
+	YOLOv4 hat die Geschwindigkeit und Genauigkeit verbessert. So nennt das Paper \cite{b2} zum Beispiel \textit{Bag of Freebies}. Damit sind Verbesserungen gemeint, die die Genauigkeit des Modells zur Trainingszeit verbessern, aber die Inferenzzeit nicht beeinflussen. So wurde stark das Training optimiert. Bei dem Training werden Bilder zusätzlich aus dem Datensatz generiert. Existierende Bilder werden dupliziert und dann rotiert, zugeschnitten, verzerrt, verdunkelt, etc. und dann auch durch das Netz geschickt. 
 	Auch Techniken wie \textit{Cut Mix}\cite{cutmix} und \textit{Mosaic Data Augmentation} werden angewendet. Bei älteren Verfahren werden Bildteile gelöscht. Bei den beiden verwendeten Verfahren werden stattdessen Bildteile aus den Trainingsdaten ausgeschnitten und kombiniert, wobei die Ground-Truth-Labels ebenfalls angepasst werden müssen. Die Data Augmentation sorgt für eine verbesserte Generalisierungfähigkeit des Modells.\\
 	Regularisierungsmethoden wie \textit{DropOut} \cite{dropout} und \textit{DropBlock}\cite{dropblock} wurden gegen Overfitting eingesetzt.\\
-	Auch wird die Lossfunktion aus YoloV1 angepasst. Bei den bisherigen Versionen wurde die mittlere quadratische Abweichung (MSE) für das Regressionsproblem verwendet. Die Regression wird dann unabhängig für alle Vorhersagen von $t_x, t_y, t_w, t_h$ verwendet. Sinnvoller ist es die Koordinaten zusammen als die IoU der Boundingboxen in Betracht zu ziehen. Deshalb verwendet YoloV4 \textit{CIoU}\cite{diou} als Lossfunktion, um die Integrität der Objekte mit einzubeziehen.\\
+	Auch wird die Lossfunktion aus YOLOv1 angepasst. Bei den bisherigen Versionen wurde die mittlere quadratische Abweichung (MSE) für das Regressionsproblem verwendet. Die Regression wird dann unabhängig für alle Vorhersagen von $t_x, t_y, t_w, t_h$ verwendet. Sinnvoller ist es die Koordinaten zusammen als die IoU der Bounding Boxen in Betracht zu ziehen. Deshalb verwendet YOLOv4 \textit{CIoU}\cite{diou} als Lossfunktion, um die Integrität der Objekte mit einzubeziehen.\\
 	Weitere Verbesserungen die auf Kosten der Laufzeit gehen werden \textit{Bag of Specials} genannt. Dazu gehören zum Beispiel \textit{Squeeze-and-Excitation}, \textit{Spatial Attention Module}\cite{cbam}, Vergrößerung des Rezeptionsfeldes des Modells und Stärkung der Fähigkeit zur Merkmalsintegration.\\
 	Im Backbone wird eine \textit{MISH}-Aktivierungsfunktion \cite{b7} verwendet. Diese ist eine glatte und nicht-monotone neuronale Aktivierungsfunktion, die wie folgt definiert werden kann:
 	\[ f(x) = x* \tanh (\ln (1+e^x)) \]
 	Sie arbeitet besser als zum Beispiel \textit{ReLU} oder Swish \cite{b7}.\\
-	Die Komponenten in der Architektur wurde auch ersetzt. Im \textit{Backbone} läuft nun \textit{CSPDarknet53}. Dies basiert auf dem Darknet53 aus YoloV3 und wird mit Cross-Stage-Partial-Networks (CSP)\cite{csp} erweitert. Im Hals des Netzes wird \textit{Spatial pyramid pooling} (SPP)\cite{b9} verwendet. \textit{Path Aggregation Network} (PANet)\cite{b10} und \textit{Spatial Attention Module} (SAM)\cite{cbam} ersetzen die Merkmalspyramidennetze (FPN) die YoloV3 verwendet.\\
-	\textit{Convolutional-Layer} brauchen keine feste Bildgröße und erzeugen deshalb  Feature-Maps beliebiger Größe. \textit{Fullyconnected-Layer} benötigen stattdessen per Definition eine Eingabe mit fester Länge. SPP entfernt genau diese Restriktion. SPP wendet verschiedene Strategien bei unterschiedlichen Skalierungen an. Die Feature-Maps werden räumlich in $m$ × $m$ Bins unterteilt. Dann wird ein Maximumpool auf jeden Bin für jeden Kanal angewendet. In YoloV4 wird eine modifiziert Version von SPP verwendet die die räumliche Dimension der Ausgabe beibehaltet \cite{b9}.\\
-	In den FPN aus YoloV3 werden die Objekte separat und unabhängig voneinander auf verschiedenen Skalenebenen erkannt. Dies kann zu doppelten Vorhersagen führen. PAN erweitert FPN mit einem Bottom-up-Pfad der die Weitergabe von Informationen aus den unteren Ebenen erleichtern. Durch adaptives Featurepooling kann auf jede Vorhersagen aus allen Ebenen zugriffen werden \cite{b10}.\\
+	Die Komponenten in der Architektur wurde auch ersetzt. Im \textit{Backbone} läuft nun \textit{CSPDarknet53}. Dies basiert auf dem Darknet53 aus YOLOv3 und wird mit Cross-Stage-Partial-Networks (CSP)\cite{csp} erweitert. Im Hals des Netzes wird \textit{Spatial pyramid pooling} (SPP)\cite{b9} verwendet. \textit{Path Aggregation Network} (PANet)\cite{b10} und \textit{Spatial Attention Module} (SAM)\cite{cbam} ersetzen die Merkmalspyramidennetze (FPN) die YOLOv3 verwendet.\\
+	\textit{Convolutional-Layer} brauchen keine feste Bildgröße und erzeugen deshalb  Feature-Maps beliebiger Größe. \textit{Fullyconnected-Layer} benötigen stattdessen per Definition eine Eingabe mit fester Länge. SPP entfernt genau diese Restriktion. SPP wendet verschiedene Strategien bei unterschiedlichen Skalierungen an. Die Feature-Maps werden räumlich in $m$ × $m$ Bins unterteilt. Dann wird ein Maximumpool auf jeden Bin für jeden Kanal angewendet. In YOLOv4 wird eine modifiziert Version von SPP verwendet die die räumliche Dimension der Ausgabe beibehaltet \cite{b9}.\\
+	In den FPN aus YOLOv3 werden die Objekte separat und unabhängig voneinander auf verschiedenen Skalenebenen erkannt. Dies kann zu doppelten Vorhersagen führen. PAN erweitert FPN mit einem Bottom-up-Pfad der die Weitergabe von Informationen aus den unteren Ebenen erleichtern. Durch adaptives Featurepooling kann auf jede Vorhersagen aus allen Ebenen zugriffen werden \cite{b10}.\\
 	SAM verbessert die räumliche Aufmerksamkeit.\\
-	Am \textit{Head} der für Prädiktion verantwortlich ist wurde nichts geändert und  ist damit identisch zu YoloV3 \cite{b2}\cite{b8}. Diese Architektur mit der Vielzahl an Komponenten wird in er Abbildung \ref{V4Arch} dargestellt.
+	Am \textit{Head} der für Prädiktion verantwortlich ist wurde nichts geändert und  ist damit identisch zu YOLOv3 \cite{b2}\cite{b8}. Diese Architektur mit der Vielzahl an Komponenten wird in er Abbildung \ref{V4Arch} dargestellt.
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=9cm]{Media/YoloV4Arch.jpeg}
-			\caption{Das Konzept von YoloV4 \cite{b8}}
+			\caption{Das Konzept von YOLOv4 \cite{b8}}
 			\label{V4Arch}
 		\end{center}
 	\end{figure}\\
@@ -356,7 +356,7 @@
 	Dennoch kann man je nach Szenario per Parameter die relevanten Klassen auswählen. Das Modell prädiktiert trotzdem noch alle Klassen. Die nicht relevanten werden im Postprocessing herausgefiltert.\\
 	Ein weitere Postprocessingschritt ist es die Detektion die eine zu geringe Sicherheit besitzen zu entfernen.\\
 	Die übrigen Boxen durchlaufen eine Non-Maximum-Suppression (NMS)\cite{nms}.
-	Der Output kann überschneidende Boundingboxen besitzen die eigentlich zur selben Klasse gehören. Diese Duplikate können mittels der Non-Maximum-Suppression (NMS) entfernt werden. Hierfür wird die IoU der Boxen berechnet. Sollte die IoU einen Threshold überschreiten dann wird das Duplikat entfernt. Die Grafik \ref{NMS} zeigt wie zu viele überlappende Boxen mit einer NMS mit einer ersetzt werden kann.\\
+	Der Output kann überschneidende Bounding Boxen besitzen die eigentlich zur selben Klasse gehören. Diese Duplikate können mittels der Non-Maximum-Suppression (NMS) entfernt werden. Hierfür wird die IoU der Boxen berechnet. Sollte die IoU einen Threshold überschreiten dann wird das Duplikat entfernt. Die Grafik \ref{NMS} zeigt wie zu viele überlappende Boxen mit einer NMS mit einer ersetzt werden kann.\\
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=6cm]{Media/NMS.png}
@@ -364,10 +364,10 @@
 			\label{NMS}
 		\end{center}
 	\end{figure}\\
-	Das Ergebnis einer Prädiktion ist eine Liste von Objekten, welche aus den x,y Koordinate des Mittelpunktes der Boundingbox, der Breite w, der Höhe h, der Klasse und des Konfidenzwerts besteht.
+	Das Ergebnis einer Prädiktion ist eine Liste von Objekten, welche aus den x,y Koordinate des Mittelpunktes der Bounding Box, der Breite w, der Höhe h, der Klasse und des Konfidenzwerts besteht.
 	
 	\subsection{Fehler in der Erkennung}
-	YoloV4 ist nicht perfekt. So gibt es gelegentlich Falschklassifizierungen, fehlende Detektionen oder unpassende Boundingboxen.  Fehlerursachen sind aber sehr schwer zu erklären, da das Netz eine Blackbox ist. Dieser Abschnitt zeigt Beispiele für diese Art von Fehler auf.\\
+	YOLOv4 ist nicht perfekt. So gibt es gelegentlich Falschklassifizierungen, fehlende Detektionen oder unpassende Bounding Boxen.  Fehlerursachen sind aber sehr schwer zu erklären, da das Netz eine Blackbox ist. Dieser Abschnitt zeigt Beispiele für diese Art von Fehler auf.\\
 	\textbf{Falschklassifizierung:}\\
 	Selten Klassifiziert das Netz falsch. So wie in der Abbildung \ref{FaK} zu sehen ist wurde ein Bus als Pkw klassifiziert. Das Modell ist sich in diesem Beispiel auch nur unsicher mit $31\%$. Der Fehler lässt sich vermutlich damit das die Frontpartie des Busses einem Pkw sehr ähnelt und der Rest des Fahrzeuges wegen eines Baum und einer Laterne verdeckt wird. Auch ist zu vermuten, dass das Netz falsche Merkmale gelernt hat. Dies könnte mit Sicherheit verbessert werden wenn das Modell nur auf die für das Projekt relevanten Klassen trainiert worden wäre. Die folgenden Abbildungen \ref{FaK}, \ref{FaK2}, \ref{FaK3} und \ref{FaK4} sind Beispiele für falsche Klassifikationen. Speziell ist vor allem der Fehler in Bild \ref{FaK4}. Hier wurde ein Anhänger als Fahrzeug klassifiziert. Der Ursprung dieses Fehlers kann unterschiedliche Gründe haben. Dies liegt wahrscheinlich auch am Datensatz selbst.
 	\begin{figure}[!h]
@@ -415,33 +415,33 @@
 			\label{FeK2}
 		\end{center}
 	\end{figure}\\
-	\textbf{Unpassende Boundingboxen:}\\
-	Yolo hat durch seine Eigenschaft nur rechteckige Boundingboxen vorhersagen zu können eine große Schwäche. Das resultiert in manchen Szenarien zu sehr unpassenden Boundingboxen. Beispielsweise kann man in der Abbildung \ref{UB} gut erkennen das wegen dem Busses welcher diagonal steht die Boxen sehr groß werden können. Der Effekt tritt noch verstärkter auf bei noch längere Objekten wie Zügen wie in Bild \ref{UB4} zusehen. Der Fehler der in Abbildung \ref{UB3} zu sehen ist hängt womöglich von Fehlern im Training zusammen. Züge wurden vielleicht an Bahnsteigen schlecht gelabelt was dem Netz dann beigebracht hat Bahnsteige als Züge zu klassifizieren. Auch kann die Box für das Objekt etwas falsch anliegen wenn Bäume oder Laternen ein Teil verdecken wie in Abbildung \ref{UB2} zu sehen ist. Diese unpassenden Boxen erschweren das Tracking ungemein. Dazu später aber noch mehr. 
+	\textbf{Unpassende Bounding Boxen:}\\
+	YOLO hat durch seine Eigenschaft nur rechteckige Bounding Boxen vorhersagen zu können eine große Schwäche. Das resultiert in manchen Szenarien zu sehr unpassenden Bounding Boxen. Beispielsweise kann man in der Abbildung \ref{UB} gut erkennen das wegen dem Busses welcher diagonal steht die Boxen sehr groß werden können. Der Effekt tritt noch verstärkter auf bei noch längere Objekten wie Zügen wie in Bild \ref{UB4} zusehen. Der Fehler der in Abbildung \ref{UB3} zu sehen ist hängt womöglich von Fehlern im Training zusammen. Züge wurden vielleicht an Bahnsteigen schlecht gelabelt was dem Netz dann beigebracht hat Bahnsteige als Züge zu klassifizieren. Auch kann die Box für das Objekt etwas falsch anliegen wenn Bäume oder Laternen ein Teil verdecken wie in Abbildung \ref{UB2} zu sehen ist. Diese unpassenden Boxen erschweren das Tracking ungemein. Dazu später aber noch mehr. 
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=8cm]{Media/Output_777 - Kopie.jpg}
-			\caption{Unpassende Boundingbox}
+			\caption{Unpassende Bounding Box}
 			\label{UB}
 		\end{center}
 	\end{figure}\\
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=8cm]{Media/Output_2126.jpg}
-			\caption{Unpassende Boundingbox}
+			\caption{Unpassende Bounding Box}
 			\label{UB4}
 		\end{center}
 	\end{figure}\\
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=8cm]{Media/Output_276 - Kopie.jpg}
-			\caption{Unpassende Boundingbox}
+			\caption{Unpassende Bounding Box}
 			\label{UB2}
 		\end{center}
 	\end{figure}\\
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=8cm]{Media/Output_564.jpg}
-			\caption{Unpassende Boundingbox}
+			\caption{Unpassende Bounding Box}
 			\label{UB3}
 		\end{center}
 	\end{figure}\\
@@ -610,12 +610,12 @@
 	kann ein häufiger Wechsel der ID mit direkt benachbarten Fahrzeugen vermieden werden.
 	
 	\subsubsection{Ergebnisse des Trackings mit SORT}
-	Erneut basiert der Tracking-Algorithmus auf den Erkennungen des Objekt-Detektors. In Falle von SORT handelt es sich dabei um Gaussmixture. Dieser liefert teilweise für ein Objekt mehrere Erkennung. Dies liegt daran, dass Gaussmixture bei großen Objekte nicht das gesamte Objekt erkennt, sondern einzelne Flächen und die definierten Boundingboxen nur diese Flächen umschließen. SORT verarbeitet nur die erhaltenen Boundingboxen und kann daher nicht erkennen ob mehrere Boundingboxen zu einem Objekt gehören. Zu sehen ist die Problematik in Abbildung \ref{sortdouble}. Hierbei wurden zwei Boundingboxen für den Bus definiert. Ebenfalls zu erkennen ist, dass weder das gezeigte Auto, noch der Bus von einer Boundingbox einheitlich umschlossen sind. SORT kann allerdings die definierten Boxen korrekt verfolgen bis der Bus beziehungsweise das Auto den durch Gaussmixture abgedeckten Bereich verlässt. 
+	Erneut basiert der Tracking-Algorithmus auf den Erkennungen des Objekt-Detektors. In Falle von SORT handelt es sich dabei um Gaussmixture. Dieser liefert teilweise für ein Objekt mehrere Erkennung. Dies liegt daran, dass Gaussmixture bei großen Objekte nicht das gesamte Objekt erkennt, sondern einzelne Flächen und die definierten Bounding Boxen nur diese Flächen umschließen. SORT verarbeitet nur die erhaltenen Bounding Boxen und kann daher nicht erkennen ob mehrere Bounding Boxen zu einem Objekt gehören. Zu sehen ist die Problematik in Abbildung \ref{sortdouble}. Hierbei wurden zwei Bounding Boxen für den Bus definiert. Ebenfalls zu erkennen ist, dass weder das gezeigte Auto, noch der Bus von einer Bounding Box einheitlich umschlossen sind. SORT kann allerdings die definierten Boxen korrekt verfolgen bis der Bus beziehungsweise das Auto den durch Gaussmixture abgedeckten Bereich verlässt. 
 	
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=7cm]{Media/sortdouble.jpg}
-			\caption{Doppelte Erkennung eines Objekts. SORT unterscheidet nicht, daher zwei Tracking-IDs für den Bus}
+			\caption{Doppelte Erkennung eines Objekts. SORT nimmt pro Bounding Box ein Objekt an, daher werden zwei Tracking-IDs für den Bus erstellt}
 			\label{sortdouble}
 		\end{center}
 	\end{figure}
@@ -629,9 +629,9 @@
 	\textbf{Zählen der vergebenen TrackingID's:}\\
 	 Unser erster Plan war das Zählen aller vergebenen Tracking ID's. Dies hätte den Vorteil, dass sobald ein Objekt gefunden wird auch gezählt wird. Wir stellten aber schnell fest, dass aufgrund von Fehlern in der Pipeline Objekten mehrfach neue IDs zugewiesen wurde. Diese Probleme entstehen in Kombination aus Fehlern in der Objekterkennung und dem Tracker. Je zuverlässiger das Tracking funktioniert desto geringer ist der Fehler im Zählen. Da aber ein perfekter Tracker nicht immer realistisch ist müssen bessere Lösungen gefunden werden.\\
 	\textbf{Zähllinie:}\\
-	 Um Trackingfehler zu umgehen wurde eine Zähllinie eingebaut, die sobald der Mittelpunkt der Boundingbox diese schneidet einmal hochzählt. Dies hatte noch immer Probleme wie zum Beispiel das manche Boxen doppelt gezählt wurden weil der Mittelpunkt kurz wieder nach oben rutschte. Manchmal wurde die Linie auch direkt übersprungen.\\
+	 Um Trackingfehler zu umgehen wurde eine Zähllinie eingebaut, die sobald der Mittelpunkt der Bounding Box diese schneidet einmal hochzählt. Dies hatte noch immer Probleme wie zum Beispiel das manche Boxen doppelt gezählt wurden weil der Mittelpunkt kurz wieder nach oben rutschte. Manchmal wurde die Linie auch direkt übersprungen.\\
 	\textbf{Zählung der Tracking IDs in einer Zählbox:}\\
-	 Um die beiden Techniken zu vereinen wurde eine Zählbox entwickelt. So kann für jedes Szenario per Parameter die Position und Größe der Zählbox definiert werden. Sobald der Mittelpunkt einer Boundingbox in den die Zählbereich eindringt wird überprüft ob diese Tracking ID schon in einem Set enthalten ist. Ist sie es noch nicht wird hochgezählt. Es ist sinnvoll die Zählbox in Bereiche zu setzten in denen das Tracking zuverlässig funktioniert. 
+	 Um die beiden Techniken zu vereinen wurde eine Zählbox entwickelt. So kann für jedes Szenario per Parameter die Position und Größe der Zählbox definiert werden. Sobald der Mittelpunkt einer Bounding Box in den die Zählbereich eindringt wird überprüft ob diese Tracking ID schon in einem Set enthalten ist. Ist sie es noch nicht wird hochgezählt. Es ist sinnvoll die Zählbox in Bereiche zu setzten in denen das Tracking zuverlässig funktioniert. 
 	\begin{figure}[!h]
 		\begin{center}
 			\includegraphics[width=7cm]{Media/BrudermuhlCounter.png}
@@ -648,11 +648,11 @@
 	Beide Verfahren haben ihre Stärken und Schwächen. Im Trackingteil sind beide Verfahren sich relativ ähnlich. Vor allem unterscheiden sich unsere Pipelines in der Objekterkennung welches dann aber auch maßgeblich die Trackingergebnisse beeinflusst. In der folgenden Liste werden die Vor- und Nachteile beider Verfahren nach unserer Erkenntnissen aufgeschlüsselt.
 	\begin{enumerate}
 		\item \textbf{Genauigkeit:} Die Deep-Learning Verfahren verzeichnen vor allem gute Out-Of-The-Box Leistung. Ohne große Hyperparameteroptimierung erreicht man schnell eine ausgezeichnete Performance. Klassische Verfahren können dabei auch sehr gute Leistung erzielen wenn genug Optimierung stattfindet. Der Aufwand der Optimierung ist aber stark von der Situation abhängig.\\
-		So stellten wir fest das die klassischen Verfahren deutlich fehleranfälliger bei schlechten Videoaufnahmen waren. Verwackelte Aufnahmen stellten eine große Herausforderung dar. Gegenmaßnahmen dafür sind ein Stativ oder andere auf Software basierende Verfahren. Die Objekterkennung basierend auf YoloV4 hat überhaupt kein Problem mit verwackelten Bildern da es jeden Frame unabhängig von einander betrachtet. Die Tracking-Algorithmen sind bezüglich starker Bewegung jedoch anfällig, da die Vorhersage der nächsten Position und der Assoziation der Detektion erschwert wird. DeepSort nutzt für die Assoziation bei starker Bewegung daher hauptsächlich den Feature-Vektor um die Objekte zuzuordnen. Es lässt sich sagen das die meisten Fehler der Tracker auf schlechter Objekterkennung basieren. DeepSORT ist dabei etwas weniger fehleranfällig als SORT.
+		So stellten wir fest das die klassischen Verfahren deutlich fehleranfälliger bei schlechten Videoaufnahmen waren. Verwackelte Aufnahmen stellten eine große Herausforderung dar. Gegenmaßnahmen dafür sind ein Stativ oder andere auf Software basierende Verfahren. Die Objekterkennung basierend auf YOLOv4 hat überhaupt kein Problem mit verwackelten Bildern da es jeden Frame unabhängig von einander betrachtet. Die Tracking-Algorithmen sind bezüglich starker Bewegung jedoch anfällig, da die Vorhersage der nächsten Position und der Assoziation der Detektion erschwert wird. DeepSort nutzt für die Assoziation bei starker Bewegung daher hauptsächlich den Feature-Vektor um die Objekte zuzuordnen. Es lässt sich sagen das die meisten Fehler der Tracker auf schlechter Objekterkennung basieren. DeepSORT ist dabei etwas weniger fehleranfällig als SORT.
 		
 		\item \textbf{Laufzeit:} Bei der Laufzeit haben die klassischen Verfahren einen klaren Vorteil. Hier erzielten wir etwa doppelt so viele Bilder pro Sekunde als bei den DeepLearning Methoden. Außerdem dürfte es schwieriger sein Deep-Learning Verfahren auf Embedded Geräten lauffähig zu bekommen. Prinzipiell sollten beide Methoden auf Grafikkarten beschleunigt werden können.
 		
-		\item \textbf{Nachvollziehbarkeit:} Bei Fehlern in der Objekterkennung bei Yolo ist es häufig schwierig nachzuvollziehen wie diese entstanden. Auch ist das behandeln dieser Fehler schwieriger. Bei MOG ist dies deutlich einfacher, da man nur das Graubild untersuchen muss und dann die Hyperparameter anpassen muss.
+		\item \textbf{Nachvollziehbarkeit:} Bei Fehlern in der Objekterkennung bei YOLO ist es häufig schwierig nachzuvollziehen wie diese entstanden. Auch ist das behandeln dieser Fehler schwieriger. Bei MOG ist dies deutlich einfacher, da man nur das Graubild untersuchen muss und dann die Hyperparameter anpassen muss.
 		
 		\item \textbf{Implementierungsaufwand:} Es kann gesagt werden das die Implementierung der klassischen Verfahren deutlich einfacher ist wie die der DeepLearning Methoden. Außerdem muss beachtet werden das ein trainiertes Netz vorhanden sein muss. Ist dieses nicht vorhanden muss erst ein Datensatz aufwendig erstellt werden mit welchen dann ein Netz trainiert werden muss.
 		

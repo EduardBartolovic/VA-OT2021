@@ -1,7 +1,7 @@
 \documentclass[conference]{IEEEtran}
 \IEEEoverridecommandlockouts
 % The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
-\usepackage{cite}
+%\usepackage{cite}
 \usepackage[ngerman]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath,amssymb,amsfonts}
@@ -12,7 +12,8 @@
 \usepackage{listings}
 \usepackage{bbold}
 \usepackage{subfigure}
-
+\usepackage[backend=bibtex]{biblatex}
+\bibliography{source.bib}
 
 \definecolor{pblue}{rgb}{0.13,0.13,1}
 \definecolor{pgreen}{rgb}{0,0.5,0}
@@ -33,8 +34,8 @@
 
 
 \usepackage{url}
-\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
-		T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+%\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+%		T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
 	
 	\title{Videoanalyse und Objekttracking}
@@ -438,7 +439,7 @@
 	
 	Die ungarische Methode wird verwendet, um die Detektion einem existierenden getrackten Objekt zuzuordnen. Hierfür wird die Intersection-over-Union Distance zwischen jeder Detektion und allen bereits erkannten Objekten verglichen und als Gewichtung verwendet.
 	
-	Die Zuweisung der ID erfolgt anschließend über die optimale Lösung der Hungarian Methode, auch Kuhn-Munkres-Algorithmus genannt. Diese wird für das Lösen von Zuordnungsproblemen in einem gewichteten kompletten bipartiten Graph genutzt. Hierbei wird die Zuordnung anhand der minimalen Gewichtung, zwischen den Elementen gelöst. Gegeben ist ein Graph $G = (A \cup B, E) $. Zwischen $A$ und $B$ wird nun die Verbindung mit der kleinsten Gewichtung gesucht. Hierfür wird eine Kostenmatrix $C$ erstellt mit $c_{ij}$ als Kosten um $a_i \in A$, $b_j \in B$ zuzuordnen. Die Matrix $C$ wird anschließend reduziert. In diesem Beispiel werden Objekte den Detektionen zugeordnet. Als Gewichtung dienen die Distanzen der IoU, welche minimal sein soll.
+	Die Zuweisung der ID erfolgt anschließend über die optimale Lösung der Hungarian Methode, auch Kuhn-Munkres-Algorithmus genannt. Diese wird für das Lösen von Zuordnungsproblemen in einem gewichteten kompletten bipartiten Graph genutzt. Hierbei wird die Zuordnung anhand der minimalen Gewichtung, zwischen den Elementen gelöst. Gegeben ist ein Graph $G = (A \cup B, E) $. Zwischen $A$ und $B$ wird nun die Verbindung mit der kleinsten Gewichtung gesucht. Hierfür wird eine Kostenmatrix $C$ erstellt mit $c_{ij}$ als Kosten um $a_i \in A$, $b_j \in B$ zuzuordnen. Die Matrix $C$ wird anschließend reduziert. In diesem Beispiel werden Objekte den Detektionen zugeordnet. Als Gewichtung dienen die Distanzen der IoU, welche minimal sein soll \cite{hungarian}.
 	 
 	 ++++++++Fehler SORT++++++++++++
 	 
@@ -472,7 +473,7 @@
 	
 	Kann DeepSORT erfolgreich ein bereits verfolgtes Objekt zu einer Detektion assoziieren, wird anschließend eine TrackingID erstellt. Hierbei muss beachtet werden, dass im Zuge der Verbesserung von SORT weitere Sicherheiten eingebaut wurden. Ein neu getracktes Objekt erhält nicht sofort eine endgültige Identifikationsnummer. Erst nachdem das Objekt in drei hintereinander liegenden Frames erfolgreich getrackt werden konnte erhält es eine Nummer. Das Objekt erhält des weiteren einen Zähler $a$, der die Anzahl an Frames zählt, seitdem das Objekt nicht mehr erfolgreich assoziiert werden konnte. Ist eine maximale Anzahl $Age_{max}$ erreicht gilt das Objekt als verloren oder außer Reichweite der Kamera und wird aus der Objektliste entfernt. Dieser Zähler wird jedoch zurückgesetzt, sollte zuvor das Objekt erneut erfolgreich assoziiert werden.
 	
-	\subsubsection{Ergebnisse des Tracking mit DeepSORT}
+	\subsubsection{Ergebnisse des Trackings mit DeepSORT}
 	Das Tracking basiert auf YOLO, daher wird es beeinträchtigt wenn YOLO Objekte nicht erkennt. Der Kalman-Filter kann zwar in Fällen von fehlenden Detektionen weiterhin eine Vorhersage liefern, allerdings nur bei gleichbleibender Bewegung in eine Richtung. 
 	
 	Geprüft wurde wie lange der Tracker erfolgreich stehende und fahrende Autos verfolgen kann. In den meisten Fällen ist dabei kein Problem festzustellen. Problematisch ist, wenn der Objekt-Detektor über mehrere Frames ein Objekt nicht erkennt.
@@ -591,7 +592,7 @@
 	Durch die Anpassung der maximalen IoU-Distanz
 	kann ein häufiger Wechsel der ID mit direkt benachbarten Fahrzeugen vermieden werden.
 	
-	\subsubsection{Ergebnisse des Tracking mit SORT}
+	\subsubsection{Ergebnisse des Trackings mit SORT}
 	Erneut basiert der Tracking-Algorithmus auf den Erkennungen des Objekt-Detektors. In Falle von SORT handelt es sich dabei um Gaussmixture. Dieser liefert teilweise für ein Objekt mehrere Erkennung. Dies liegt daran, dass Gaussmixture bei großen Objekte nicht das gesamte Objekt erkennt, sondern einzelne Flächen und die definierten Boundingboxen nur diese Flächen umschließen. SORT verarbeitet nur die erhaltenen Boundingboxen und kann daher nicht erkennen ob mehrere Boundingboxen zu einem Objekt gehören. Zu sehen ist die Problematik in Abbildung \ref{sortdouble}. Hierbei wurden zwei Boundingboxen für den Bus definiert. Ebenfalls zu erkennen ist, dass weder das gezeigte Auto, noch der Bus von einer Boundingbox einheitlich umschlossen sind. SORT kann allerdings die definierten Boxen korrekt verfolgen bis der Bus beziehungsweise das Auto den durch Gaussmixture abgedeckten Bereich verlässt. 
 	
 	\begin{figure}[!h]
@@ -643,32 +644,33 @@
 	\end{enumerate}
 	Zusammenfassend lässt sich sagen das beide Verfahren ihre Stärken haben. Die Entscheidung welche Methode verwendet werden sollte hängt stark von der Situation und den verfügbaren Ressourcen ab.
 	
-	\begin{thebibliography}{00}
-		\bibitem{z1}https://www.zeit.de/news/2020-10/18/s-bahn-stammstrecke-in-muenchen-fuer-arbeiten-gesperrt
-		\bibitem{mog1}http://www1.ece.neu.edu/~schirner/cv/AsilomarSCC13\_MoG.pdf
-		\bibitem{stab}https://de.wikipedia.org/wiki/Bildstabilisierung
-		\bibitem{s1}https://learnopencv.com/video-stabilization-using-point-feature-matching-in-opencv/
-		\bibitem{s2}https://docs.opencv.org/3.4/d4/dee/tutorial\_optical\_flow.html
-		\bibitem{s3}https://docs.opencv.org/3.4/d4/d8c/tutorial\_py\_shi\_tomasi.html
-		\bibitem{s4}https://docs.opencv.org/3.4/dc/d6b/group\_\_video\_\_track.html
-		\bibitem{ed}https://docs.opencv.org/3.4.12/db/df6/tutorial\_erosion\_dilatation.html
-		\bibitem{m1}https://www.cs.hs-rm.de/~ulges/teaching/15MLSEM/files/folien/suhr.pdf
-		\bibitem{m2}https://opencv24-python-tutorials.readthedocs.io/en/latest/py\_tutorials/py\_video/py\_bg\_subtraction/py\_bg\_subtraction.html
-		\bibitem{m3}https://link.springer.com/article/10.1007/s10462-017-9542-x
-		\bibitem{m4}https://docs.opencv.org/3.4/d1/dc5/tutorial\_background\_subtraction.html
-		
-		\bibitem{b0}https://medium.com/@sarangzambare/object-detection-using-non-max-supression-over-yolov2-382a90212b51
-		\bibitem{b1}https://arxiv.org/pdf/1506.02640v5.pdf
-		\bibitem{b2}https://arxiv.org/pdf/2004.10934.pdf %V4
-		\bibitem{b3}https://arxiv.org/pdf/1612.08242.pdf %V2
-		\bibitem{b4}https://pjreddie.com/media/files/papers/YOLOv3.pdf %V3
-		\bibitem{b5}https://jonathan-hui.medium.com/real-time-object-detection-with-yolo-yolov2-28b1b93e2088 % V1 Loss
-		\bibitem{b6}https://openaccess.thecvf.com/content\_cvpr\_2017/papers/Lin\_Feature\_Pyramid\_Networks\_CVPR\_2017\_paper.pdf % FPN
-		\bibitem{b7}https://arxiv.org/vc/arxiv/papers/1908/1908.08681v1.pdf%MISH
-		\bibitem{b8}https://jonathan-hui.medium.com/yolov4-c9901eaa8e61 %Yolov4 Hui
-		\bibitem{b9}https://arxiv.org/pdf/1406.4729.pdf %SPP
-		\bibitem{b10}https://arxiv.org/pdf/1803.01534.pdf %PAN
-	\end{thebibliography}
+	\printbibliography
+%	\begin{thebibliography}{00}
+%		\bibitem{z1}https://www.zeit.de/news/2020-10/18/s-bahn-stammstrecke-in-muenchen-fuer-arbeiten-gesperrt
+%		\bibitem{mog1}http://www1.ece.neu.edu/~schirner/cv/AsilomarSCC13\_MoG.pdf
+%		\bibitem{stab}https://de.wikipedia.org/wiki/Bildstabilisierung
+%		\bibitem{s1}https://learnopencv.com/video-stabilization-using-point-feature-matching-in-opencv/
+%		\bibitem{s2}https://docs.opencv.org/3.4/d4/dee/tutorial\_optical\_flow.html
+%		\bibitem{s3}https://docs.opencv.org/3.4/d4/d8c/tutorial\_py\_shi\_tomasi.html
+%		\bibitem{s4}https://docs.opencv.org/3.4/dc/d6b/group\_\_video\_\_track.html
+%		\bibitem{ed}https://docs.opencv.org/3.4.12/db/df6/tutorial\_erosion\_dilatation.html
+%		\bibitem{m1}https://www.cs.hs-rm.de/~ulges/teaching/15MLSEM/files/folien/suhr.pdf
+%		\bibitem{m2}https://opencv24-python-tutorials.readthedocs.io/en/latest/py\_tutorials/py\_video/py\_bg\_subtraction/py\_bg\_subtraction.html
+%		\bibitem{m3}https://link.springer.com/article/10.1007/s10462-017-9542-x
+%		\bibitem{m4}https://docs.opencv.org/3.4/d1/dc5/tutorial\_background\_subtraction.html
+%		
+%		\bibitem{b0}https://medium.com/@sarangzambare/object-detection-using-non-max-supression-over-yolov2-382a90212b51
+%		\bibitem{b1}https://arxiv.org/pdf/1506.02640v5.pdf
+%		\bibitem{b2}https://arxiv.org/pdf/2004.10934.pdf %V4
+%		\bibitem{b3}https://arxiv.org/pdf/1612.08242.pdf %V2
+%		\bibitem{b4}https://pjreddie.com/media/files/papers/YOLOv3.pdf %V3
+%		\bibitem{b5}https://jonathan-hui.medium.com/real-time-object-detection-with-yolo-yolov2-28b1b93e2088 % V1 Loss
+%		\bibitem{b6}https://openaccess.thecvf.com/content\_cvpr\_2017/papers/Lin\_Feature\_Pyramid\_Networks\_CVPR\_2017\_paper.pdf % FPN
+%		\bibitem{b7}https://arxiv.org/vc/arxiv/papers/1908/1908.08681v1.pdf%MISH
+%		\bibitem{b8}https://jonathan-hui.medium.com/yolov4-c9901eaa8e61 %Yolov4 Hui
+%		\bibitem{b9}https://arxiv.org/pdf/1406.4729.pdf %SPP
+%		\bibitem{b10}https://arxiv.org/pdf/1803.01534.pdf %PAN
+%	\end{thebibliography}
 	
 	\section{Anhang}
 	

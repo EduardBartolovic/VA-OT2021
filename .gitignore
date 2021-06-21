@@ -9,3 +9,10 @@ Latex/VAOT.pdf
 *.aux
 *.gz
 .idea/
+*.bbl
+*.bcf
+*.blg
+*-blx.aux
+*-blx.bib
+*.run.xml
+.vs/

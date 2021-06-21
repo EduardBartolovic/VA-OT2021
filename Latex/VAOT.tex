@@ -211,10 +211,11 @@
 	Vereinfacht beschrieben misst der Algorithmus in den Lernbildern die Zeit, in welcher ein Pixel den gleichen Intensitätswert hat und bestimmt so den Hintergrund. Ändert sich der Wert, wird an dem Pixel eine Bewegung erkannt. Dieser wird als Vordergrund bestimmt und die Parameter aktualisiert.\\
 	\\
 	\subsection{Fehler in der Erkennung}
-	Eine Schwierigkeit bei der Objekterkennung ist, dass die Bewegungen hauptsächlich bei großen Intensitätsunterschieden wie der Wechsel von Straße zu Fahrzeuganfang und von Fahrzeugende zur Straße, erkannt werden. Große Flächen wie die Motorhaube, Windschutzscheibe und die Dachfläche werden nicht erkannt, da diese so lange einen Pixel mit einem sehr ähnlichen Intensitätswert „bedecken“, dass dieser zwischendurch als Hintergrund festgelegt wird. Dabei kann es passieren, dass je nach Thresholdgröße mehrere Objekte in einem Fahrzeug erkannt werden. Dieses Verhalten zeigt sich in Abbildung \ref{mogFehler1}, \ref{mogFehler2} und \ref{mogFehler3}. Ein weiteres Problem ist es, wenn neben den Objekten markante Kanten liegen. Diese Kanten sorgen zum Beispiel dafür, dass der Bus in der Grafik \ref{mogFehler2} und \ref{mogFehler3} zweigeteilt wird. Der Grund hierfür dürfte die Bordsteinkante und der Asphaltflick auf dem Radweg sein. All diese Probleme führen dazu, dass der Bus, der in den Abbildungen \ref{mogFehler2} und \ref{mogFehler4} zu sehen ist, insgesamt dreimal erkannt wird. %TODO
+	Eine Schwierigkeit bei der Objekterkennung ist, dass die Bewegungen hauptsächlich bei großen Intensitätsunterschieden wie der Wechsel von Straße zu Fahrzeuganfang und von Fahrzeugende zur Straße, erkannt werden. Große Flächen wie die Motorhaube, Windschutzscheibe und die Dachfläche werden nicht erkannt, da diese so lange einen Pixel mit einem sehr ähnlichen Intensitätswert „bedecken“, dass dieser zwischendurch als Hintergrund festgelegt wird. Dabei kann es passieren, dass je nach Thresholdgröße mehrere Objekte in einem Fahrzeug erkannt werden. Dieses Verhalten zeigt sich in Abbildung \ref{mogFehler1}, \ref{mogFehler2} und \ref{mogFehler3}.
+	Ein weiteres Problem ist es, wenn neben den Objekten markante Kanten liegen. Diese Kanten sorgen zum Beispiel dafür, dass der Bus in der Grafik \ref{mogFehler2} und \ref{mogFehler3} zweigeteilt wird. Der Grund hierfür dürfte die Bordsteinkante und der Asphaltflick auf dem Radweg sein. All diese Probleme führen dazu, dass der Bus, der in den Abbildungen \ref{mogFehler2} und \ref{mogFehler4} zu sehen ist, insgesamt dreimal erkannt wird.\\
 	\begin{figure}[!h]
 		\begin{center}
-			\includegraphics[width=9cm]{Media/MOGVergleich.png}
+			\includegraphics[width=8cm]{Media/MOGVergleich.png}
 			\caption{Schwierigkeiten bei der Objekterkennung}
 			\label{mogFehler1}
 		\end{center}
@@ -234,13 +235,31 @@
 		\end{center}
 	\end{figure}
 	\begin{figure}[!h]
-	\begin{center}
-		\includegraphics[width=8cm]{Media/Output_847MOG2.jpg}
-		\caption{Schwierigkeiten bei der Objekterkennung}
-		\label{mogFehler4}
-	\end{center}
-\end{figure}
-	
+		\begin{center}
+			\includegraphics[width=8cm]{Media/Output_847MOG2.jpg}
+			\caption{Schwierigkeiten bei der Objekterkennung}
+			\label{mogFehler4}
+		\end{center}
+	\end{figure}\\
+	Um diese Probleme zu lösen, steigern wir den Einfluss der Dilatation. Damit werden die Flächen, die als Basis der Erkennung dienen verbunden. Dies resultiert in einer verbesserten Erkennung, wie gut in den Abbildungen \ref{mogFehler5} und \ref{mogFehler6} zu sehen ist.
+	Das ein Bus zwei mal erkannt wird wurde damit nicht gelöst.\\
+	\begin{figure}[!h]
+		\begin{center}
+			\includegraphics[width=8cm]{Media/Output_733-MOGV2Cut.jpg}
+			\caption{Optimierung der Parameter verbessert die Ergebnisse}
+			\label{mogFehler5}
+		\end{center}
+	\end{figure}
+	\begin{figure}[!h]
+		\begin{center}
+			\includegraphics[width=8cm]{Media/Output_847-MOGV2Cut}
+			\caption{Optimierung der Parameter verbessert die Ergebnisse}
+			\label{mogFehler6}
+		\end{center}
+	\end{figure}
+
+	\newpage
+
 	\section{Objekterkennung: YOLOv4}
 	YOLO \cite{b1} ist ein Neuronal Netz für die Echtzeit-Objekterkennung. In diesem Projekt wurde die vierte und damit aktuellste Version von YOLO \cite{b2} verwendet. So bietet jede Version inkrementelle Verbesserung zum jeweiligen Vorgänger. In dem folgenden Abschnitt werden die wichtigsten Punkte aller Versionen erläutert.\\
 	YOLO ist die Abkürzung für 'You Only Look Once' was übersetzt 'Man sieht nur einmal hin' heißt. Die Aufgabe der Objekterkennung besteht darin, den Ort und die Größe der Bounding Box im Bild zu bestimmen, sowie die Objekte zu klassifizieren. Frühere Methoden, wie R-CNN \cite{rcnn} und seine Variationen, verwendeten eine Pipeline, um diese Aufgabe in mehreren Schritten durchzuführen. Dies ist in der Ausführung langsam und aufwendiger zu trainieren, da jede einzelne Komponente separat trainiert werden muss. YOLO, erledigt beide Aufgaben mit einem einzigen Convolutional Neural Network. Es betrachtet dabei die Objekterkennung als ein Regressionsproblem auf räumlich getrennte Bounding Boxen und zugehörige Klassenwahrscheinlichkeiten.\\

@@ -18,3 +18,8 @@ In Zeiten, in denen Neuronale Netze immer mehr Bedeutung erlangen ist es wichtig
 - TensorFlow
 
 ## Wie startet man den Code:
+
+1. Projekt clonen
+2. "Output" Ordner mit Unterordnern erstellen.
+3. main.py anpassen an gewünschte Videodatei
+4. main.py starten

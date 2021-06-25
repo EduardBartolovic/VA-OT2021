@@ -41,11 +41,12 @@ class Tracking_object(object):
     
     def increase_stop_counter(self):
         self.stopCounter += 1
-        if self.stopCounter == 8:
+        if self.stopCounter == 15:
             self.sameDirectionCounter = 0
             self.stopCounter = 0
             if self.state == 1 or self.state == 3:
                 self.increase_state()
+                
         
     def get_stop_counter(self):
         return self.stopCounter

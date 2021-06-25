@@ -17,40 +17,16 @@ def opticalFlow(prev_gray, frame):
     mask[..., 2] = cv2.normalize(magnitude, None, 0, 255, cv2.NORM_MINMAX)
     # Converts HSV to RGB (BGR) color representation
     rgb = cv2.cvtColor(mask, cv2.COLOR_HSV2BGR)
-    return (gray, rgb, magnitude, angle, mask)
+    return (magnitude, angle, mask)
 
 
-def calculateMeanColorInBB(detections, magnitude, angles, image_w, image_h, mask):
-    count= 0
-    magnitudeMeans = np.zeros((len(detections),1))
-    angleMeans = np.zeros((len(detections),1))
-    for det in detections:
-        t,l,b,r = det.get_tlbr()
-        startY = int(max(t,0))
-        endY = int(min(b, image_w-1))
-        startX = int(max(l,0))
-        endX = int(min(r, image_h-1))
-
-        mags = []
-        angs = []
-        col = []
-        for y in range(startY,endY):
-            for x in range(startX,endX):
-                if mask[x][y][2] > 19:
-                    col.append(mask[x][y][0])
-                    mags.append(magnitude[x][y])
-                    angs.append(angles[x][y])
-
-        mags.append(-1)
-        angs.append(0)
-        col.append(-1)
-        magnitudeMeans[count] = np.mean(mags)
-        meancol = np.mean(col)*2
-        if (meancol > 90 and meancol < 180) or meancol > 270:
-            angleMeans[count] = np.mean(angs)-np.pi
-        else:
-            angleMeans[count] = np.mean(angs)
-        
-
-        count += 1
-    return (magnitudeMeans, angleMeans)
+def is_moving(magnitude, mask):
+    mags = []
+    for y in range(0,len(magnitude)):
+        for x in range(0, len(magnitude)):
+            if mask[x][y][2] > 19:
+                mags.append(magnitude[x][y])
+    mags.append(-1)
+    magnitudeMean = np.mean(mags)
+    print("magMean: ",magnitudeMean)
+    return magnitudeMean

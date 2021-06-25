@@ -12,6 +12,8 @@ In Zeiten, in denen Neuronale Netze immer mehr Bedeutung erlangen ist es wichtig
 
 - Python-Sourcecode
 
+(Original Repository für Coco, Configurations-Datei und Gewichte: https://github.com/AlexeyAB/darknet)
+
 ## Benötigte Bibliotheken:
 
 - OpenCV
@@ -22,4 +24,6 @@ In Zeiten, in denen Neuronale Netze immer mehr Bedeutung erlangen ist es wichtig
 1. Projekt clonen
 2. "Output" Ordner mit Unterordnern erstellen.
 3. main.py anpassen an gewünschte Videodatei
-4. main.py starten
+4. main.py anpassen an gewünschte Klassen
+5. main.py anpassen an gewünschten Algorithmus (classic, NN)
+6. main.py starten

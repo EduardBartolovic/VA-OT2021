@@ -1,12 +1,7 @@
 import cv2
 import numpy as np
-
 import time
-import sys
-import os
-import math
 
-from OpticalFlow import opticalFlow, calculateMeanColorInBB
 from YoloDetection import detect_image_yolo
 from MOGDetection import detect_image_mog
 from trackingSort import *
@@ -44,59 +39,64 @@ outputLocationMOG = '../Output/MOG'
 outputLocationSORT = '../Output/SORT'
 outputLocationZugphase = '../Output/Zugphase'
 #Classic or DeepLearning
-classic = True
+classic = False
 
 
 # Video settings
 
-#videoFile = 'goodtrain.mp4'
-#allowedClasses = [2]# allows classes in which we are interested person,bicycle,car,motorbike,aeroplane,bus,train,truck
-#crop_img_y = 0
-#crop_img_x = 0
-#crop_img_h = 1
-#crop_img_w = 0.5
-#max_cosine_distance = 0.4
-#nn_budget = None
-#max_iou_distance = 0.2
-#metric = nn_matching.NearestNeighborDistanceMetric(
+# videoFile = 'goodtrain.mp4'
+# allowedClasses = [6]# allows classes in which we are interested person,bicycle,car,motorbike,aeroplane,bus,train,truck
+# crop_img_y = 0
+# crop_img_x = 0
+# crop_img_h = 1
+# crop_img_w = 0.5
+# max_cosine_distance = 0.4
+# nn_budget = None
+# max_iou_distance = 0.2
+# metric = nn_matching.NearestNeighborDistanceMetric(
 #    "euclidean", max_cosine_distance, nn_budget)  # DeepSort parameter
+# kernel_e = np.ones((5, 5), np.uint8)
+# kernel_d = np.ones((9, 9), np.uint8)
+# iterations_e = 2
+# iterations_d = 2
+# threshold = 7000
 
 #Video Zug1
 
 #Video Brudermühl
-videoFile = 'Brudermuehl.mp4'
-allowedClasses = [2]# allows classes in which we are interested person,bicycle,car,motorbike,aeroplane,bus,train,truck
-crop_img_y = 0.25
-crop_img_x = 0
+# videoFile = 'Brudermuehl.mp4'
+# allowedClasses = [2]# allows classes in which we are interested person,bicycle,car,motorbike,aeroplane,bus,train,truck
+# crop_img_y = 0.25
+# crop_img_x = 0
+# crop_img_h = 1
+# crop_img_w = 0.75
+# max_cosine_distance = 0.4
+# nn_budget = None
+# max_iou_distance = 0.2
+# metric = nn_matching.NearestNeighborDistanceMetric(
+#     "cosine", max_cosine_distance, nn_budget)  # DeepSort parameter
+# kernel_e = np.ones((5, 5), np.uint8)
+# kernel_d = np.ones((9, 9), np.uint8)
+# iterations_e = 2
+# iterations_d = 2
+# threshold = 7000
+
+#Video Candid
+videoFile = 'Candidtunnel.mp4'
+allowedClasses = [1,2,5,7]# allows classes in which we are interested person,bicycle,car,motorbike,aeroplane,bus,train,truck
+crop_img_y = 0.1
+crop_img_x = 0.1
 crop_img_h = 1
-crop_img_w = 0.75
+crop_img_w = 1
 max_cosine_distance = 0.4
 nn_budget = None
 max_iou_distance = 0.2
-metric = nn_matching.NearestNeighborDistanceMetric(
-    "cosine", max_cosine_distance, nn_budget)  # DeepSort parameter
+metric = nn_matching.NearestNeighborDistanceMetric("cosine", max_cosine_distance, nn_budget)# DeepSort parameter
 kernel_e = np.ones((5, 5), np.uint8)
 kernel_d = np.ones((9, 9), np.uint8)
 iterations_e = 2
 iterations_d = 2
 threshold = 7000
-
-#Video Candid
-#videoFile = 'Candidtunnel.mp4'
-#allowedClasses = [2,5]# allows classes in which we are interested person,bicycle,car,motorbike,aeroplane,bus,train,truck
-#crop_img_y = 0.1
-#crop_img_x = 0.1
-#crop_img_h = 1
-#crop_img_w = 1
-#max_cosine_distance = 0.4
-#nn_budget = None
-#max_iou_distance = 0.2
-#metric = nn_matching.NearestNeighborDistanceMetric("cosine", max_cosine_distance, nn_budget)# DeepSort parameter
-#kernel_e = np.ones((5, 5), np.uint8)
-#kernel_d = np.ones((9, 9), np.uint8)
-#iterations_e = 2
-#iterations_d = 2
-#threshold = 7000
 
 #Video Kanal
 #videoFile = 'Kanal.mp4'
@@ -252,6 +252,7 @@ end_point = (image_w, int(0.7*image_h))
 
 # Zugphase
 tracking_objects_states = {}
+useKalman = False
 
 count = 0
 while success:
@@ -279,14 +280,10 @@ while success:
         #print(counterBox.getDict())
 
         # Zugphase
-        #tracking_objects_states = zugphase(track_bbs_ids, angles, magnitudes, tracking_objects_states)
-        #draw_detections(outputLocationZugphase,image, track_bbs_ids, True)
+        tracking_objects_states = zugphase(track_bbs_ids, angles, magnitudes, tracking_objects_states, prev_gray, image, useKalman)
+        prev_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        draw_detections(outputLocationZugphase,image, track_bbs_ids, True)
         
-
-        #OpticalFlow:
-        #prev_gray, imageOF, magnitude, angle, mask = opticalFlow(prev_gray, image)
-        #magnitudes, angles = calculateMeanColorInBB(detections, magnitude, angle, image_w, image_h, mask)
-        #draw_detections(outputLocationOF, image, detections, True, angles, magnitudes)
 
     count += 1
 

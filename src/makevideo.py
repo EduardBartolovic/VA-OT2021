@@ -1,13 +1,13 @@
 import cv2
 import os
 
-image_folder = 'output/OF'
-pathOut = 'output/OF/ofkalman.avi'
+image_folder = '../Output/Zugphase'
+pathOut = '../Output/Zugphase/ZugphaseOF.avi'
 
 images = sorted([img for img in os.listdir(image_folder) if img.endswith(".jpg")])
 frame = cv2.imread(os.path.join(image_folder, images[0]))
 height, width, layers = frame.shape
-video = cv2.VideoWriter(pathOut, cv2.VideoWriter_fourcc(*'XVID'), 15, (width,height)) 
+video = cv2.VideoWriter(pathOut, cv2.VideoWriter_fourcc(*'XVID'), 30, (width,height)) 
  
 for image in images:
     video.write(cv2.imread(os.path.join(image_folder, image)))

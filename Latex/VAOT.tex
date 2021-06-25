@@ -291,7 +291,7 @@
 	Das Bild ist in ein S × S-Gitter mit den Residualblöcken aufgeteilt. Wenn der Mittelpunkt eines Objekts in eine Gitterzelle fällt, ist diese Gitterzelle für die Erkennung dieses Objekts zuständig. Jede Gitterzelle sagt B Bounding Boxen und C Klassenkonfidenzwerte für diese Boxen voraus \cite{b1}\\
 	Diese Klassenkonfidenzwerte zeigen, wie sicher das Modell ist, dass die Bounding Box ein Objekt enthält und auch wie genau die Box das Objekt beschreibt. Die Konfidenz wird wie folgt definiert:
 	\[ c = Pr(Objekt) * IoU_{pred}^{truth} \]
-	Die IoU ist zwischen zwei Boxen A und B ist wie folgt definiert:
+	Die IoU zwischen zwei Boxen A und B ist wie folgt definiert:
 	\[ IoU = \frac{A \cap B}{A \cup B} \]
 	\begin{figure}[h]
 		\begin{center}

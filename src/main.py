@@ -82,7 +82,7 @@ classic = False
 # threshold = 7000
 
 #Video Brudermühl Nacht1
-videoFile = 'BrudermuehlNacht (2).mp4'
+videoFile = 'BrudermuehlNacht (1).mp4'
 allowedClasses = [2,6]# allows classes in which we are interested person,bicycle,car,motorbike,aeroplane,bus,train,truck
 crop_img_y = 0.25
 crop_img_x = 0

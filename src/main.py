@@ -81,22 +81,40 @@ classic = False
 # iterations_d = 2
 # threshold = 7000
 
-#Video Candid
-videoFile = 'Candidtunnel.mp4'
-allowedClasses = [1,2,5,7]# allows classes in which we are interested person,bicycle,car,motorbike,aeroplane,bus,train,truck
-crop_img_y = 0.1
-crop_img_x = 0.1
+#Video Brudermühl Nacht1
+videoFile = 'BrudermuehlNacht (2).mp4'
+allowedClasses = [2,6]# allows classes in which we are interested person,bicycle,car,motorbike,aeroplane,bus,train,truck
+crop_img_y = 0.25
+crop_img_x = 0
 crop_img_h = 1
-crop_img_w = 1
+crop_img_w = 0.75
 max_cosine_distance = 0.4
 nn_budget = None
 max_iou_distance = 0.2
-metric = nn_matching.NearestNeighborDistanceMetric("cosine", max_cosine_distance, nn_budget)# DeepSort parameter
+metric = nn_matching.NearestNeighborDistanceMetric(
+    "cosine", max_cosine_distance, nn_budget)  # DeepSort parameter
 kernel_e = np.ones((5, 5), np.uint8)
 kernel_d = np.ones((9, 9), np.uint8)
 iterations_e = 2
 iterations_d = 2
 threshold = 7000
+
+#Video Candid
+#videoFile = 'Candidtunnel.mp4'
+#allowedClasses = [1,2,5,7]# allows classes in which we are interested person,bicycle,car,motorbike,aeroplane,bus,train,truck
+#crop_img_y = 0.1
+#crop_img_x = 0.1
+#crop_img_h = 1
+#crop_img_w = 1
+#max_cosine_distance = 0.4
+#nn_budget = None
+#max_iou_distance = 0.2
+#metric = nn_matching.NearestNeighborDistanceMetric("cosine", max_cosine_distance, nn_budget)# DeepSort parameter
+#kernel_e = np.ones((5, 5), np.uint8)
+#kernel_d = np.ones((9, 9), np.uint8)
+#iterations_e = 2
+#iterations_d = 2
+#threshold = 7000
 
 #Video Kanal
 #videoFile = 'Kanal.mp4'

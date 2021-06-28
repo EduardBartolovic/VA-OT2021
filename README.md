@@ -6,8 +6,6 @@ In Zeiten, in denen Neuronale Netze immer mehr Bedeutung erlangen ist es wichtig
 
 - Configuration für das Neuronale Netz YoloV4
 
-- Gewichte für das vortrainierte Netz
-
 - Namendatei für den COCO Datensatz
 
 - Python-Sourcecode
@@ -18,6 +16,12 @@ In Zeiten, in denen Neuronale Netze immer mehr Bedeutung erlangen ist es wichtig
 
 - OpenCV
 - TensorFlow
+
+## Benötigte Gewichte:
+
+- Die Gewichte für das vortrainierte Netz (YoloV4) werden benötigt
+
+(Original Repository für Coco, Configurations-Datei und Gewichte: https://github.com/AlexeyAB/darknet)
 
 ## Wie startet man den Code:
 

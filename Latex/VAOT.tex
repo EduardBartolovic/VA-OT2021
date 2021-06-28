@@ -511,17 +511,14 @@
 	Kann DeepSORT erfolgreich ein bereits verfolgtes Objekt zu einer Detektion assoziieren, wird anschließend eine TrackingID erstellt. Hierbei muss beachtet werden, dass im Zuge der Verbesserung von SORT weitere Sicherheiten eingebaut wurden. Ein neu getracktes Objekt erhält nicht sofort eine endgültige Identifikationsnummer. Erst nachdem das Objekt in drei hintereinander liegenden Frames erfolgreich getrackt werden konnte erhält es eine Nummer. Das Objekt erhält des weiteren einen Zähler $a$, der die Anzahl an Frames zählt, seitdem das Objekt nicht mehr erfolgreich assoziiert werden konnte. Ist eine maximale Anzahl $Age_{max}$ erreicht gilt das Objekt als verloren oder außer Reichweite der Kamera und wird aus der Objektliste entfernt. Dieser Zähler wird jedoch zurückgesetzt, sollte zuvor das Objekt erneut erfolgreich assoziiert werden \cite{deepSort}.
 	
 	\subsubsection{Ergebnisse des Trackings mit DeepSORT}
-	Das Tracking basiert auf YOLO, daher wird es beeinträchtigt wenn YOLO Objekte nicht erkennt. Der Kalman-Filter kann zwar in Fällen von fehlenden Detektionen weiterhin eine Vorhersage liefern, allerdings nur bei gleichbleibender Bewegung in eine Richtung. 
-	
-	Geprüft wurde wie lange der Tracker erfolgreich stehende und fahrende Autos verfolgen kann. In den meisten Fällen ist dabei kein Problem festzustellen. Problematisch ist, wenn der Objekt-Detektor über mehrere Frames ein Objekt nicht erkennt.
-	
+	Das Tracking basiert auf YOLO, daher wird es beeinträchtigt wenn YOLO Objekte nicht erkennt. Der Kalman-Filter kann zwar in Fällen von fehlenden Detektionen weiterhin eine Vorhersage liefern, allerdings nur bei gleichbleibender Bewegung in eine Richtung.\\
+	Geprüft wurde wie lange der Tracker erfolgreich stehende und fahrende Autos verfolgen kann. In den meisten Fällen ist dabei kein Problem festzustellen. Problematisch ist, wenn der Objekt-Detektor über mehrere Frames ein Objekt nicht erkennt.\\
 	In den Aufzeichnung des Brudermühl-Tunnels zeigt sich die Problematik der
 	unregelmäßigen Detektionen deutlich. Ein Teil der Straße wird durch die Laterne
 	verdeckt, wodurch für einige Frames keine Detektion möglich ist. Die Fahrzeuge
 	erhalten eine neue ID. Nachdem die Laterne jedoch passiert wurde wird die alte
 	Nummerierung teilweise wieder zurückgesetzt, sodass lediglich eine Unterbrechung
-	erfolgt.
-	
+	erfolgt.\\
 	Des weiteren entfernt sich teilweise das Fahrzeug zu schnell während die Bounding Boxen fehlen und kann nicht
 	mehr der zuvor festgelegten Tracking-ID zugeordnet werden. Hierbei wird ebenfalls eine neue ID zugewiesen.
 	
@@ -529,11 +526,10 @@
 	befindenden Objekts übernehmen, dies ist zu sehen in Abbildung \ref{track4}-\ref{track6}.
 	Dabei wechselt Fahrzeug 6 auf die ID 69. Da ist im Abbildung \ref{track5} wieder zurück auf 6
 	wechselt ist die ID 69 offen. Da Fahrzeug 63 für kurze Zeit hinter der Laterne keine Bounding Box erhält, wird fälschlicherweise die ID 69 zugewiesen.
-	Dies wird in der nächsten Abbildung \ref{track6} nicht mehr korrigiert, da es sich zu schnell entfernt.
-	
+	Dies wird in der nächsten Abbildung \ref{track6} nicht mehr korrigiert, da es sich zu schnell entfernt.\\
 	\begin{figure}[!h]
 		\begin{center}
-			\includegraphics[width=7cm]{Media/switch1.jpg}
+			\includegraphics[width=7.5cm]{Media/switch1.jpg}
 			\caption{Im Hintergrund zu sehen Auto 6, 24 und 48 die die Lampe passieren}
 			\label{track3}
 		\end{center}
@@ -558,9 +554,7 @@
 			\caption{Wechsel von Fahrzeug 63 auf 69, dahinterliegende Fahrzeug erhält 63}
 			\label{track6}
 		\end{center}
-	\end{figure}
-	
-	
+	\end{figure}\\
 	In den Aufzeichnungen des Candid-Tunnels zeigen sich Probleme bei der Verfolgung von weiter entfernten und stehenden Fahrzeugen.
 	
 	Die Verfolgung der nahen stehenden Fahrzeuge funktioniert gut, allerdings kommt es zu
@@ -634,7 +628,7 @@
 	
 	\begin{figure}[!h]
 		\begin{center}
-			\includegraphics[width=7cm]{Media/sortdouble.jpg}
+			\includegraphics[width=7.5cm]{Media/sortdouble.jpg}
 			\caption{Doppelte Erkennung eines Objekts. SORT nimmt pro Bounding Box ein Objekt an, daher werden zwei Tracking-IDs für den Bus erstellt}
 			\label{sortdouble}
 		\end{center}

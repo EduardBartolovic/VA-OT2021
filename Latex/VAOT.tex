@@ -471,10 +471,20 @@
 	\section{Tracking: Sort}
 	SORT \cite{sort} berechnet auf Basis des Kalman Filters \cite{kalman} und der Ungarische Methode \cite{hungarian} die Bewegung des Objekts und weist je nach Status eine eindeutige Identifikationsnummer zu. 
 	
-	Der Kalman-Filter funktioniert für die Problemstellung sehr gut, da dieser ein lineares System mit gaußisches Rauschen voraussetzt. Dies ist gegeben durch die gleichmäßige Bewegung der Züge/ Autos in eine Richtung.
-	Der Kalmanfilter kann aus verrauschten, teils redundanten Messungen die Zustände und Parameter des aktuellen Systems schätzen. 
-	Die Zustände des aktuellen Systems sind die Positionen der Objekte angegeben in Bounding Boxen. Durch Berücksichtigung des letzten Zustand des Systems, (die letzte Position), der Schätzung der nächsten Position und Abgleich mit der aktuellen Messung (die aktuelle Detektion) und anschließender Aktualisierung des Systems, kann eine zuverlässige Verfolgung des Objekts berechnet werden. Probleme die den Kalmanfilter stören sind zum Beispiel ungleichmäßige Bewegungen von Fahrzeugen, dies wird „Process Noise“ genannt, sowie Ungenauigkeiten in Messungen, diese werden als „Measurement Noise“ bezeichnet.
-	Kann zu dem aktuell getrackten Objekt in dem Frame keine Bounding Box zugeordnet werden, wird der Zustand des Systems auch ohne die Korrektur durch die Messung berechnet. Kann in einem späteren Frame wieder eine Bounding Box zugeordnet werden, wird der Zustand durch diese Detektion erneut aktualisiert.
+	Der Kalman-Filter ist ein mathematisches Verfahren welches auf Basis eines beobachteten stochastischen Modells und Messungen eine Schätzung abgeben kann, in welchem Zustand sich dieses Modell befindet.
+	Dabei werden ebenfalls mögliches Rauschen $Q_k$ innerhalb des Modells, als auch Rauschen $R_k$ in den Messungen berücksichtigt. Voraussetzung ist, dass das Modell linear ist und die durch das Rauschen entstehende Unsicherheiten gaußverteilt sind. Das beobachtete Modell ist in diesem Anwendungsfall die Bewegung der Objekte in Form von Bounding Boxen innerhalb des Frames. 
+	Für die Schätzung des aktuellen Zustands des beobachteten Modells benötigt der Kalman-Filter eine aktuelle Messung $z_k$, sowie den letzten Zustand des Modells $\hat{x}^{-}_{k}$. 
+	Ein Zustand ist die Position an der sich das Objekt zum Zeitpunkt $k$ befindet. Durch das erwähnte Rauschen kann die neue Position nicht genau bestimmt werden kann. Diese Unsicherheit wird anhand einer Wahrscheinlichkeitsdichtefunktion dargestellt. Das mathematisches Modell, welches dem beobachteten Modell gleicht, bestimmt anschließend die neue Position des Objekts $\hat{x}^{-}_{k+1} = A_k \hat{x}_{k}+Bu_k$.
+	Als Messung wird die aktuelle Detektion verwendet. Somit ergeben sich zwei Möglichkeiten für die Position.  Der optimale Zustand wird anteilig aus dem zuvor bestimmten Zustand und der Messung berechnet. Die Gewichtung wird durch den sogenannten \textit{Kalman Gain} $K_k$ bestimmt. Ist der Messfehler klein, wird die Messung stärker gewichtet in der Berechnung des aktuellen Zustands. Ist hingegen der Fehler in der Vorhersage des Zustands geringer, wird diese mehr gewichtet \cite{kalman}. Der Optimale Zustand wird ebenfalls unter Rauschen berechnet, daher wird hierfür die \textit{a posteriori} Fehler Kovarianz $P_k$ berechnet. Dafür wird die \textit{a priori} Fehler Kovarianz $P^-_k$ durch die Messung ebenfalls aktualisiert.
+	Sollte keine Detektion vorhanden sein, wird das Modell ohne Korrektur der Messung neu berechnet.
+	Die genaue Berechnung ist in Abbildung \ref{figure_21} dargestellt, welche ebenfalls den Zyklus der Neuberechnung der Zustände zeigt.
+	\begin{figure}[h]
+		\begin{center}
+			\includegraphics[width=8cm]{Media/kalman.png}
+			\caption{Kalman-Filter Zyklus \cite{kalman}}
+			\label{figure_21}
+		\end{center}
+	\end{figure}
 	
 	Die ungarische Methode wird verwendet, um die Detektion einem existierenden getrackten Objekt zuzuordnen. Hierfür wird die Intersection-over-Union Distance zwischen jeder Detektion und allen bereits erkannten Objekten verglichen und als Gewichtung verwendet.
 	
